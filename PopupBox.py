@@ -1,8 +1,4 @@
 from tkinter import *
-#from tkinter import ttk
-#from tkinter import messagebox
-import mysql.connector
-from mysql.connector import errorcode
 
 # Implementation for a generic popup dialog box
 def popupBox(mainWindow, parentWindow, windowTitle, messageText):
