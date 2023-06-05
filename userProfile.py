@@ -1,10 +1,25 @@
 import tkinter as tk
 from tkinter.ttk import Entry, Label
-
+import PopUpBox
 
 
 def user_profile(profileWindow):
+
     profileWindow = tk()
+    w = 600 # Width 
+    h = 500 # Height
+ 
+    # Determine the size of the screen
+    screen_width =  profileWindow.winfo_screenwidth()  # Width of the screen
+    screen_height = profileWindow.winfo_screenheight() # Height of the screen
+ 
+    # Calculate starting x and y coordinates to center the main window on the screen
+    x = (screen_width / 2) - (w / 2)
+    y = (screen_height / 2) - (h / 2)
+ 
+    profileWindow.geometry('%dx%d+%d+%d' % (w, h, x, y))
+    profileWindow.resizable(True, True)
+    profileWindow.title("User Profile")
 
     name = ""
     gender = ""
@@ -37,11 +52,19 @@ def user_profile(profileWindow):
     heightEntry.grid(column = 0, row = 3, columnspan = 2)
 
 
-def userErrors(nameEntry, genderEntry, weightEntry, heightEntry):
+def nameErrors(nameEntry, genderEntry, weightEntry, heightEntry):
     if len(nameEntry > 50):
         print("Name cannot be more than 50 letters, Use a nickname if you must.")
     elif len(nameEntry < 1):
         print("Please Enter a Name.")
 
+def genderErrors(genderEntry)
+    if len(genderEntry != "Mal")
 
+def weightErrors(weightEntry):
+    if len(weightEntry > 3)
+        print("Invalid")
+    
+
+user_profile()
     
