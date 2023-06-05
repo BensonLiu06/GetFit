@@ -43,6 +43,7 @@ def createAppWindow(mainWindow, appWindow, userLoginWindow, dbConnection, dbCurs
     label2 = Label(topFrame, text = "Username: " + username, width = 20, anchor = 'center')
     label2.grid(column = 1, row = 0, pady = 5)
 
+    # Create button widget for Profile & Settings
     updateProfileButton = Button(leftFrame, text = "Profile & Settings", command = lambda : updateProfileWindow(mainWindow, appWindow, dbConnection, dbCursor, username))
     updateProfileButton.grid(column = 0, row = 1, pady = 5)
 
