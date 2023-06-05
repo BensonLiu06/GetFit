@@ -5,6 +5,7 @@ from RegisterUserWindow import *
 from AppWindow import *
 from PopupBox import *
 from CheckUserNameExists import *
+from PasswordHash import *
 
 # Implementation of login window
 def createLoginWindow(mainWindow, userLoginWindow, registrationWindow, appWindow, dbConnection, dbCursor):
@@ -145,13 +146,17 @@ def verifyLogin(mainWindow, parentWindow, appWindow, dbConnection, dbCursor, use
     passwordLoginField.delete(0, END)
 
     if checkUserNameExists(username, dbCursor):
-        #selectQuery = "SELECT * FROM `Users` WHERE `username` = %s and `password` = %s VALUES (%s, %s)"
-        selectStatement = """SELECT * FROM Users WHERE username = %s AND password = %s"""
-        vals = (username, password)
+        #selectStatement = """SELECT * FROM User WHERE username = %s AND password = %s"""
+        #vals = (username, password)
+
+        selectStatement = """SELECT * FROM User WHERE username = %s"""
+        vals = (username,)
         dbCursor.execute(selectStatement, vals)
 
         user = dbCursor.fetchone()
-        if user is not None:
+        passwordHash = user[2]
+
+        if (comparePassword(password,passwordHash)):
             parentWindow.grid_forget()
             appWindow.grid(sticky='nsew')
             createAppWindow(mainWindow, appWindow, parentWindow, dbConnection, dbCursor, username)
@@ -166,7 +171,7 @@ def verifyLogin(mainWindow, parentWindow, appWindow, dbConnection, dbCursor, use
 def verifyUserResetPassword(mainWindow, parentWindow, callingWindow, dbConnection, dbCursor, username):
     # Check the GetFit database to ensure the Username exists
     if checkUserNameExists(username, dbCursor):
-        selectQuery = """SELECT security_question, security_response FROM Users WHERE username = %s"""
+        selectQuery = """SELECT security_question, security_response FROM User WHERE username = %s"""
 
         vals = (username,)
         dbCursor.execute(selectQuery, vals)
@@ -358,13 +363,14 @@ def verifyAndResetPassword(mainWindow, parentWindow, callingWindow, dbConnection
 
     if password == confirmPassword:
         callingWindow.destroy()
+        passwordHash = createPasswordHash(password)
+
         
-        updateStatement = """UPDATE Users SET password = %s WHERE username = %s"""
-        vals = (password, username)
+        updateStatement = """UPDATE User SET password_hash = %s WHERE username = %s"""
+        vals = (passwordHash, username)
         dbCursor.execute(updateStatement, vals)
         dbConnection.commit()
-
+        #
         popupBox(mainWindow, parentWindow, "Information", "Password was successfully reset")
     else:
         popupBox(mainWindow, callingWindow, "Error", "Passwords do not match")
-
