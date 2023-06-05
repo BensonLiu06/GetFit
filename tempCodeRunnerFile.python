@@ -1,24 +1,10 @@
 import tkinter as tk
 from tkinter.ttk import Entry, Label
+import mysql.connector as db
 
-
-def user_profile(profileWindow):
-
+def user_profile(userRegistrationWindow):
+    
     profileWindow = tk()
-    w = 600 # Width 
-    h = 500 # Height
- 
-    # Determine the size of the screen
-    screen_width =  profileWindow.winfo_screenwidth()  # Width of the screen
-    screen_height = profileWindow.winfo_screenheight() # Height of the screen
- 
-    # Calculate starting x and y coordinates to center the main window on the screen
-    x = (screen_width / 2) - (w / 2)
-    y = (screen_height / 2) - (h / 2)
- 
-    profileWindow.geometry('%dx%d+%d+%d' % (w, h, x, y))
-    profileWindow.resizable(True, True)
-    profileWindow.title("User Profile")
 
     name = ""
     gender = ""
@@ -35,7 +21,7 @@ def user_profile(profileWindow):
     genderLabel = Label(profileWindow  , text = "Gender", width = "30")
     genderLabel.grid (column = 0 , row = 2, columnspan = 2)
 
-    genderEntry = Entry(profileWindow  , bd = 3, width = 30 , textvariable = gender)
+    genderEntry = Entry(profileWindow  , bd = 3, width = 30 , textvariable = name)
     genderEntry.grid(column = 0, row = 3, columnspan = 2)
 
     weightLabel = Label(profileWindow  , text = "Weight", width = "30")
@@ -51,17 +37,9 @@ def user_profile(profileWindow):
     heightEntry.grid(column = 0, row = 3, columnspan = 2)
 
 
-def nameErrors(nameEntry, genderEntry, weightEntry, heightEntry):
+def userErrors(nameEntry, genderEntry, weightEntry, heightEntry):
     if len(nameEntry > 50):
         print("Name cannot be more than 50 letters, Use a nickname if you must.")
     elif len(nameEntry < 1):
         print("Please Enter a Name.")
-
-def genderErrors(genderEntry):
-    if len(genderEntry != "Mal"):
-
-
-    
-
-user_profile()
     
