@@ -1,10 +1,8 @@
 from tkinter import *
-#from tkinter import ttk
-#from tkinter import messagebox
-import mysql.connector
-from mysql.connector import errorcode
+import bcrypt
 from PopupBox import *
 from CheckUserNameExists import *
+from PasswordHash import *
 
 # Implementation for user registration window
 def registerUserWindow(mainWindow, userRegistrationWindow, userLoginWindow, dbConnection, dbCursor):
@@ -102,35 +100,46 @@ def registerUserWindow(mainWindow, userRegistrationWindow, userLoginWindow, dbCo
     emptyLabel.grid(column = 0, row = 12, columnspan = 2)
 
     # Create button widget for Register - registers a new user
-    registerUserButton = Button(leftFrame, text = "Register", width=10, height=1, bg="blue", command = lambda : registerUser(mainWindow, userRegistrationWindow, userLoginWindow, dbConnection, dbCursor, usernameField.get(), passwordField.get(), confirmPasswordField.get(), securityQuestionField.get(), securityResponseField.get(), usernameField, passwordField, securityQuestionField, securityResponseField))
+    registerUserButton = Button(leftFrame, text = "Register", width=10, height=1, bg="blue", command = lambda : registerUser(mainWindow, userRegistrationWindow, userLoginWindow, dbConnection, dbCursor, usernameField.get(), passwordField.get(), confirmPasswordField.get(), securityQuestionField.get(), securityResponseField.get(), usernameField, passwordField, confirmPasswordField, securityQuestionField, securityResponseField))
     registerUserButton.grid(column = 0, row = 13)
 
     # Create button widget for Cancel - cancels user registration
-    cancelButton = Button(leftFrame, text = "Cancel", width = 10, height=1, bg="blue", command = lambda : cancelUserRegistration(userRegistrationWindow, userLoginWindow, usernameField, passwordField, securityQuestionField, securityResponseField))
+    cancelButton = Button(leftFrame, text = "Cancel", width = 10, height=1, bg="blue", command = lambda : cancelUserRegistration(userRegistrationWindow, userLoginWindow, usernameField, passwordField, confirmPasswordField, securityQuestionField, securityResponseField))
     cancelButton.grid(column = 1, row = 13)
 
 # Implemention for register button event
-def registerUser(mainWindow, parentWindow, userLoginWindow, dbConnection, dbCursor, username, password, confirmPassword, securityQuestion, securityResponse, usernameField, passwordField, securityQuestionField, securityResponseField):
+def registerUser(mainWindow, parentWindow, userLoginWindow, dbConnection, dbCursor, username, password, confirmPassword, securityQuestion, securityResponse, usernameField, passwordField, confirmPasswordField, securityQuestionField, securityResponseField):
     if not username:
         popupBox(mainWindow, parentWindow, "Error", "Username is null. Please provide a valid user name")
+    elif len(username) < 6 or len(username) > 50:
+        popupBox(mainWindow,parentWindow, "Error", "Username must be between 6 and 50 characters long")
     elif not password:
         popupBox(mainWindow, parentWindow, "Error", "Password is null. Please provide a valid password")
+    elif len(password) < 8 or len(password) > 64:
+        popupBox(mainWindow,parentWindow, "Error", "Password must be between 8 and 64 characters long")
     elif not securityQuestion:
         popupBox(mainWindow, parentWindow, "Error", "You must provide a security question")
+    elif len(securityQuestion) > 256:
+        popupBox(mainWindow,parentWindow, "Error", "The maximum length of a security question is 256 characters long")
     elif not securityResponse:
         popupBox(mainWindow, parentWindow, "Error", "You must provide a security response")
+    elif len(securityResponse) > 64:
+        popupBox(mainWindow,parentWindow, "Error", "The maximum length of a security response is 64 characters long")
     else:
         if checkUserNameExists(username, dbCursor) == False:
             if password == confirmPassword:
+                passwordHash = createPasswordHash(password)
+
                 # Add new user into the GetFit database
-                insertStatement = """INSERT INTO Users (username, password, security_question, security_response) VALUES (%s, %s, %s, %s)"""
-                vals = (username, password, securityQuestion, securityResponse)
+                insertStatement = """INSERT INTO User (username, password_hash, security_question, security_response) VALUES (%s, %s, %s, %s)"""
+                vals = (username, passwordHash, securityQuestion, securityResponse)
                 dbCursor.execute(insertStatement, vals)
 
                 dbConnection.commit()
 
                 usernameField.delete(0, END)
                 passwordField.delete(0, END)
+                confirmPasswordField.delete(0, END)
                 securityQuestionField.delete(0, END)
                 securityResponseField.delete(0, END)
 
@@ -144,9 +153,10 @@ def registerUser(mainWindow, parentWindow, userLoginWindow, dbConnection, dbCurs
             popupBox(mainWindow, parentWindow, "Error", "This username already exits. Please try another username")
 
 # Implemtation for cancel user registration button event
-def cancelUserRegistration(parentWindow, userLoginWindow, usernameField, passwordField, securityQuestionField, securityResponseField):
+def cancelUserRegistration(parentWindow, userLoginWindow, usernameField, passwordField, confirmPasswordField, securityQuestionField, securityResponseField):
     usernameField.delete(0, END)
     passwordField.delete(0, END)
+    confirmPasswordField.delete(0, END)
     securityQuestionField.delete(0, END)
     securityResponseField.delete(0, END)
 
