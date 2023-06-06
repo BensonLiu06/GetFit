@@ -4,6 +4,7 @@ from mysql.connector import errorcode
 from RegisterUserWindow import *
 from PopupBox import *
 from CheckUserNameExists import *
+from userProfile import *
 
 # Implementation of app window
 def createAppWindow(mainWindow, appWindow, userLoginWindow, dbConnection, dbCursor, username):
@@ -59,19 +60,81 @@ def signoutOfApp(mainWindow, appWindow, userLoginWindow):
     popupBox(mainWindow, userLoginWindow, "Information", "User was successfully signed out")
 
 def updateProfileWindow(mainWindow, parentWindow, dbConnection, dbCursor, username):
-    # Create a frame for the Profile & Settings window
-    parentWindow.gridforget()
 
-    # Create a frame for the Update Profile window
-
-    updateProfileWindow = Frame(mainWindow)
-    updateProfileWindow.grid(sticky='nsew')
-    #updateProfileWindow.grid_forget()
+    profileWindow = Tk()
     
-    # Create label widget
-    label1 = Label(updateProfileWindow, text = "Profile & Settings", width = 20, anchor = 'center')
-    label1.grid(column = 0, row = 0, columnspan = 2, pady = 5)
+    w = 600 # Width 
+    h = 500 # Height
+ 
+    # Determine the size of the screen
+    screen_width =  profileWindow.winfo_screenwidth()  # Width of the screen
+    screen_height = profileWindow.winfo_screenheight() # Height of the screen
+     
+    x = (screen_width / 2) - (w / 2)
+    y = (screen_height / 2) - (h / 2)
 
-    # Create label widget
-    label2 = Label(updateProfileWindow, text = "Username: " + username, width = 20, anchor = 'center')
-    label2.grid(column = 0, row = 1, columnspan = 2, pady = 5)
+    profileWindow.geometry('%dx%d+%d+%d' % (w, h, x, y))
+    profileWindow.resizable(True, True)
+    profileWindow.title("User Profile")
+
+    name = StringVar()
+    age = StringVar()
+    gender = StringVar()
+    weight = StringVar()
+    height = StringVar()
+
+    
+    nameLabel = Label(profileWindow , text = "Full Name", width = 30)
+    nameLabel.grid(column = 1, row = 2, columnspan = 1)
+    nameLabel.pack()
+
+
+    nameEntry = Entry(profileWindow , bd = 3, width = 30, textvariable = name)
+    nameEntry.grid(column = 0, row = 2, columnspan = 2 )
+    nameEntry.pack()
+
+
+    ageLabel = Label(profileWindow , text = "Age", width = 30 )
+    ageLabel.grid(column = 1, row = 4 , columnspan = 2)
+    ageLabel.pack()
+
+
+    ageEntry = Entry(profileWindow, bd = 3, width = 30, textvariable = age)
+    ageEntry.grid(column = 0, row = 5, columnspan = 2)
+    ageEntry.pack()
+
+
+    genderLabel = Label(profileWindow  , text = "Gender", width = 30)
+    genderLabel.grid (column = 1 , row = 6, columnspan = 2)
+    genderLabel.pack()
+
+
+    genderEntry = Entry(profileWindow  , bd = 3, width = 30 , textvariable = gender)
+    genderEntry.grid(column = 0, row = 7, columnspan = 2)
+    genderEntry.pack()
+
+
+    weightLabel = Label(profileWindow  , text = "Weight", width = 30)
+    weightLabel.grid(column = 1 , row = 8, columnspan = 2)
+    weightLabel.pack()
+
+
+    weightEntry = Entry(profileWindow, bd = 3, width = 30 , textvariable = weight)
+    weightEntry.grid(column = 0 , row = 9, columnspan = 2)
+    weightEntry.pack()
+
+
+    heightLabel = Label(profileWindow, text = "Height", width = 30)
+    heightLabel.grid(column = 1, row = 10, columnspan = 2)
+    heightLabel.pack()
+
+
+    heightEntry = Entry(profileWindow, bd = 3, width = 30, textvariable = height)
+    heightEntry.grid(column = 0, row = 11, columnspan = 2)
+    heightEntry.pack()
+
+
+
+
+    profileWindow.mainloop()
+

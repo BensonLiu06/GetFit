@@ -1,10 +1,10 @@
-import tkinter as tk
+import tkinter as Tk
 from tkinter.ttk import Entry, Label
 
 
-def user_profile(profileWindow):
+def updateProfileWindow(profileWindow):
 
-    profileWindow = tk()
+    profileWindow = Tk()
     w = 600 # Width 
     h = 500 # Height
  
@@ -50,18 +50,3 @@ def user_profile(profileWindow):
     heightEntry = Entry(profileWindow, bd = 3, width = 30, textvariable = height)
     heightEntry.grid(column = 0, row = 3, columnspan = 2)
 
-
-def nameErrors(nameEntry, genderEntry, weightEntry, heightEntry):
-    if len(nameEntry > 50):
-        print("Name cannot be more than 50 letters, Use a nickname if you must.")
-    elif len(nameEntry < 1):
-        print("Please Enter a Name.")
-
-def genderErrors(genderEntry):
-    if len(genderEntry != "Mal"):
-
-
-    
-
-user_profile()
-    
