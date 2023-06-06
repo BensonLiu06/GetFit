@@ -5,6 +5,8 @@ from RegisterUserWindow import *
 from PopupBox import *
 from CheckUserNameExists import *
 from userProfile import *
+import time
+from tkinter import messagebox
 
 # Implementation of app window
 def createAppWindow(mainWindow, appWindow, userLoginWindow, dbConnection, dbCursor, username):
@@ -48,10 +50,16 @@ def createAppWindow(mainWindow, appWindow, userLoginWindow, dbConnection, dbCurs
     updateProfileButton = Button(leftFrame, text = "Profile & Settings", command = lambda : updateProfileWindow(mainWindow, appWindow, dbConnection, dbCursor, username))
     updateProfileButton.grid(column = 0, row = 1, pady = 5)
 
+    #Creates a button for Workouts Window
+    workoutsButton = Button(leftFrame, text = "Workouts", command = lambda : workoutsWindow()
+                            )
+    workoutsButton.grid(column = 0 , row = 3, pady = 5 )
+
     # Create button widget to sign out 
     signoutButton = Button(leftFrame, text = "Sign out", command = lambda : 
                                    signoutOfApp(mainWindow, appWindow, userLoginWindow))
     signoutButton.grid(column = 0, row = 2, pady = 5)
+
 
 def signoutOfApp(mainWindow, appWindow, userLoginWindow):
     appWindow.grid_forget()
@@ -140,3 +148,13 @@ def clickCommand():
 
     weightDisplay = Label(profileWindow, text = "Weight:" + weightEntry.get())
     weightDisplay.pack()
+
+
+
+def workoutsWindow():
+    workoutsTab = Tk()
+
+    workout1 = Button(workoutsTab, text = "Arms Workout", padx=50)
+    workout1.pack()
+
+    
