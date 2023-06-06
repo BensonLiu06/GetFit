@@ -90,6 +90,12 @@ def updateProfileWindow(mainWindow, parentWindow, dbConnection, dbCursor, userna
     nameEntry = Entry(profileWindow , width = "30", textvariable = name)
     nameEntry.pack()
 
+    ageLabel = Label(profileWindow, text = "Age" , width = "30")
+    ageLabel.pack()
+
+    ageEntry = Entry(profileWindow, width = "30",  textvariable = age)
+    ageEntry.pack()
+
     genderLabel = Label(profileWindow  , text = "Gender", width = 30)
     genderLabel.pack()
 
@@ -108,8 +114,12 @@ def updateProfileWindow(mainWindow, parentWindow, dbConnection, dbCursor, userna
     heightEntry = Entry(profileWindow, width = 30, textvariable = height)
     heightEntry.pack()
 
+    savebutton = Button(profileWindow, text = "Save" , command =clickCommand)
+    savebutton.pack()
 
 
 
     profileWindow.mainloop()
 
+def clickCommand(profileWindow, name):
+    text = Label(profileWindow, text = name)
