@@ -61,6 +61,7 @@ def signoutOfApp(mainWindow, appWindow, userLoginWindow):
 
 def updateProfileWindow(mainWindow, parentWindow, dbConnection, dbCursor, username):
     global profileWindow
+    global name, age, gender, weight, height
     global nameEntry, ageEntry, genderEntry, weightEntry, heightEntry
     profileWindow = Tk()
     
@@ -78,11 +79,11 @@ def updateProfileWindow(mainWindow, parentWindow, dbConnection, dbCursor, userna
     profileWindow.resizable(True, True)
     profileWindow.title("User Profile")
 
-    name = StringVar()
-    age = StringVar()
-    gender = StringVar()
-    weight = StringVar()
-    height = StringVar()
+    name = ""
+    age = ""
+    gender = ""
+    weight = ""
+    height = ""
 
     
     nameLabel = Label(profileWindow , text = "Full Name", width = "30")
@@ -120,8 +121,22 @@ def updateProfileWindow(mainWindow, parentWindow, dbConnection, dbCursor, userna
 
 
 
+
+
     profileWindow.mainloop()
 
 def clickCommand():
-    information = Label(profileWindow, text = f"Name: {nameEntry}\n age: {ageEntry}\n Gender: {genderEntry}\n Height: {heightEntry}\n Weight: {weightEntry}")
-    information.pack()
+    nameDisplay = Label(profileWindow, text = "Name:" + nameEntry.get())
+    nameDisplay.pack()
+
+    ageDisplay = Label(profileWindow, text = "Age:" + ageEntry.get())
+    ageDisplay.pack()
+
+    genderDisplay = Label(profileWindow, text = "Gender:" + genderEntry.get())
+    genderDisplay.pack()
+
+    heightDisplay = Label(profileWindow, text = "Height:" + heightEntry.get())
+    heightDisplay.pack()
+
+    weightDisplay = Label(profileWindow, text = "Weight:" + weightEntry.get())
+    weightDisplay.pack()
