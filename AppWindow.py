@@ -60,7 +60,8 @@ def signoutOfApp(mainWindow, appWindow, userLoginWindow):
     popupBox(mainWindow, userLoginWindow, "Information", "User was successfully signed out")
 
 def updateProfileWindow(mainWindow, parentWindow, dbConnection, dbCursor, username):
-
+    global profileWindow
+    global nameEntry, ageEntry, genderEntry, weightEntry, heightEntry
     profileWindow = Tk()
     
     w = 600 # Width 
@@ -114,12 +115,13 @@ def updateProfileWindow(mainWindow, parentWindow, dbConnection, dbCursor, userna
     heightEntry = Entry(profileWindow, width = 30, textvariable = height)
     heightEntry.pack()
 
-    savebutton = Button(profileWindow, text = "Save" , command =clickCommand)
+    savebutton = Button(profileWindow, text = "Save" , command = clickCommand )
     savebutton.pack()
 
 
 
     profileWindow.mainloop()
 
-def clickCommand(profileWindow, name):
-    text = Label(profileWindow, text = name)
+def clickCommand():
+    information = Label(profileWindow, text = f"Name: {nameEntry}\n age: {ageEntry}\n Gender: {genderEntry}\n Height: {heightEntry}\n Weight: {weightEntry}")
+    information.pack()
