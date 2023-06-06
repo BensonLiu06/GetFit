@@ -84,53 +84,28 @@ def updateProfileWindow(mainWindow, parentWindow, dbConnection, dbCursor, userna
     height = StringVar()
 
     
-    nameLabel = Label(profileWindow , text = "Full Name", width = 30)
-    nameLabel.grid(column = 1, row = 2, columnspan = 1)
+    nameLabel = Label(profileWindow , text = "Full Name", width = "30")
     nameLabel.pack()
 
-
-    nameEntry = Entry(profileWindow , bd = 3, width = 30, textvariable = name)
-    nameEntry.grid(column = 0, row = 2, columnspan = 2 )
+    nameEntry = Entry(profileWindow , width = "30", textvariable = name)
     nameEntry.pack()
 
-
-    ageLabel = Label(profileWindow , text = "Age", width = 30 )
-    ageLabel.grid(column = 1, row = 4 , columnspan = 2)
-    ageLabel.pack()
-
-
-    ageEntry = Entry(profileWindow, bd = 3, width = 30, textvariable = age)
-    ageEntry.grid(column = 0, row = 5, columnspan = 2)
-    ageEntry.pack()
-
-
     genderLabel = Label(profileWindow  , text = "Gender", width = 30)
-    genderLabel.grid (column = 1 , row = 6, columnspan = 2)
     genderLabel.pack()
 
-
-    genderEntry = Entry(profileWindow  , bd = 3, width = 30 , textvariable = gender)
-    genderEntry.grid(column = 0, row = 7, columnspan = 2)
+    genderEntry = Entry(profileWindow  , width = 30 , textvariable = gender)
     genderEntry.pack()
 
-
-    weightLabel = Label(profileWindow  , text = "Weight", width = 30)
-    weightLabel.grid(column = 1 , row = 8, columnspan = 2)
+    weightLabel = Label(profileWindow  , text = "Weight", width = "30")
     weightLabel.pack()
 
-
-    weightEntry = Entry(profileWindow, bd = 3, width = 30 , textvariable = weight)
-    weightEntry.grid(column = 0 , row = 9, columnspan = 2)
+    weightEntry = Entry(profileWindow, width = 30 , textvariable = weight)
     weightEntry.pack()
 
-
-    heightLabel = Label(profileWindow, text = "Height", width = 30)
-    heightLabel.grid(column = 1, row = 10, columnspan = 2)
+    heightLabel = Label(profileWindow, text = "Height", width = "30")
     heightLabel.pack()
 
-
-    heightEntry = Entry(profileWindow, bd = 3, width = 30, textvariable = height)
-    heightEntry.grid(column = 0, row = 11, columnspan = 2)
+    heightEntry = Entry(profileWindow, width = 30, textvariable = height)
     heightEntry.pack()
 
 
