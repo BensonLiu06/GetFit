@@ -5,13 +5,13 @@ from datetime import datetime
 #rom mysql.connector import errorcode
 #from RegisterUserWindow import *
 from PopupBox import *
-from CheckUserNameExists import *
+#from CheckUserNameExists import *
 from ResetPassword import *
 
 # Implementation of the Update Profile and Settings window
-def createUpdateProfileAndSettingsWindow(mainWindow, parentWindow, dbConnection, dbCursor, username):
+def createUpdateProfileAndSettingsWindow(mainWindow, appWindow, dbConnection, dbCursor, username):
     # Hide the App window
-    parentWindow.grid_forget()
+    appWindow.grid_forget()
 
     userProfileInfo = getUserProfileInformation(dbConnection, dbCursor, username)
 
@@ -110,11 +110,11 @@ def createUpdateProfileAndSettingsWindow(mainWindow, parentWindow, dbConnection,
     passwordAndSecurityInfoLabel.grid(column = 0, row = 2, columnspan = 2, sticky = (N, W))
 
     # Create button widget for Change password
-    updatePasswordAndSecurityButton = ttk.Button(middleButtonFrame, text = "Change password", command = lambda : changePasswordSecurityCheck(mainWindow, updateProfileAndSettingsWindow, dbConnection, dbCursor, username))
+    updatePasswordAndSecurityButton = ttk.Button(middleButtonFrame, text = "Change password", command = lambda : createChangePasswordSecurityCheckBox(mainWindow, updateProfileAndSettingsWindow, dbConnection, dbCursor, username))
     updatePasswordAndSecurityButton.grid(column = 1, row = 1)
 
     # Create button widget for Change security question password
-    updatePasswordAndSecurityButton = ttk.Button(middleButtonFrame, text = "Change security question", command = lambda : changeSecretQuestionSecurityCheck(mainWindow, updateProfileAndSettingsWindow, dbConnection, dbCursor, username))
+    updatePasswordAndSecurityButton = ttk.Button(middleButtonFrame, text = "Change security question", command = lambda : createChangeSecretQuestionSecurityCheckBox(mainWindow, updateProfileAndSettingsWindow, dbConnection, dbCursor, username))
     updatePasswordAndSecurityButton.grid(column = 1, row = 2)
     
     # Create label widget for Personal Information
@@ -150,15 +150,15 @@ def createUpdateProfileAndSettingsWindow(mainWindow, parentWindow, dbConnection,
     weightLabel.grid(column = 0, row = 10, sticky = (N, W))
 
     # Create button widget for Edit
-    updateProfileButton = ttk.Button(bottomButtonFrame, text = "Edit", command = lambda : updateProfile(mainWindow, updateProfileAndSettingsWindow, dbConnection, dbCursor, username))
+    updateProfileButton = ttk.Button(bottomButtonFrame, text = "Edit", command = lambda : createUpdateProfileBox(mainWindow, updateProfileAndSettingsWindow, dbConnection, dbCursor, username))
     updateProfileButton.grid(column = 1, row = 3)
 
     # Create button widget to Cancel the Update Profile & Settings window
     cancelButton = ttk.Button(buttonFrame, text = "Cancel", command = lambda : 
-                                   cancelUpdateProfileAndSettingsWindow(mainWindow, updateProfileAndSettingsWindow, parentWindow))
+                                   cancelUpdateProfileAndSettingsWindow(mainWindow, updateProfileAndSettingsWindow, appWindow))
     cancelButton.grid(column = 1, row = 11, pady = 5)
 
-def changePasswordSecurityCheck(mainWindow, parentWindow, dbConnection, dbCursor, username):
+def createChangePasswordSecurityCheckBox(mainWindow, parentWindow, dbConnection, dbCursor, username):
     # Create StringVars to hold the user input
     password = StringVar()
 
@@ -183,7 +183,7 @@ def changePasswordSecurityCheck(mainWindow, parentWindow, dbConnection, dbCursor
     passwordField.grid(column = 0, row = 3, columnspan = 2)
 
     # Create button widget for OK
-    oKButton = ttk.Button(changePasswordSecurityCheckWindow, text = "OK", width=10, command = lambda : confirmPassword(mainWindow, parentWindow, dbConnection, dbCursor, username, passwordField.get()))
+    oKButton = ttk.Button(changePasswordSecurityCheckWindow, text = "OK", width=10, command = lambda : checkPasswordToChangePassword(mainWindow, parentWindow, changePasswordSecurityCheckWindow, dbConnection, dbCursor, username, passwordField.get()))
     oKButton.grid(column = 0, row = 7)
 
     # Create button widget for Cancel
@@ -207,7 +207,7 @@ def changePasswordSecurityCheck(mainWindow, parentWindow, dbConnection, dbCursor
 
     changePasswordSecurityCheckWindow.grab_set()
 
-def changeSecretQuestionSecurityCheck(mainWindow, parentWindow, dbConnection, dbCursor, username):
+def createChangeSecretQuestionSecurityCheckBox(mainWindow, parentWindow, dbConnection, dbCursor, username):
     # Create StringVars to hold the user input
     password = StringVar()
 
@@ -216,7 +216,7 @@ def changeSecretQuestionSecurityCheck(mainWindow, parentWindow, dbConnection, db
     changeSecretQuestionSecurityCheckWindow.title("Enter Your Password")
 
     # Create an information label widget
-    informationLabel =ttk.Label(changeSecretQuestionSecurityCheckWindow, text = "Please enter your current password to reset your password")
+    informationLabel =ttk.Label(changeSecretQuestionSecurityCheckWindow, text = "Please enter your current password to reset your security question")
     informationLabel.grid(column = 0, row = 0, columnspan = 2)
 
     # Create an empty label widget for padding
@@ -232,7 +232,7 @@ def changeSecretQuestionSecurityCheck(mainWindow, parentWindow, dbConnection, db
     passwordField.grid(column = 0, row = 3, columnspan = 2)
 
     # Create button widget for OK
-    oKButton = ttk.Button(changeSecretQuestionSecurityCheckWindow, text = "OK", width=10, command = lambda : confirmPassword(mainWindow, parentWindow, dbConnection, dbCursor, username, passwordField.get()))
+    oKButton = ttk.Button(changeSecretQuestionSecurityCheckWindow, text = "OK", width=10, command = lambda : checkPasswordToChangeSecretQuestion(mainWindow, parentWindow, changeSecretQuestionSecurityCheckWindow, dbConnection, dbCursor, username, passwordField.get()))
     oKButton.grid(column = 0, row = 7)
 
     # Create button widget for Cancel
@@ -256,32 +256,112 @@ def changeSecretQuestionSecurityCheck(mainWindow, parentWindow, dbConnection, db
 
     changeSecretQuestionSecurityCheckWindow.grab_set()
 
+def checkPasswordToChangePassword(mainWindow, parentWindow, callingWindow, dbConnection, dbCursor, username, password):
+    # Get the hashed password for the username from the GetFit database
+    selectStatement = """SELECT * FROM User WHERE username = %s"""
+    vals = (username,)
+    dbCursor.execute(selectStatement, vals)
 
-def changePassword(mainWindow, parentWindow, dbConnection, dbCursor, username):
-    security(mainWindow, parentWindow, dbConnection, dbCursor, username)
+    user = dbCursor.fetchone()
+    passwordHash = user[2]
 
-    #if (passwordCheck(mainWindow, parentWindow, dbConnection, dbCursor, username, password)):
-    #    resetPassword(mainWindow, parentWindow, dbConnection, dbCursor, username)
-    #else:
-    #    pass
+    if (comparePassword(password,passwordHash)):
+        callingWindow.destroy()
 
+        createResetPasswordBox(mainWindow, parentWindow, dbConnection, dbCursor, username)
+    else:
+        popupBox(mainWindow, parentWindow, "Error", "Password was invalid")
 
-def changeSecurityQuestion(mainWindow, parentWindow, dbConnection, dbCursor, username, password):
-    getPasswordAndCheck(mainWindow, parentWindow, dbConnection, dbCursor, username)
+def checkPasswordToChangeSecretQuestion(mainWindow, parentWindow, callingWindow, dbConnection, dbCursor, username, password):
+    # Get the hashed password for the username from the GetFit database
+    selectStatement = """SELECT * FROM User WHERE username = %s"""
+    vals = (username,)
+    dbCursor.execute(selectStatement, vals)
 
-    #if (passwordCheck(mainWindow, parentWindow, dbConnection, dbCursor, username, password)):
-    #    resetSecurityQuestion(mainWindow, parentWindow, dbConnection, dbCursor, username)
-    #else:
-    #    pass
+    user = dbCursor.fetchone()
+    passwordHash = user[2]
 
-def resetPasswordd():
-    i = 1
+    if (comparePassword(password,passwordHash)):
+        callingWindow.destroy()
+        createChangeSecretQuestionBox(mainWindow, parentWindow, callingWindow, dbConnection, dbCursor, username)
+    else:
+        popupBox(mainWindow, parentWindow, "Error", "Password was invalid")
 
-def resetSecurityQuestion(mainWindow, parentWindow, dbConnection, dbCursor, username):
-    i = 1
+def createChangeSecretQuestionBox(mainWindow, parentWindow, callingWindow, dbConnection, dbCursor, username):
+    # Create StringVars to hold the user input
+    securityQuestion = StringVar()
+    securityResponse = StringVar()
 
+    # Create a toplevel window for the Reset Password dialog box
+    changeSecretQuestionWindow = Toplevel(parentWindow)
+    changeSecretQuestionWindow.title("Reset Secret Question and Response")
+    
+    # Create label widget for Security Question
+    securityQuestionLabel =ttk.Label(changeSecretQuestionWindow, text = "Enter a security question", width = "30", anchor = 'w')
+    securityQuestionLabel.grid(column = 0, row = 0, columnspan = 2)
 
-def updateProfile(mainWindow, parentWindow, dbConnection, dbCursor, username):
+    # Creat entry widget for Security Question
+    securityQuestionField = ttk.Entry(changeSecretQuestionWindow, width = 30, textvariable = securityQuestion)
+    securityQuestionField.grid(column = 0, row = 1, columnspan = 2)
+
+    # Create label widget for Security Response
+    securityResponseLabel =ttk.Label(changeSecretQuestionWindow, text = "Enter a response to the security question", width = "30", anchor = 'w')
+    securityResponseLabel.grid(column = 0, row = 2, columnspan = 2)
+
+    # Create an entry widget for Security Response
+    securityResponseField = ttk.Entry(changeSecretQuestionWindow, width = 30, textvariable = securityResponse)
+    securityResponseField.grid(column = 0, row = 3, columnspan = 2)
+
+    # Create label for padding
+    emptyLabel =ttk.Label(changeSecretQuestionWindow, text = "", width = "30", anchor = 'w')
+    emptyLabel.grid(column = 0, row = 4, columnspan = 2)
+
+    # Create button widget for OK - changes the Security Question and Response for a user
+    okButton = ttk.Button(changeSecretQuestionWindow, text = "OK", width=10, command = lambda : changeSecurityQuestion(mainWindow, parentWindow, changeSecretQuestionWindow, dbConnection, dbCursor, username, securityQuestionField.get(), securityResponseField.get()))
+    okButton.grid(column = 0, row = 5, sticky = (N, W))
+
+    # Create button widget for Cancel - cancels Security Question window
+    cancelButton = ttk.Button(changeSecretQuestionWindow, text = "Cancel", width = 10, command = lambda : changeSecretQuestionWindow.destroy())
+    cancelButton.grid(column = 1, row = 5 ,sticky = (N, W))
+
+    # Force an update on the mainWindow so the size of the widgets are known
+    mainWindow.update()
+
+    # Get width an height of the popup diagog box so we can resize it
+    # to fit the contents of the label and button
+    w = changeSecretQuestionWindow.winfo_reqwidth()
+    h = changeSecretQuestionWindow.winfo_reqheight()
+
+    # Calculate the geometry to center the dialog box on the screen
+    ws = mainWindow.winfo_screenwidth()
+    hs = mainWindow.winfo_screenheight()
+    x = (ws/2) - (w/2)
+    y = (hs/2) - (h/2)
+    changeSecretQuestionWindow.geometry('%dx%d+%d+%d' % (w, h, x, y))
+
+    changeSecretQuestionWindow.grab_set()
+
+def changeSecurityQuestion(mainWindow, parentWindow, callingWindow, dbConnection, dbCursor, username, securityQuestion, securityResponse):
+    if not securityQuestion:
+        popupBox(mainWindow, parentWindow, "Error", "You must provide a security question")
+    elif len(securityQuestion) > 256:
+        popupBox(mainWindow,parentWindow, "Error", "The maximum length of a security question is 256 characters long")
+    elif not securityResponse:
+        popupBox(mainWindow, parentWindow, "Error", "You must provide a security response")
+    elif len(securityResponse) > 64:
+        popupBox(mainWindow,parentWindow, "Error", "The maximum length of a security response is 64 characters long")
+    else:
+        callingWindow.destroy()
+
+        updateStatement = """UPDATE User SET security_question = %s , security_response = %s WHERE username = %s"""
+        vals = (securityQuestion, securityResponse, username)
+        dbCursor.execute(updateStatement, vals)
+        dbConnection.commit()
+    
+        # Show information message indicating Security question was updated
+        popupBox(mainWindow, parentWindow, "Information", "Security Question was successfully updated")
+
+def createUpdateProfileBox(mainWindow, parentWindow, dbConnection, dbCursor, username):
     # Create a toplevel window for the Update Profile dialog box
     updateProfileWindow = Toplevel(parentWindow)
     updateProfileWindow.title("Update profile")
