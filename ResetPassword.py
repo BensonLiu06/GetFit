@@ -6,8 +6,7 @@ from PopupBox import *
 from CheckUserNameExists import *
 from PasswordHash import *
 
-def resetPassword(mainWindow, parentWindow, dbConnection, dbCursor, username):
-
+def createResetPasswordBox(mainWindow, parentWindow, dbConnection, dbCursor, username):
     # Create StringVars to hold the user input
     password = StringVar()
     confirmPassword = StringVar()
@@ -95,7 +94,7 @@ def verifyAndResetPassword(mainWindow, parentWindow, callingWindow, dbConnection
 
 
 def confirmPassword(mainWindow, parentWindow, dbConnection, dbCursor, username, password):
-    if checkUserNameExists(username, dbCursor):
+    if checkUsernameExists(username, dbCursor):
         selectStatement = """SELECT * FROM User WHERE username = %s"""
         vals = (username,)
         dbCursor.execute(selectStatement, vals)
@@ -111,7 +110,7 @@ def confirmPassword(mainWindow, parentWindow, dbConnection, dbCursor, username, 
         popupBox(mainWindow, parentWindow, "Error", "Username was not found")
 
 def passwordCheck(mainWindow, parentWindow, dbConnection, dbCursor, username, password):
-    if checkUserNameExists(username, dbCursor):
+    if checkUsernameExists(username, dbCursor):
         selectStatement = """SELECT * FROM User WHERE username = %s"""
         vals = (username,)
         dbCursor.execute(selectStatement, vals)
