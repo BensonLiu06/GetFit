@@ -103,7 +103,7 @@ def createLoginWindow(mainWindow, dbConnection, dbCursor):
 
     # Create button widget for forgot your password
     forgotYourPasswordButton = ttk.Button(rightFrame, text = "Forgot your password?", command = lambda : 
-                                      forgotYourPassword(mainWindow, userLoginWindow, dbConnection, dbCursor))
+                                      createForgotYourPasswordBox(mainWindow, userLoginWindow, dbConnection, dbCursor))
     forgotYourPasswordButton.grid(column = 1, row = 5)
     
     # Create button widget to register a new user
@@ -116,9 +116,31 @@ def createLoginWindow(mainWindow, dbConnection, dbCursor):
                                     exitApp(mainWindow, dbConnection))
     exitButton.grid(column = 1, row = 9)
 
+# Implementation for the Sign in button event
+# Check that the provided user name exists and that the provided password matches
+# the password for that username. If it matches, open the main app window
+def verifyLogin(mainWindow, parentWindow, dbConnection, dbCursor, username, password, usernameLoginField, passwordLoginField):
+    usernameLoginField.delete(0, END)
+    passwordLoginField.delete(0, END)
+
+    if checkUsernameExists(username, dbCursor):
+        selectStatement = """SELECT * FROM User WHERE username = %s"""
+        vals = (username,)
+        dbCursor.execute(selectStatement, vals)
+
+        user = dbCursor.fetchone()
+        passwordHash = user[2]
+
+        if (comparePassword(password,passwordHash)):
+            createAppWindow(mainWindow, parentWindow, dbConnection, dbCursor, username)
+        else:
+            popupBox(mainWindow, parentWindow, "Error", "Password was invalid")
+    else:
+        popupBox(mainWindow, parentWindow, "Error", "Username was not found")
+
 # Implementation for the Forgot your password button event
 # Obtains the username for which the password is to be reset
-def forgotYourPassword(mainWindow, parentWindow, dbConnection, dbCursor):
+def createForgotYourPasswordBox(mainWindow, parentWindow, dbConnection, dbCursor):
     # Create StringVars to hold the user input
     username = StringVar()
 
@@ -147,7 +169,7 @@ def forgotYourPassword(mainWindow, parentWindow, dbConnection, dbCursor):
     emptyLabel2.grid(column = 0, row = 4, columnspan = 2)
 
     # Create button widget for OK
-    oKButton = ttk.Button(forgotYourPasswordWindow, text = "OK", width = 10, command = lambda : verifyUserResetPassword(mainWindow, parentWindow, forgotYourPasswordWindow, dbConnection, dbCursor, usernameField.get()))
+    oKButton = ttk.Button(forgotYourPasswordWindow, text = "OK", width = 10, command = lambda : verifyUsernameForPasswordReset(mainWindow, parentWindow, forgotYourPasswordWindow, dbConnection, dbCursor, usernameField.get()))
     oKButton.grid(column = 0, row = 5)
 
     # Create button widget for Cancel
@@ -170,35 +192,13 @@ def forgotYourPassword(mainWindow, parentWindow, dbConnection, dbCursor):
     forgotYourPasswordWindow.geometry('%dx%d+%d+%d' % (w, h, x, y))
 
     forgotYourPasswordWindow.grab_set()
-    
-# Implementation for the Sign in button event
-# Check that the provided user name exists and that the provided password matches
-# the password for that username. If it matches, open the main app window
-def verifyLogin(mainWindow, parentWindow, dbConnection, dbCursor, username, password, usernameLoginField, passwordLoginField):
-    usernameLoginField.delete(0, END)
-    passwordLoginField.delete(0, END)
-
-    if checkUserNameExists(username, dbCursor):
-        selectStatement = """SELECT * FROM User WHERE username = %s"""
-        vals = (username,)
-        dbCursor.execute(selectStatement, vals)
-
-        user = dbCursor.fetchone()
-        passwordHash = user[2]
-
-        if (comparePassword(password,passwordHash)):
-            createAppWindow(mainWindow, parentWindow, dbConnection, dbCursor, username)
-        else:
-            popupBox(mainWindow, parentWindow, "Error", "Password was invalid")
-    else:
-        popupBox(mainWindow, parentWindow, "Error", "Username was not found")
 
 # Implementation of the OK button event for the Forgot Your Password window
 # Create a function to check that the provided username exists and obtain the
 # security question and response for that user's username
-def verifyUserResetPassword(mainWindow, parentWindow, callingWindow, dbConnection, dbCursor, username):
+def verifyUsernameForPasswordReset(mainWindow, parentWindow, callingWindow, dbConnection, dbCursor, username):
     # Check the GetFit database to ensure the Username exists
-    if checkUserNameExists(username, dbCursor):
+    if checkUsernameExists(username, dbCursor):
         selectQuery = """SELECT security_question, security_response FROM User WHERE username = %s"""
 
         vals = (username,)
@@ -212,12 +212,12 @@ def verifyUserResetPassword(mainWindow, parentWindow, callingWindow, dbConnectio
         securityResponse = result[1]
 
         callingWindow.destroy()
-        askSecurityQuestion(mainWindow, parentWindow, dbConnection, dbCursor, username, securityQuestion, securityResponse)
+        createAskSecurityQuestionBox(mainWindow, parentWindow, dbConnection, dbCursor, username, securityQuestion, securityResponse)
     else:
         popupBox(mainWindow, parentWindow, "Error", "Username was not found")
 
 # Create a function that obtains the user's response to the security question
-def askSecurityQuestion(mainWindow, parentWindow, dbConnection, dbCursor, username, securityQuestion, securityResponse):
+def createAskSecurityQuestionBox(mainWindow, parentWindow, dbConnection, dbCursor, username, securityQuestion, securityResponse):
     # Create StringVars to hold the user input
     inputSecurityResponse = StringVar()
 
@@ -282,7 +282,7 @@ def verifySecurityResponse(mainWindow, parentWindow, callingWindow, dbConnection
     if inputSecurityResponse == securityResponse:
         callingWindow.destroy()
 
-        resetPassword(mainWindow, parentWindow, dbConnection, dbCursor, username)
+        createResetPasswordBox(mainWindow, parentWindow, dbConnection, dbCursor, username)
     else:
         popupBox(mainWindow, parentWindow, "Error", "Your security response was invalid")
 
