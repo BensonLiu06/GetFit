@@ -1,24 +1,24 @@
 from tkinter import *
+#from tkinter import ttk
 import mysql.connector
 from mysql.connector import errorcode
 from GetFitDB import *
 from LoginWindow import *
-from RegisterUserWindow import *
-from AppWindow import *
-from PopupBox import *
-from CheckUserNameExists import *
-from PasswordHash import *
+#from RegisterUserWindow import *
+#from AppWindow import *
+#from PopupBox import *
+#from CheckUsernameExists import *
+#from PasswordHash import *
 
-# Implementation of main window
-
+# Implementation of the main window
 def mainAppWindow():
     #global mainWindow
     # Create an instance of tkinter frame or window
     mainWindow = Tk()
 
     # Set the width and height of the main window
-    w = 600 # Width 
-    h = 500 # Height
+    w = 800 # Width 
+    h = 600 # Height
  
     # Determine the size of the screen
     screen_width =  mainWindow.winfo_screenwidth()  # Width of the screen
@@ -29,26 +29,12 @@ def mainAppWindow():
     y = (screen_height / 2) - (h / 2)
  
     mainWindow.geometry('%dx%d+%d+%d' % (w, h, x, y))
-    mainWindow.resizable(True, True)
     mainWindow.title("GetFit")
 
-    # Create three frames in the window
+    mainWindow.columnconfigure(0, weight = 1)
+    mainWindow.rowconfigure(0, weight = 1)
 
-    # Create a frame for the main app window
-    appWindow = Frame(mainWindow)
-    appWindow.grid(sticky='nsew')
-    appWindow.grid_forget()
-
-    # Create a frame for the user registration window
-    userRegistrationWindow = Frame(mainWindow)
-    userRegistrationWindow.grid(sticky='nsew')
-    userRegistrationWindow.grid_forget()
-
-    # Create a frame for the user login window
-    userLoginWindow = Frame(mainWindow)
-    userLoginWindow.grid(sticky='nsew')
-
-    # Setup parameter to access the mySQL server
+    # Setup parameters to access the mySQL server
     dbHostname = "localhost"
     dbUsername = "root"
     dbPort = "3306"
@@ -58,16 +44,22 @@ def mainAppWindow():
     # Connect to the GetFit database
     accessDatabase(mainWindow, dbHostname, dbUsername, dbPort, dbPassword, dbName)
     
-    dbConnection = mysql.connector.connect(
-        host = dbHostname,
-        user = dbUsername,
-        port = dbPort,
-        password = dbPassword,
-        database = dbName
-    )
-    dbCursor = dbConnection.cursor()
+    try:
+        # Connect to the GetFit database
+        dbConnection = mysql.connector.connect(
+            host = dbHostname,
+            user = dbUsername,
+            port = dbPort,
+            password = dbPassword,
+            database = dbName
+        )
+        dbCursor = dbConnection.cursor()
 
-    createLoginWindow(mainWindow, userLoginWindow, userRegistrationWindow, appWindow, dbConnection, dbCursor)
+        # Show the Login window
+        createLoginWindow(mainWindow, dbConnection, dbCursor)
+    except mysql.connector.Error as error:
+        errorMessage = "Error Code: " + str(error.errno) + "\n" + "SQLSTATE: " + error.sqlstate + "\n" + "Message: " + error.msg  
+        popupBox(mainWindow, mainWindow, "Error", errorMessage)
 
     mainWindow.mainloop()
 
