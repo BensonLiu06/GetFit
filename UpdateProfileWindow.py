@@ -1,0 +1,416 @@
+from tkinter import *
+from tkinter import ttk
+from datetime import datetime
+#import mysql.connector
+#rom mysql.connector import errorcode
+#from RegisterUserWindow import *
+from PopupBox import *
+#from CheckUserNameExists import *
+from ResetPassword import *
+
+# Implementation of the Update Profile and Settings window
+def createUpdateProfileAndSettingsWindow(mainWindow, appWindow, dbConnection, dbCursor, username):
+    # Hide the App window
+    appWindow.grid_forget()
+
+    userProfileInfo = getUserProfileInformation(dbConnection, dbCursor, username)
+
+    fullName = userProfileInfo[0]
+    birthdate = userProfileInfo[1].strftime("%m/%d/%y")
+    phoneNo = userProfileInfo[2]
+    email = userProfileInfo[3]
+    gender = userProfileInfo[4]
+    height = str(userProfileInfo[5])
+    weight = str(userProfileInfo[6])
+    imagePath = userProfileInfo[7]
+
+    #imagePath = "/Users/marvinharrison/Documents/Code/Final Summative/GetFit/Marvin.jpeg"
+
+    # Create a frame for the Update Profile & Settings window
+    updateProfileAndSettingsWindow = ttk.Frame(mainWindow)
+
+    # Setup the Update Profile & Settings window
+    updateProfileAndSettingsWindow.grid(sticky = (N, S, E, W))
+    updateProfileAndSettingsWindow.columnconfigure(0, weight = 1)
+    updateProfileAndSettingsWindow.columnconfigure(1, weight = 1)
+    #updateProfileWindow.rowconfigure(0, weight = 1)
+    updateProfileAndSettingsWindow.rowconfigure(1, weight = 1)
+    updateProfileAndSettingsWindow.rowconfigure(2, weight = 1)
+    updateProfileAndSettingsWindow.rowconfigure(3, weight = 1)
+    updateProfileAndSettingsWindow.rowconfigure(4, weight = 1)
+    updateProfileAndSettingsWindow.rowconfigure(5, weight = 1)
+    updateProfileAndSettingsWindow.rowconfigure(6, weight = 1)
+    updateProfileAndSettingsWindow.rowconfigure(7, weight = 1)
+    updateProfileAndSettingsWindow.rowconfigure(8, weight = 1)
+    updateProfileAndSettingsWindow.rowconfigure(9, weight = 1)
+
+    # Create all the main frame containers
+    topFrame = ttk.Frame(updateProfileAndSettingsWindow, width = 600, height = 50, relief = 'groove', borderwidth = 2)
+    middleFrame = ttk.Frame(updateProfileAndSettingsWindow, width = 300, height = 100, relief = 'groove', borderwidth = 2)
+    bottomFrame = ttk.Frame(updateProfileAndSettingsWindow, width = 300, height = 400, relief = 'groove', borderwidth = 2)
+    buttonFrame = ttk.Frame(updateProfileAndSettingsWindow, width = 600, height = 50, relief = 'groove', borderwidth = 2)
+    middleButtonFrame = ttk.Frame(updateProfileAndSettingsWindow, width = 300, height = 100, relief = 'groove', borderwidth = 2)
+    bottomButtonFrame = ttk.Frame(updateProfileAndSettingsWindow, width = 300, height = 400, relief = 'groove', borderwidth = 2)
+
+    # Layout all of the main frame containers
+    topFrame.grid(column = 0, row = 0, columnspan = 2, rowspan = 1, padx = 5, pady = 5, sticky=(N, S, E, W))
+    middleFrame.grid(column = 0, row = 1, columnspan = 1, rowspan = 2, padx = 5, pady = 5, sticky=(N, S, E, W))
+    bottomFrame.grid(column = 0, row = 3, columnspan = 1, rowspan = 6, padx = 5, pady = 5, sticky=(N, S, E, W))
+    buttonFrame.grid(column = 0, row = 9, columnspan = 2, rowspan = 1, padx = 5, pady = 5, sticky=(N, S, E, W))
+    middleButtonFrame.grid(column = 1, row = 1, columnspan = 1, rowspan = 2, padx = 5, pady = 5, sticky=(N, S, E, W))
+    bottomButtonFrame.grid(column = 1, row = 3, columnspan = 2, rowspan = 6, padx = 5, pady = 5, sticky=(N, S, E, W))
+
+    topFrame.columnconfigure(0, weight = 1)
+    topFrame.columnconfigure(1, weight = 1)
+    middleFrame.columnconfigure(0, weight = 1)
+    bottomFrame.columnconfigure(0, weight = 1)
+    #bottomFrame.columnconfigure(0, weight = 1)
+    #bottomFrame.columnconfigure(1, weight = 1)
+    buttonFrame.columnconfigure(0, weight = 1)
+    buttonFrame.columnconfigure(1, weight = 1)
+    middleButtonFrame.columnconfigure(1, weight = 1)
+    bottomButtonFrame.columnconfigure(1, weight = 1)
+
+    #topFrame.rowconfigure(0, weight = 1)
+    middleFrame.rowconfigure(1, weight = 1)
+    middleFrame.rowconfigure(2, weight = 1)
+    bottomFrame.rowconfigure(3, weight = 1)
+    bottomFrame.rowconfigure(4, weight = 1)
+    bottomFrame.rowconfigure(5, weight = 1)
+    bottomFrame.rowconfigure(6, weight = 1)
+    bottomFrame.rowconfigure(7, weight = 1)
+    bottomFrame.rowconfigure(8, weight = 1)
+    bottomFrame.rowconfigure(9, weight = 1)
+    bottomFrame.rowconfigure(10, weight = 1)
+    middleButtonFrame.rowconfigure(1, weight = 1)
+    middleButtonFrame.rowconfigure(2, weight = 1)
+    bottomButtonFrame.rowconfigure(3, weight = 1)
+    bottomButtonFrame.rowconfigure(4, weight = 1)
+    bottomButtonFrame.rowconfigure(5, weight = 1)
+    bottomButtonFrame.rowconfigure(6, weight = 1)
+    bottomButtonFrame.rowconfigure(7, weight = 1)
+    bottomButtonFrame.rowconfigure(8, weight = 1)
+    bottomButtonFrame.rowconfigure(9, weight = 1)
+    bottomButtonFrame.rowconfigure(10, weight = 1)
+
+    # Create label widget for Profile & Settings
+    profileAndSettingsLabel =ttk.Label(topFrame, text = "Profile & Settings", width = 25, anchor = W)
+    profileAndSettingsLabel.grid(column = 0, row = 0, pady = 5, sticky = (N, W))
+
+    # Create label widget for Username
+    usernameLabel =ttk.Label(topFrame, text = "Username: " + username, width = 20, anchor = W)
+    usernameLabel.grid(column = 1, row = 0, pady = 5, sticky = (N, W))
+
+    # Create label widget for Password & Security
+    passwordAndSecurityLabel =ttk.Label(middleFrame,text = "Password & Security", width = "30", anchor = W)
+    passwordAndSecurityLabel.grid(column = 0, row = 1, pady = 5, sticky = (N, W))
+
+    # Create label widget for Password & Security information
+    passwordAndSecurityInfoLabel =ttk.Label(middleFrame,text = "Manage your GetFit password and edit your Security Question", width = "50", anchor = W)
+    passwordAndSecurityInfoLabel.grid(column = 0, row = 2, columnspan = 2, sticky = (N, W))
+
+    # Create button widget for Change password
+    updatePasswordAndSecurityButton = ttk.Button(middleButtonFrame, text = "Change password", command = lambda : createChangePasswordSecurityCheckBox(mainWindow, updateProfileAndSettingsWindow, dbConnection, dbCursor, username))
+    updatePasswordAndSecurityButton.grid(column = 1, row = 1)
+
+    # Create button widget for Change security question password
+    updatePasswordAndSecurityButton = ttk.Button(middleButtonFrame, text = "Change security question", command = lambda : createChangeSecretQuestionSecurityCheckBox(mainWindow, updateProfileAndSettingsWindow, dbConnection, dbCursor, username))
+    updatePasswordAndSecurityButton.grid(column = 1, row = 2)
+    
+    # Create label widget for Personal Information
+    personaInformationLabel =ttk.Label(bottomFrame,text = "Personal Information", width = "30", anchor = W)
+    personaInformationLabel.grid(column = 0, row = 3, sticky = (N, W))
+
+    # Create label widget for Name
+    nameLabel =ttk.Label(bottomFrame,text = "Name: " + fullName, width = "30", anchor = W)
+    nameLabel.grid(column = 0, row = 4, sticky = (N, W))
+
+    # Create label widget for Birthdate
+    birthdateLabel =ttk.Label(bottomFrame,text = "Birth date: " + birthdate, width = "30", anchor = W)
+    birthdateLabel.grid(column = 0, row = 5, sticky = (N, W))
+
+    # Create label widget for Phone
+    phoneNumberLabel =ttk.Label(bottomFrame,text = "Phone: " + phoneNo, width = "30", anchor = W)
+    phoneNumberLabel.grid(column = 0, row = 6, sticky = (N, W))
+
+    # Create label widget for Email
+    emailLabel =ttk.Label(bottomFrame,text = "Email: " + email, width = "30", anchor = W)
+    emailLabel.grid(column = 0, row = 7, sticky = (N, W))
+
+    # Create label widget for Gender
+    genderLabel =ttk.Label(bottomFrame,text = "Gender: " + gender, width = "30", anchor = W)
+    genderLabel.grid(column = 0, row = 8, sticky = (N, W))
+
+    # Create label widget for Height
+    heightLabel =ttk.Label(bottomFrame,text = "Height: " + height + " cm", width = "30", anchor = W)
+    heightLabel.grid(column = 0, row = 9, sticky = (N, W))
+    
+    # Create label widget for Weight
+    weightLabel =ttk.Label(bottomFrame,text = "Weight: " + weight + " kg", width = "30", anchor = W)
+    weightLabel.grid(column = 0, row = 10, sticky = (N, W))
+
+    # Create button widget for Edit
+    updateProfileButton = ttk.Button(bottomButtonFrame, text = "Edit", command = lambda : createUpdateProfileBox(mainWindow, updateProfileAndSettingsWindow, dbConnection, dbCursor, username))
+    updateProfileButton.grid(column = 1, row = 3)
+
+    # Create button widget to Cancel the Update Profile & Settings window
+    cancelButton = ttk.Button(buttonFrame, text = "Cancel", command = lambda : 
+                                   cancelUpdateProfileAndSettingsWindow(mainWindow, updateProfileAndSettingsWindow, appWindow))
+    cancelButton.grid(column = 1, row = 11, pady = 5)
+
+def createChangePasswordSecurityCheckBox(mainWindow, parentWindow, dbConnection, dbCursor, username):
+    # Create StringVars to hold the user input
+    password = StringVar()
+
+    # Create a toplevel window for the Reset Password dialog box
+    changePasswordSecurityCheckWindow = Toplevel(parentWindow)
+    changePasswordSecurityCheckWindow.title("Enter Your Password")
+
+    # Create an information label widget
+    informationLabel =ttk.Label(changePasswordSecurityCheckWindow, text = "Please enter your current password to reset your password")
+    informationLabel.grid(column = 0, row = 0, columnspan = 2)
+
+    # Create an empty label widget for padding
+    emptyLabel1 =ttk.Label(changePasswordSecurityCheckWindow, text = "")
+    emptyLabel1.grid(column = 0, row = 1, columnspan = 2)
+
+    # Create label widget for Password
+    passwordLabel =ttk.Label(changePasswordSecurityCheckWindow, text = "Password", width = "30", anchor = 'w')
+    passwordLabel.grid(column = 0, row = 2, columnspan = 2)
+
+    # Create entry widget for Password
+    passwordField = ttk.Entry(changePasswordSecurityCheckWindow, width = 30, textvariable = password, show = '*')
+    passwordField.grid(column = 0, row = 3, columnspan = 2)
+
+    # Create button widget for OK
+    oKButton = ttk.Button(changePasswordSecurityCheckWindow, text = "OK", width=10, command = lambda : checkPasswordToChangePassword(mainWindow, parentWindow, changePasswordSecurityCheckWindow, dbConnection, dbCursor, username, passwordField.get()))
+    oKButton.grid(column = 0, row = 7)
+
+    # Create button widget for Cancel
+    cancelButton = ttk.Button(changePasswordSecurityCheckWindow, text = "Cancel", width = 10, command = lambda : changePasswordSecurityCheckWindow.destroy())
+    cancelButton.grid(column = 1, row = 7)
+    
+    # Force an update on the mainWindow so the size of the widgets are known
+    mainWindow.update()
+
+    # Get width an height of the popup diagog box so we can resize it
+    # to fit the contents of the label and button
+    w = changePasswordSecurityCheckWindow.winfo_reqwidth()
+    h = changePasswordSecurityCheckWindow.winfo_reqheight()
+
+    # Calculate the geometry to center the dialog box on the screen
+    ws = mainWindow.winfo_screenwidth()
+    hs = mainWindow.winfo_screenheight()
+    x = (ws/2) - (w/2)
+    y = (hs/2) - (h/2)
+    changePasswordSecurityCheckWindow.geometry('%dx%d+%d+%d' % (w, h, x, y))
+
+    changePasswordSecurityCheckWindow.grab_set()
+
+def createChangeSecretQuestionSecurityCheckBox(mainWindow, parentWindow, dbConnection, dbCursor, username):
+    # Create StringVars to hold the user input
+    password = StringVar()
+
+    # Create a toplevel window for the Reset Password dialog box
+    changeSecretQuestionSecurityCheckWindow = Toplevel(parentWindow)
+    changeSecretQuestionSecurityCheckWindow.title("Enter Your Password")
+
+    # Create an information label widget
+    informationLabel =ttk.Label(changeSecretQuestionSecurityCheckWindow, text = "Please enter your current password to reset your security question")
+    informationLabel.grid(column = 0, row = 0, columnspan = 2)
+
+    # Create an empty label widget for padding
+    emptyLabel1 =ttk.Label(changeSecretQuestionSecurityCheckWindow, text = "")
+    emptyLabel1.grid(column = 0, row = 1, columnspan = 2)
+
+    # Create label widget for Password
+    passwordLabel =ttk.Label(changeSecretQuestionSecurityCheckWindow, text = "Password", width = "30", anchor = 'w')
+    passwordLabel.grid(column = 0, row = 2, columnspan = 2)
+
+    # Create entry widget for Password
+    passwordField = ttk.Entry(changeSecretQuestionSecurityCheckWindow, width = 30, textvariable = password, show = '*')
+    passwordField.grid(column = 0, row = 3, columnspan = 2)
+
+    # Create button widget for OK
+    oKButton = ttk.Button(changeSecretQuestionSecurityCheckWindow, text = "OK", width=10, command = lambda : checkPasswordToChangeSecretQuestion(mainWindow, parentWindow, changeSecretQuestionSecurityCheckWindow, dbConnection, dbCursor, username, passwordField.get()))
+    oKButton.grid(column = 0, row = 7)
+
+    # Create button widget for Cancel
+    cancelButton = ttk.Button(changeSecretQuestionSecurityCheckWindow, text = "Cancel", width = 10, command = lambda : changeSecretQuestionSecurityCheckWindow.destroy())
+    cancelButton.grid(column = 1, row = 7)
+    
+    # Force an update on the mainWindow so the size of the widgets are known
+    mainWindow.update()
+
+    # Get width an height of the popup diagog box so we can resize it
+    # to fit the contents of the label and button
+    w = changeSecretQuestionSecurityCheckWindow.winfo_reqwidth()
+    h = changeSecretQuestionSecurityCheckWindow.winfo_reqheight()
+
+    # Calculate the geometry to center the dialog box on the screen
+    ws = mainWindow.winfo_screenwidth()
+    hs = mainWindow.winfo_screenheight()
+    x = (ws/2) - (w/2)
+    y = (hs/2) - (h/2)
+    changeSecretQuestionSecurityCheckWindow.geometry('%dx%d+%d+%d' % (w, h, x, y))
+
+    changeSecretQuestionSecurityCheckWindow.grab_set()
+
+def checkPasswordToChangePassword(mainWindow, parentWindow, callingWindow, dbConnection, dbCursor, username, password):
+    # Get the hashed password for the username from the GetFit database
+    selectStatement = """SELECT * FROM User WHERE username = %s"""
+    vals = (username,)
+    dbCursor.execute(selectStatement, vals)
+
+    user = dbCursor.fetchone()
+    passwordHash = user[2]
+
+    if (comparePassword(password,passwordHash)):
+        callingWindow.destroy()
+
+        createResetPasswordBox(mainWindow, parentWindow, dbConnection, dbCursor, username)
+    else:
+        popupBox(mainWindow, parentWindow, "Error", "Password was invalid")
+
+def checkPasswordToChangeSecretQuestion(mainWindow, parentWindow, callingWindow, dbConnection, dbCursor, username, password):
+    # Get the hashed password for the username from the GetFit database
+    selectStatement = """SELECT * FROM User WHERE username = %s"""
+    vals = (username,)
+    dbCursor.execute(selectStatement, vals)
+
+    user = dbCursor.fetchone()
+    passwordHash = user[2]
+
+    if (comparePassword(password,passwordHash)):
+        callingWindow.destroy()
+        createChangeSecretQuestionBox(mainWindow, parentWindow, callingWindow, dbConnection, dbCursor, username)
+    else:
+        popupBox(mainWindow, parentWindow, "Error", "Password was invalid")
+
+def createChangeSecretQuestionBox(mainWindow, parentWindow, callingWindow, dbConnection, dbCursor, username):
+    # Create StringVars to hold the user input
+    securityQuestion = StringVar()
+    securityResponse = StringVar()
+
+    # Create a toplevel window for the Reset Password dialog box
+    changeSecretQuestionWindow = Toplevel(parentWindow)
+    changeSecretQuestionWindow.title("Reset Secret Question and Response")
+    
+    # Create label widget for Security Question
+    securityQuestionLabel =ttk.Label(changeSecretQuestionWindow, text = "Enter a security question", width = "30", anchor = 'w')
+    securityQuestionLabel.grid(column = 0, row = 0, columnspan = 2)
+
+    # Creat entry widget for Security Question
+    securityQuestionField = ttk.Entry(changeSecretQuestionWindow, width = 30, textvariable = securityQuestion)
+    securityQuestionField.grid(column = 0, row = 1, columnspan = 2)
+
+    # Create label widget for Security Response
+    securityResponseLabel =ttk.Label(changeSecretQuestionWindow, text = "Enter a response to the security question", width = "30", anchor = 'w')
+    securityResponseLabel.grid(column = 0, row = 2, columnspan = 2)
+
+    # Create an entry widget for Security Response
+    securityResponseField = ttk.Entry(changeSecretQuestionWindow, width = 30, textvariable = securityResponse)
+    securityResponseField.grid(column = 0, row = 3, columnspan = 2)
+
+    # Create label for padding
+    emptyLabel =ttk.Label(changeSecretQuestionWindow, text = "", width = "30", anchor = 'w')
+    emptyLabel.grid(column = 0, row = 4, columnspan = 2)
+
+    # Create button widget for OK - changes the Security Question and Response for a user
+    okButton = ttk.Button(changeSecretQuestionWindow, text = "OK", width=10, command = lambda : changeSecurityQuestion(mainWindow, parentWindow, changeSecretQuestionWindow, dbConnection, dbCursor, username, securityQuestionField.get(), securityResponseField.get()))
+    okButton.grid(column = 0, row = 5, sticky = (N, W))
+
+    # Create button widget for Cancel - cancels Security Question window
+    cancelButton = ttk.Button(changeSecretQuestionWindow, text = "Cancel", width = 10, command = lambda : changeSecretQuestionWindow.destroy())
+    cancelButton.grid(column = 1, row = 5 ,sticky = (N, W))
+
+    # Force an update on the mainWindow so the size of the widgets are known
+    mainWindow.update()
+
+    # Get width an height of the popup diagog box so we can resize it
+    # to fit the contents of the label and button
+    w = changeSecretQuestionWindow.winfo_reqwidth()
+    h = changeSecretQuestionWindow.winfo_reqheight()
+
+    # Calculate the geometry to center the dialog box on the screen
+    ws = mainWindow.winfo_screenwidth()
+    hs = mainWindow.winfo_screenheight()
+    x = (ws/2) - (w/2)
+    y = (hs/2) - (h/2)
+    changeSecretQuestionWindow.geometry('%dx%d+%d+%d' % (w, h, x, y))
+
+    changeSecretQuestionWindow.grab_set()
+
+def changeSecurityQuestion(mainWindow, parentWindow, callingWindow, dbConnection, dbCursor, username, securityQuestion, securityResponse):
+    if not securityQuestion:
+        popupBox(mainWindow, parentWindow, "Error", "You must provide a security question")
+    elif len(securityQuestion) > 256:
+        popupBox(mainWindow,parentWindow, "Error", "The maximum length of a security question is 256 characters long")
+    elif not securityResponse:
+        popupBox(mainWindow, parentWindow, "Error", "You must provide a security response")
+    elif len(securityResponse) > 64:
+        popupBox(mainWindow,parentWindow, "Error", "The maximum length of a security response is 64 characters long")
+    else:
+        callingWindow.destroy()
+
+        updateStatement = """UPDATE User SET security_question = %s , security_response = %s WHERE username = %s"""
+        vals = (securityQuestion, securityResponse, username)
+        dbCursor.execute(updateStatement, vals)
+        dbConnection.commit()
+    
+        # Show information message indicating Security question was updated
+        popupBox(mainWindow, parentWindow, "Information", "Security Question was successfully updated")
+
+def createUpdateProfileBox(mainWindow, parentWindow, dbConnection, dbCursor, username):
+    # Create a toplevel window for the Update Profile dialog box
+    updateProfileWindow = Toplevel(parentWindow)
+    updateProfileWindow.title("Update profile")
+
+    # Create an information label
+    informationLabel =ttk.Label(updateProfileWindow, text = "Please enter details below to update your profile")
+    informationLabel.grid(column = 0, row = 0, columnspan = 2)
+
+    # Add your labels widget, entry widgets, and button widgets below here
+    # Add checking for the entry fields
+    # Add button event
+
+
+    # Force an update on the mainWindow so the size of the widgets are known
+    mainWindow.update()
+
+    # Get width an height of the popup diagog box so we can resize it
+    # to fit the contents of the label and button
+    w = updateProfileWindow.winfo_reqwidth()
+    h = updateProfileWindow.winfo_reqheight()
+
+    # Calculate the geometry to center the dialog box on the screen
+    ws = mainWindow.winfo_screenwidth()
+    hs = mainWindow.winfo_screenheight()
+    x = (ws/2) - (w/2)
+    y = (hs/2) - (h/2)
+    updateProfileWindow.geometry('%dx%d+%d+%d' % (w, h, x, y))
+
+
+# Implementation of the Cancel button for the Update Profile & Settings window
+# Closes the Update Profile & Settings window and returns to the App window
+def cancelUpdateProfileAndSettingsWindow(mainWindow, parentWindow, appWindow):
+    # Hide the Update Profile & Settings window
+    parentWindow.grid_forget()
+    
+    # Show the App window
+    appWindow.grid(sticky = (N, S, E, W))
+
+
+def getUserProfileInformation(dbConnection, dbCursor, username):
+        selectStatement = """SELECT * FROM UserInfo WHERE username = %s"""
+        vals = (username,)
+        dbCursor.execute(selectStatement, vals)
+
+        userInfo = dbCursor.fetchone()
+
+        # Create the userProfileInfo tuple
+        # userProfileInfo = (fullname, birthdate, phone_number, email, gender, height, weight, image_path)
+        userProfileInfo = (userInfo[2], userInfo[3], userInfo[4], userInfo[5], userInfo[6], userInfo[7], userInfo[8], userInfo[9])
+
+        # Return the tuple (fullname, birthdate, phone_number, email, gender, height, weight, image_path)
+        return userProfileInfo
