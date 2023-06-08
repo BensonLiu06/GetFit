@@ -10,10 +10,10 @@ from TrackProgress import *
 from PopupBox import *
 
 # Implementation of the app window
-def createAppWindow(mainWindow, callingWindow, dbConnection, dbCursor, username):
+def createAppWindow(mainWindow, userLoginWindow, dbConnection, dbCursor, username):
 
     # Hide the User Login window
-    callingWindow.grid_forget()
+    userLoginWindow.grid_forget()
 
     # Create a frame for the main App window
     appWindow = ttk.Frame(mainWindow, padding=(3,3,12,12))
