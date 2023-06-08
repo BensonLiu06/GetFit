@@ -153,7 +153,7 @@ def registerUser(mainWindow, parentWindow, userLoginWindow, dbConnection, dbCurs
     elif len(securityResponse) > 64:
         popupBox(mainWindow,parentWindow, "Error", "The maximum length of a security response is 64 characters long")
     else:
-        if checkUserNameExists(username, dbCursor) == False:
+        if checkUsernameExists(username, dbCursor) == False:
             if password == confirmPassword:
                 passwordHash = createPasswordHash(password)
 
