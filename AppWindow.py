@@ -10,7 +10,7 @@ from TrackProgress import *
 from PopupBox import *
 
 # Implementation of the app window
-def createAppWindow(mainWindow, userLoginWindow, dbConnection, dbCursor, username):
+def createAppWindow(mainWindow, userLoginWindow, dbConnection, dbCursor, username, callingWindow):
 
     # Hide the User Login window
     userLoginWindow.grid_forget()
@@ -97,6 +97,7 @@ def signoutOfApp(mainWindow, callingWindow, appWindow):
     callingWindow.grid(sticky = (N, S, E, W))
     popupBox(mainWindow, callingWindow, "Information", "User was successfully signed out")
 
+
 def updateProfileWindow(mainWindow, parentWindow, dbConnection, dbCursor, username):
     global profileWindow
     global name, age, gender, weight, height
@@ -181,10 +182,6 @@ def clickCommand():
 
 
 
-def workoutsWindow():
-    workoutsTab = Tk()
 
-    workout1 = Button(workoutsTab, text = "Arms Workout", padx=50)
-    workout1.pack()
 
     
