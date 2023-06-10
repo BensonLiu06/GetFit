@@ -4,11 +4,11 @@ import mysql.connector
 from mysql.connector import errorcode
 from GetFitDB import *
 from LoginWindow import *
-#from RegisterUserWindow import *
-#from AppWindow import *
-#from PopupBox import *
-#from CheckUsernameExists import *
-#from PasswordHash import *
+from RegisterUserWindow import *
+from AppWindow import *
+from PopupBox import *
+from CheckUsernameExists import *
+from PasswordHash import *
 
 # Implementation of the main window
 def mainAppWindow():

@@ -97,7 +97,6 @@ def signoutOfApp(mainWindow, callingWindow, appWindow):
     callingWindow.grid(sticky = (N, S, E, W))
     popupBox(mainWindow, callingWindow, "Information", "User was successfully signed out")
 
-
 def updateProfileWindow(mainWindow, parentWindow, dbConnection, dbCursor, username):
     global profileWindow
     global name, age, gender, weight, height

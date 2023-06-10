@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 
 # Implementation for a generic popup dialog box
 def popupBox(mainWindow, parentWindow, windowTitle, messageText):
@@ -7,11 +8,11 @@ def popupBox(mainWindow, parentWindow, windowTitle, messageText):
     popupBoxWindow.title(windowTitle)
 
     # Create lable widget to show the message text
-    messageLabel = Label(popupBoxWindow, text = messageText, padx = '10', pady = '10')
+    messageLabel =ttk.Label(popupBoxWindow, text = messageText)
     messageLabel.grid(column = 0, row = 0)
     
     # Create an OK button widget to dismiss the popup dialog box
-    okButton = Button(popupBoxWindow, text = "OK", command = lambda : popupBoxWindow.destroy())
+    okButton = ttk.Button(popupBoxWindow, text = "OK", command = lambda : popupBoxWindow.destroy())
     okButton.grid(column = 0, row = 1)
 
     # Force an update on the mainWindow so the size of the widgets are known
