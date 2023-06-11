@@ -3,8 +3,15 @@ from tkinter import *
 from tkinter import ttk
 import time
 import tkinter.font as tkFont
+from WorkoutsShowText import *
 
-
+def switch():
+    if Start["state"] == "normal":
+        Start["state"] = "disabled"
+        End["text"] = "enable"
+    else:
+        Start["state"] = "normal"
+        End["text"] = "disable"
 
 def workoutsTab():
 
@@ -59,11 +66,11 @@ def workoutsTab():
     workout1.grid(column = 0, row = 1, ipadx= 40, ipady = 80, padx = 30, pady = 30)
 
 
-    workout2 = ttk.Button(bottomFrame, text = " Advanced Workout")
+    workout2 = ttk.Button(bottomFrame, text = " Advanced Workout", command = lambda: showWorkout2())
     workout2.grid(column = 0, row = 2, ipadx= 40, ipady = 80, padx = 30, pady = 30)
 
 
-    workout3 = ttk.Button(bottomFrame, text = " Strength Workout")
+    workout3 = ttk.Button(bottomFrame, text = " HIIT Workout")
     workout3.grid(column = 1, row = 1, ipadx= 40, ipady = 80 , padx = 30, pady = 30)
 
 
@@ -92,39 +99,30 @@ def workoutsTab():
    
 def showWorkout1():
     global top
-    
+    global Start
+    global End
+
     top = Tk()
     top.geometry("1380x720")
     top.title("Beginner Workout")
 
-    Label(top, text = "Press Start to start the workout.")
+    introduction = Label(top, text = "Press Start to start the workout.")
+    introduction.grid()
+
     Label(top, text = "Tips"  )
 
-    Start = Button(top, text = "Start", command = lambda: [buttonClicked(), timer()] )
+    Start = Button(top, text = "Start", command = lambda: [buttonClicked2(), timer()] )
     Start.grid(column = 1, row= 1, ipadx = 30, ipady = 20, padx = 15, pady = 15)
+
+    End = Button(top, text = "End", command = top.destroy)
+    End.grid(column = 1, row= 2, ipadx = 30, ipady = 20, padx = 15, pady = 15)
+
 
     top.mainloop()
 
-def showtext1():
-    airSquats.grid(column = 6, row = 1)
 
-def showtext2():
-    inbetweenBreaks.grid(column = 6, row = 2)
 
-def showtext3():
-    walkingLunges.grid(column = 6, row = 3)
-
-def showtext4():
-    pushUps.grid(column = 6, row = 5)
-
-def showtext5():
-    plank.grid(column = 6, row = 7)
-
-def showtext6():
-    jumpingJacks.grid(column = 6, row = 9)
-
-def showtext7():
-    breakTime.grid(column = 6, row = 11)
+    tricepDips.grid(column=6, row = 8)
 
 def buttonClicked():
     
@@ -216,9 +214,6 @@ def finished():
         return
 
     
-
-
-
 def countdown(count):
     global Font_tuple
     
@@ -250,16 +245,101 @@ def timer():
 
 
 def showWorkout2():
-    top = Tk()
-    top.geometry("720x250")
-    top.title("Intermediate Workout")
+    global workout2
+
+    workout2 = Tk()
+    workout2.geometry("1380x720")
+    workout2.title("Advanced Workout")
     
-    Label(top, text = "")
+    introduction2 = Label(workout2, text = "Press start to start the workout")
+    introduction2.grid()
+
+    Start = Button(workout2, text = "Start", command = lambda: [buttonClicked2(), timer()] )
+    Start.grid(column = 1, row= 1, ipadx = 30, ipady = 20, padx = 15, pady = 15)
+
+    End = Button(workout2, text = "End", command = top.destroy)
+    End.grid(column = 1, row= 2, ipadx = 30, ipady = 20, padx = 15, pady = 15)
+
+
+def buttonClicked2():
+    global airSquats
+    global inbetweenBreaks
+    global walkingLunges
+    global pushUps
+    global plank
+    global breakTime
+    global i
+    global pistolSquats
+    global tricepDips
+
+
+    i = 0
+    while i < 5:
+        i += 1
+        fontObj = ('Times New Roman',30,'bold')
+        airSquats = Label(workout2, text = "Air Squats x 20", width = 20, font = fontObj, anchor=CENTER)
+        airSquats.after(1000 , showtext1)
+        airSquats.after(61000, airSquats.destroy)
+
+        
+        inbetweenBreaks = Label(workout2, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
+        inbetweenBreaks.after(61000, showtext2)
+        inbetweenBreaks.after(71000, inbetweenBreaks.destroy)
+
+
+
+        walkingLunges = Label(workout2, text = "Lunges x 20 on each leg", width = 20, font = fontObj, anchor=CENTER)
+        walkingLunges.after(71000, showtext3)
+        walkingLunges.after(131000, walkingLunges.destroy)
+
+
+        inbetweenBreaks = Label(workout2, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
+        inbetweenBreaks.after(131000, showtext2)
+        inbetweenBreaks.after(141000, inbetweenBreaks.destroy)
+        
+
+
+        pushUps = Label(workout2, text = "Push-Ups x 20", width = 20, font = fontObj, anchor=CENTER)
+        pushUps.after(141000 , showtext4)
+        pushUps.after(201000, pushUps.destroy)
+        
+
+        inbetweenBreaks = Label(workout2, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
+        inbetweenBreaks.after(201000, showtext2)
+        inbetweenBreaks.after(211000, inbetweenBreaks.destroy)
+        
+        pistolSquats = Label(workout2, text = "pistol Squats x 10 on each side", width = 20, font = fontObj, anchor=CENTER)
+        pistolSquats.after(251000, showtext8)
+        pistolSquats.after(311000, pistolSquats.destroy)
+
+        inbetweenBreaks = Label(workout2, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
+        inbetweenBreaks.after(241000, showtext2)
+        inbetweenBreaks.after(251000, inbetweenBreaks.destroy)
+
+        tricepDips = Label(workout2, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
+        tricepDips.after(200000, showtext9)
+        tricepDips.after(300000, tricepDips.destroy)
+
+        inbetweenBreaks = Label(workout2, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
+        inbetweenBreaks.after(311000, showtext2)
+        inbetweenBreaks.after(321000, inbetweenBreaks.destroy)
+
+        plank = Label(workout2, text = "Plank x 1 minute", width = 20, font = fontObj, anchor=CENTER)
+        plank.after(211000, showtext5)
+        plank.after(241000, plank.destroy)
+        
+
+        breakTime = Label(workout2, text = "Grab some water and take a break for 30 seconds", font = fontObj, anchor=CENTER)
+        breakTime.after(321000, showtext7)
+        breakTime.after(381000, breakTime.destroy)
+
+        repeat = Label(workout2, text = "This workout is to be repeated 5 times to complete, Finish before the time runs out.", font = fontObj, anchor=CENTER)
+        repeat.grid(column=6, row = 12)
 
 def showWorkout3():
     top = Tk()
     top.geometry("720x250")
-    top.title("Advanced Workout")
+    top.title("HIIT Workout")
     
     Label(top, text = "")
 
