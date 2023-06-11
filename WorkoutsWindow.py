@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import *
 from tkinter import ttk
 import time
+import tkinter.font as tkFont
 
 
 
@@ -102,57 +103,94 @@ def showWorkout1():
     Label(top, text = "Press Start to start the workout.")
     Label(top, text = "Tips"  )
 
-    Start = Button(top, text = "Start", command = lambda: buttonClicked() )
-    Start.grid(column = 0, row= 2, ipadx = 30, ipady = 20)
+    Start = Button(top, text = "Start", command = lambda: [buttonClicked(), timer()] )
+    Start.grid(column = 1, row= 1, ipadx = 30, ipady = 20, padx = 15, pady = 15)
+
+    top.mainloop()
 
     
 
 def buttonClicked():
-    inbetweenBreaks = Label(top, text = "10 second break")
+    fontObj = tkFont.Font(size=30)
+    inbetweenBreaks = Label(top, text = "10 second break", font = fontObj)
+    #font= ('Times New Roman',17,'bold')
 
-
-    airSquats = Label(top, text = "Air Squats x 20", font = "Arial")
-    airSquats.grid()
-    time.sleep(60)
-
-    inbetweenBreaks.grid()
-    time.sleep(10)
-
-
-    walkingLunges = Label(top, text = "Walking Lunges x 10 on each leg", font = "Arial")
-    walkingLunges.grid()
-    time.sleep(60)
-
-    inbetweenBreaks.grid()
-    time.sleep(10)
-
-    pushUps = Label(top, text = "Push-Ups x 10")
-    pushUps.grid()
-    time.sleep(60)
-
-    inbetweenBreaks.grid()
-    time.sleep(10)
-
-    plank = Label(top, text = "Plank x 30 Seconds")
-    plank.grid()
-    time.sleep(30)
-
-    inbetweenBreaks.grid()
-    time.sleep(10)
-        
-    jumpingJacks = Label(top, text = "Jumping Jacks x 30")
-    jumpingJacks.grid()
-    time.sleep(60)
-
-    breakTime = Label(top, text = "Grab some water and take a break for 30 seconds")
-    breakTime.grid()
-    time.sleep(30)
-
-
-
-
-
+    airSquats = Label(top, text = "Air Squats x 20", width = 20, anchor = 'center', font = fontObj)
+    airSquats.grid(column = 6, row = 1)
+   
     
+
+    inbetweenBreaks.grid(column = 6, row = 2)
+ 
+
+
+    walkingLunges = Label(top, text = "Lunges x 10 on each leg", width = 20, anchor = 'center', font = fontObj)
+    walkingLunges.grid(column = 6, row = 3)
+  
+
+
+    inbetweenBreaks.grid(column = 6, row = 4)
+   
+
+    pushUps = Label(top, text = "Push-Ups x 10", width = 20, anchor = 'center', font = fontObj)
+    pushUps.grid(column = 6, row = 5)
+    #top.after(60000)
+
+
+    inbetweenBreaks.grid(column = 6, row = 6)
+    #top.after(10000)
+
+    plank = Label(top, text = "Plank x 30 Seconds", width = 20, anchor = 'center', font = fontObj)
+    plank.grid(column = 6, row = 7)
+    #top.after(60000)
+
+
+    inbetweenBreaks.grid(column = 6, row = 8)
+    #top.after(10000)
+        
+    jumpingJacks = Label(top, text = "Jumping Jacks x 30", width = 20, anchor = 'center', font = fontObj)
+    jumpingJacks.grid(column = 6, row = 9)
+    #top.after(60000)
+
+    inbetweenBreaks.grid(column = 6, row = 10)
+
+
+    breakTime = Label(top, text = "Grab some water and take a break for 30 seconds", font = fontObj)
+    breakTime.grid(column = 6, row = 11)
+    #top.after(30000)
+
+    repeat = Label(top, text = "Repeat the workout 5 times to complete, Finish before the time runs out.", font = fontObj)
+    repeat.grid(column=6, row = 12)
+
+
+
+def countdown(count):
+    # change text in label        
+    label['text'] = count
+
+    if count > 0:
+        # call countdown again after 1000ms (1s)
+        root.after(1000, countdown, count-1)
+    elif count == 0:
+        alarm = Label(root, text = "60 seconds is up.", font = ('Digital-7', 40))
+        alarm.grid()
+
+def timer():
+    global label
+    global root
+
+    root = tk.Tk()
+
+    label = tk.Label(root)
+    label.place(x=35, y=15)
+
+    # call countdown first time   
+    countdown(1200)
+    # root.after(0, countdown, 5)
+
+    root.mainloop()
+
+
 def showWorkout2():
     top = Tk()
     top.geometry("720x250")

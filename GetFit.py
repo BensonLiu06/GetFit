@@ -4,6 +4,7 @@ import mysql.connector
 from mysql.connector import errorcode
 from GetFitDB import *
 from LoginWindow import *
+
 #from RegisterUserWindow import *
 #from AppWindow import *
 #from PopupBox import *
