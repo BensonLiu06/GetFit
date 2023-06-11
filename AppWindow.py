@@ -87,7 +87,7 @@ def createAppWindow(mainWindow, userLoginWindow, dbConnection, dbCursor, usernam
 
     # Create button widget for Sign out 
     signoutButton = ttk.Button(buttonFrame, text = "Sign out", command = lambda : 
-                                signoutOfApp())
+                                signoutOfApp(mainWindow, appWindow))
     signoutButton.grid(column = 1, row = 5, pady = 5)
 
     popupBox(mainWindow, appWindow,"Information", "User login was successful")
