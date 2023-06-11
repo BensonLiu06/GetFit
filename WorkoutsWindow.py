@@ -5,13 +5,6 @@ import time
 import tkinter.font as tkFont
 from WorkoutsShowText import *
 
-def switch():
-    if Start["state"] == "normal":
-        Start["state"] = "disabled"
-        End["text"] = "enable"
-    else:
-        Start["state"] = "normal"
-        End["text"] = "disable"
 
 def workoutsTab():
 
@@ -103,7 +96,7 @@ def showWorkout1():
     global End
 
     top = Tk()
-    top.geometry("1380x720")
+    top.geometry("1680x720")
     top.title("Beginner Workout")
 
     introduction = Label(top, text = "Press Start to start the workout.")
@@ -111,18 +104,15 @@ def showWorkout1():
 
     Label(top, text = "Tips"  )
 
-    Start = Button(top, text = "Start", command = lambda: [buttonClicked2(), timer()] )
+    Start = Button(top, text = "Start", command = lambda: [buttonClicked(), timer()] )
     Start.grid(column = 1, row= 1, ipadx = 30, ipady = 20, padx = 15, pady = 15)
 
     End = Button(top, text = "End", command = top.destroy)
     End.grid(column = 1, row= 2, ipadx = 30, ipady = 20, padx = 15, pady = 15)
 
-
+    buttonClicked()
     top.mainloop()
 
-
-
-    tricepDips.grid(column=6, row = 8)
 
 def buttonClicked():
     
@@ -137,68 +127,65 @@ def buttonClicked():
     global i
     
     i = 0
-    while i < 5:
-        i += 1
+    for i in range(5):  
         fontObj = ('Times New Roman',30,'bold')
 
         
         
         airSquats = Label(top, text = "Air Squats x 20", width = 20, font = fontObj, anchor=CENTER)
-        airSquats.after(1000 , showtext1)
-        airSquats.after(61000, airSquats.destroy)
+        airSquats.after(1000 , showtext1 )
+        airSquats.after(31000, airSquats.destroy)
 
         
         inbetweenBreaks = Label(top, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
-        inbetweenBreaks.after(61000, showtext2)
-        inbetweenBreaks.after(71000, inbetweenBreaks.destroy)
+        inbetweenBreaks.after(31000, showtext2)
+        inbetweenBreaks.after(41000, inbetweenBreaks.destroy)
 
 
 
         walkingLunges = Label(top, text = "Lunges x 10 on each leg", width = 20, font = fontObj, anchor=CENTER)
-        walkingLunges.after(71000, showtext3)
-        walkingLunges.after(131000, walkingLunges.destroy)
+        walkingLunges.after(41000, showtext3)
+        walkingLunges.after(71000, walkingLunges.destroy)
 
 
         inbetweenBreaks = Label(top, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
-        inbetweenBreaks.after(131000, showtext2)
-        inbetweenBreaks.after(141000, inbetweenBreaks.destroy)
+        inbetweenBreaks.after(71000, showtext2)
+        inbetweenBreaks.after(81000, inbetweenBreaks.destroy)
         
 
 
         pushUps = Label(top, text = "Push-Ups x 10", width = 20, font = fontObj, anchor=CENTER)
-        pushUps.after(141000 , showtext4)
-        pushUps.after(201000, pushUps.destroy)
+        pushUps.after(81000 , showtext4)
+        pushUps.after(111000, pushUps.destroy)
         
 
         inbetweenBreaks = Label(top, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
-        inbetweenBreaks.after(201000, showtext2)
-        inbetweenBreaks.after(211000, inbetweenBreaks.destroy)
+        inbetweenBreaks.after(111000, showtext2)
+        inbetweenBreaks.after(121000, inbetweenBreaks.destroy)
         
 
         plank = Label(top, text = "Plank x 30 Seconds", width = 20, font = fontObj, anchor=CENTER)
-        plank.after(211000, showtext5)
-        plank.after(241000, plank.destroy)
+        plank.after(121000, showtext5)
+        plank.after(151000, plank.destroy)
 
         inbetweenBreaks = Label(top, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
-        inbetweenBreaks.after(241000, showtext2)
-        inbetweenBreaks.after(251000, inbetweenBreaks.destroy)
+        inbetweenBreaks.after(151000, showtext2)
+        inbetweenBreaks.after(161000, inbetweenBreaks.destroy)
         
             
         jumpingJacks = Label(top, text = "Jumping Jacks x 30", width = 20, font = fontObj, anchor=CENTER)
-        jumpingJacks.after(251000, showtext6)
-        jumpingJacks.after(311000, jumpingJacks.destroy)
-        
-        inbetweenBreaks = Label(top, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
-        inbetweenBreaks.after(311000, showtext2)
-        inbetweenBreaks.after(321000, inbetweenBreaks.destroy)
+        jumpingJacks.after(161000, showtext6)
+        jumpingJacks.after(191000, jumpingJacks.destroy)
 
 
         breakTime = Label(top, text = "Grab some water and take a break for 30 seconds", font = fontObj, anchor=CENTER)
-        breakTime.after(321000, showtext7)
-        breakTime.after(381000, breakTime.destroy)
+        breakTime.after(191000, showtext7)
+        breakTime.after(221000, breakTime.destroy)
 
         repeat = Label(top, text = "This workout is to be repeated 5 times to complete, Finish before the time runs out.", font = fontObj, anchor=CENTER)
         repeat.grid(column=6, row = 12)
+
+    
 
     
 def finished():
@@ -243,7 +230,7 @@ def timer():
 
     root.mainloop()
 
-
+#-----------------------------------------------------------------
 def showWorkout2():
     global workout2
 
@@ -377,3 +364,35 @@ def showWorkout8():
     top.title("Beginner Workout")
     
     Label(top, text = "")
+
+
+
+
+#------------------------------------------------------------
+
+def showtext1():
+    airSquats.grid(column = 6, row = 1)
+
+def showtext2():
+    inbetweenBreaks.grid(column = 6, row = 2)
+
+def showtext3():
+    walkingLunges.grid(column = 6, row = 3)
+
+def showtext4():
+    pushUps.grid(column = 6, row = 5)
+
+def showtext5():
+    plank.grid(column = 6, row = 7)
+
+def showtext6():
+    jumpingJacks.grid(column = 6, row = 9)
+
+def showtext7():
+    breakTime.grid(column = 6, row = 11)
+
+def showtext8():
+    pistolSquats.grid(column = 6, row = 6)
+
+def showtext9():
+    tricepDips.grid(column = 6, row = 8)
