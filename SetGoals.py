@@ -1,89 +1,102 @@
+import mysql.connector
 from PopupBox import *
 
-# Implementation of Set Goals window
-def createSetGoalsWindow(mainWindow, parentWindow, dbConnection, dbCursor, username):
-    # Hide the App window
+# Connect to the database and create the necessary tables
+dbConnection, dbCursor = accessDatabase(mainWindow, dbHostname, dbUsername, dbPort, dbPassword, dbName)
+
+# Function to retrieve goals from the database for a specific user
+def getGoals(dbCursor, username):
+    dbCursor.execute("SELECT goal FROM goals WHERE username = %s", (username,))
+    goals = dbCursor.fetchall()
+    return goals
+
+# Function to display the goals in the goals window
+def displayGoals(goalsList, goalsFrame):
+    for widget in goalsFrame.winfo_children():
+        widget.destroy()
+
+    for index, goal in enumerate(goalsList):
+        goalLabel = ttk.Label(goalsFrame, text=f"{index+1}. {goal}")
+        goalLabel.pack(anchor='w')
+
+# Function to add a new goal
+def addGoal(mainWindow, goalsWindow, dbConnection, dbCursor, username, goalsList, goalsFrame):
+    goal = popupInputBox(mainWindow, goalsWindow, "Add Goal", "Enter the goal:")
+    if goal:
+        goalsList.append(goal)
+        dbCursor.execute("INSERT INTO goals (username, goal) VALUES (%s, %s)", (username, goal))
+        dbConnection.commit()
+        displayGoals(goalsList, goalsFrame)
+
+# Function to change a goal
+def changeGoal(mainWindow, goalsWindow, dbConnection, dbCursor, username, goalsList, goalsFrame):
+    oldGoal = popupOptionBox(mainWindow, goalsWindow, "Change Goal", "Select the goal to change:", goalsList)
+    if oldGoal:
+        newGoal = popupInputBox(mainWindow, goalsWindow, "Change Goal", "Enter the new goal:")
+        if newGoal:
+            goalsList.remove(oldGoal)
+            goalsList.append(newGoal)
+            dbCursor.execute("UPDATE goals SET goal = %s WHERE username = %s AND goal = %s", (newGoal, username, oldGoal))
+            dbConnection.commit()
+            displayGoals(goalsList, goalsFrame)
+
+# Function to delete a goal
+def deleteGoal(mainWindow, goalsWindow, dbConnection, dbCursor, username, goalsList, goalsFrame):
+    goal = popupOptionBox(mainWindow, goalsWindow, "Delete Goal", "Select the goal to delete:", goalsList)
+    if goal:
+        goalsList.remove(goal)
+        dbCursor.execute("DELETE FROM goals WHERE username = %s AND goal = %s", (username, goal))
+        dbConnection.commit()
+        displayGoals(goalsList, goalsFrame)
+
+# Function to mark a goal as complete
+def completeGoal(mainWindow, goalsWindow, dbConnection, dbCursor, username, goalsList, goalsFrame):
+    goal = popupOptionBox(mainWindow, goalsWindow, "Complete Goal", "Select the goal to mark as complete:", goalsList)
+    if goal:
+        goalsList.remove(goal)
+        dbCursor.execute("DELETE FROM goals WHERE username = %s AND goal = %s", (username, goal))
+        dbConnection.commit()
+        displayGoals(goalsList, goalsFrame)
+
+# Function to create the goals window
+def createGoalsWindow(mainWindow, parentWindow, dbConnection, dbCursor, username):
     parentWindow.grid_forget()
 
-    # Create a frame for the Set Goals window
-    setGoalsWindow = ttk.Frame(mainWindow, padding=(3,3,12,12))
-    setGoalsWindow.grid(sticky=(N, S, E, W))
+    goalsWindow = ttk.Frame(mainWindow, padding=(3, 3, 12, 12))
+    goalsWindow.grid(sticky=(N, S, E, W))
 
-    # Setup the Set Goals window
-    setGoalsWindow.columnconfigure(0, weight=1)
-    setGoalsWindow.columnconfigure(1, weight=1)
-    setGoalsWindow.rowconfigure(0, weight=1)
-    setGoalsWindow.rowconfigure(1, weight=1)
+    goalsWindow.columnconfigure(0, weight=1)
+    goalsWindow.rowconfigure(0, weight=1)
 
-    # Create all the main frame containers
-    topFrame = ttk.Frame(setGoalsWindow, width=600, height=50, relief='groove', borderwidth=2)
-    bottomFrame = ttk.Frame(setGoalsWindow, width=300, height=700, relief='groove', borderwidth=2)
-    buttonFrame = ttk.Frame(setGoalsWindow, width=300, height=50, relief='groove', borderwidth=2)
+    scrollFrame = ScrollableFrame(goalsWindow)
+    scrollFrame.grid(row=0, column=0, sticky=(N, S, E, W))
 
-    # Layout all of the main frame containers
-    topFrame.grid(column=0, row=0, columnspan=2, rowspan=1, padx=5, pady=5, sticky=(N, S, E, W))
-    bottomFrame.grid(column=0, row=1, columnspan=2, rowspan=1, padx=5, pady=5, sticky=(N, S, E, W))
-    buttonFrame.grid(column=0, row=2, columnspan=2, rowspan=1, padx=5, pady=5, sticky=(N, S, E, W))
+    mainFrame = ttk.Frame(goalsWindow)
+    mainFrame.grid(row=1, column=0, pady=10)
 
-    topFrame.columnconfigure(0, weight=1)
-    topFrame.columnconfigure(1, weight=1)
-    bottomFrame.columnconfigure(0, weight=1)
-    bottomFrame.columnconfigure(1, weight=1)
-    buttonFrame.columnconfigure(0, weight=1)
-    buttonFrame.columnconfigure(1, weight=1)
+    backButton = ttk.Button(mainFrame, text="Back", command=lambda: backButtonClicked(mainWindow, goalsWindow, parentWindow))
+    backButton.pack()
 
-    topFrame.rowconfigure(0, weight=1)
-    bottomFrame.rowconfigure(0, weight=1)
-    bottomFrame.rowconfigure(1, weight=1)
-    bottomFrame.rowconfigure(2, weight=1)
+    goalsList = getGoals(dbCursor, username)
+    displayGoals(goalsList, scrollFrame.scrollable_frame)
 
-    # Create an information label
-    informationLabel = ttk.Label(topFrame, text="Set your goals")
-    informationLabel.grid(column=0, row=0, columnspan=2)
+    addButton = ttk.Button(mainFrame, text="Add Goal", command=lambda: addGoal(mainWindow, goalsWindow, dbConnection, dbCursor, username, goalsList, scrollFrame.scrollable_frame))
+    addButton.pack()
 
-    # Create labels and Entry widgets for goal input
-    goal1Label = ttk.Label(bottomFrame, text="Goal 1:")
-    goal1Label.grid(column=0, row=0, padx=5, pady=5, sticky=W)
-    goal1Entry = ttk.Entry(bottomFrame)
-    goal1Entry.grid(column=1, row=0, padx=5, pady=5)
+    changeButton = ttk.Button(mainFrame, text="Change Goal", command=lambda: changeGoal(mainWindow, goalsWindow, dbConnection, dbCursor, username, goalsList, scrollFrame.scrollable_frame))
+    changeButton.pack()
 
-    goal2Label = ttk.Label(bottomFrame, text="Goal 2:")
-    goal2Label.grid(column=0, row=1, padx=5, pady=5, sticky=W)
-    goal2Entry = ttk.Entry(bottomFrame)
-    goal2Entry.grid(column=1, row=1, padx=5, pady=5)
+    deleteButton = ttk.Button(mainFrame, text="Delete Goal", command=lambda: deleteGoal(mainWindow, goalsWindow, dbConnection, dbCursor, username, goalsList, scrollFrame.scrollable_frame))
+    deleteButton.pack()
 
-    goal3Label = ttk.Label(bottomFrame, text="Goal 3:")
-    goal3Label.grid(column=0, row=2, padx=5, pady=5, sticky=W)
-    goal3Entry = ttk.Entry(bottomFrame)
-    goal3Entry.grid(column=1, row=2, padx=5, pady=5)
+    completeButton = ttk.Button(mainFrame, text="Complete Goal", command=lambda: completeGoal(mainWindow, goalsWindow, dbConnection, dbCursor, username, goalsList, scrollFrame.scrollable_frame))
+    completeButton.pack()
 
-    # Function to save the goals
-    def saveGoals():
-        goals = [goal1Entry.get(), goal2Entry.get(), goal3Entry.get()]
-        # Implement the code to save the goals to the database or file
-        # For example, you can use the dbCursor and dbConnection objects to execute an INSERT query
-        # dbCursor.execute("INSERT INTO goals (goal1, goal2, goal3) VALUES (%s, %s, %s)", goals)
-        # dbConnection.commit()
-        # Display a confirmation message
-        popupBox(mainWindow, setGoalsWindow, "Success", "Goals saved successfully!")
+    def backButtonClicked(mainWindow, currentWindow, parentWindow):
+        currentWindow.grid_forget()
+        parentWindow.grid()
 
-    # Create button widget to Cancel the Set Goals window
-    cancelButton = ttk.Button(buttonFrame, text="Cancel", command=lambda: cancelSetGoalsWindow(mainWindow, setGoalsWindow, parentWindow))
-    cancelButton.grid(column=1, row=0, padx=5, pady=5)
+    goalsWindow.grid()
 
-    # Create a button widget to save the goals
-    saveButton = ttk.Button(buttonFrame, text="Save Goals", command=saveGoals)
-    saveButton.grid(column=0, row=0, padx=5, pady=5)
-
-
-    # Call the saveGoals function
-    saveGoals()
-
-# Implementation of the Cancel button for the Set Goals window
- # Closes the Set Goals window and returns to the App window
-def cancelSetGoalsWindow(mainWindow, parentWindow, appWindow):
-# Hide the Set Goals window
-    parentWindow.grid_forget()
-
-    # Show the App window
-    appWindow.grid(sticky=(N, S, E, W))
+# Usage:
+createGoalsWindow(mainWindow, setGoalsWindow, dbConnection, dbCursor, username)
