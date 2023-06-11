@@ -105,29 +105,29 @@ def showWorkout1():
 
     top.mainloop()
 
-def removetext1():
+def showtext1():
     airSquats.grid(column = 6, row = 1)
 
-
-def removetext2():
+def showtext2():
     inbetweenBreaks.grid(column = 6, row = 2)
 
-def removetext3():
+def showtext3():
     walkingLunges.grid(column = 6, row = 3)
 
-def removetext4():
+def showtext4():
     pushUps.grid(column = 6, row = 5)
 
-def removetext5():
+def showtext5():
     plank.grid(column = 6, row = 7)
 
-def removetext6():
+def showtext6():
     jumpingJacks.grid(column = 6, row = 9)
 
-def removetext7():
+def showtext7():
     breakTime.grid(column = 6, row = 11)
 
 def buttonClicked():
+    
 
     global airSquats
     global inbetweenBreaks
@@ -136,66 +136,92 @@ def buttonClicked():
     global plank
     global jumpingJacks
     global breakTime
-
-
-    fontObj = ('Times New Roman',30,'bold')
-    inbetweenBreaks = Label(top, text = "10 second break", font = fontObj, anchor=CENTER)
+    global i
     
-    
-    airSquats = Label(top, text = "Air Squats x 20", width = 20, font = fontObj, anchor=CENTER)
-    airSquats.after(5000, removetext1)
-    airSquats.after(60000, airSquats.destroy)
-   
-    
+    i = 0
+    while i < 5:
+        i += 1
+        fontObj = ('Times New Roman',30,'bold')
 
-    inbetweenBreaks.after(61000, removetext2)
-    inbetweenBreaks.after(10000, inbetweenBreaks.destroy)
- 
-
-
-    walkingLunges = Label(top, text = "Lunges x 10 on each leg", width = 20, font = fontObj, anchor=CENTER)
-    walkingLunges.after(71000, removetext3)
-    walkingLunges.after(131000, walkingLunges.destroy)
-  
-
-
-    inbetweenBreaks.after(10000, removetext2)
-    
-   
-
-    pushUps = Label(top, text = "Push-Ups x 10", width = 20, font = fontObj, anchor=CENTER)
-    pushUps.after(60000 , removetext4)
-    
-
-
-    inbetweenBreaks.after(10000, removetext2)
-    
-
-    plank = Label(top, text = "Plank x 30 Seconds", width = 20, font = fontObj, anchor=CENTER)
-    plank.after(30000, removetext5)
-
-
-    inbetweenBreaks.after(10000, inbetweenBreaks.destroy)
-    
         
-    jumpingJacks = Label(top, text = "Jumping Jacks x 30", width = 20, font = fontObj, anchor=CENTER)
-    jumpingJacks.after(60000, removetext6)
+        
+        airSquats = Label(top, text = "Air Squats x 20", width = 20, font = fontObj, anchor=CENTER)
+        airSquats.after(1000 , showtext1)
+        airSquats.after(61000, airSquats.destroy)
+
+        
+        inbetweenBreaks = Label(top, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
+        inbetweenBreaks.after(61000, showtext2)
+        inbetweenBreaks.after(71000, inbetweenBreaks.destroy)
+
+
+
+        walkingLunges = Label(top, text = "Lunges x 10 on each leg", width = 20, font = fontObj, anchor=CENTER)
+        walkingLunges.after(71000, showtext3)
+        walkingLunges.after(131000, walkingLunges.destroy)
+
+
+        inbetweenBreaks = Label(top, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
+        inbetweenBreaks.after(131000, showtext2)
+        inbetweenBreaks.after(141000, inbetweenBreaks.destroy)
+        
+
+
+        pushUps = Label(top, text = "Push-Ups x 10", width = 20, font = fontObj, anchor=CENTER)
+        pushUps.after(141000 , showtext4)
+        pushUps.after(201000, pushUps.destroy)
+        
+
+        inbetweenBreaks = Label(top, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
+        inbetweenBreaks.after(201000, showtext2)
+        inbetweenBreaks.after(211000, inbetweenBreaks.destroy)
+        
+
+        plank = Label(top, text = "Plank x 30 Seconds", width = 20, font = fontObj, anchor=CENTER)
+        plank.after(211000, showtext5)
+        plank.after(241000, plank.destroy)
+
+        inbetweenBreaks = Label(top, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
+        inbetweenBreaks.after(241000, showtext2)
+        inbetweenBreaks.after(251000, inbetweenBreaks.destroy)
+        
+            
+        jumpingJacks = Label(top, text = "Jumping Jacks x 30", width = 20, font = fontObj, anchor=CENTER)
+        jumpingJacks.after(251000, showtext6)
+        jumpingJacks.after(311000, jumpingJacks.destroy)
+        
+        inbetweenBreaks = Label(top, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
+        inbetweenBreaks.after(311000, showtext2)
+        inbetweenBreaks.after(321000, inbetweenBreaks.destroy)
+
+
+        breakTime = Label(top, text = "Grab some water and take a break for 30 seconds", font = fontObj, anchor=CENTER)
+        breakTime.after(321000, showtext7)
+        breakTime.after(381000, breakTime.destroy)
+
+        repeat = Label(top, text = "This workout is to be repeated 5 times to complete, Finish before the time runs out.", font = fontObj, anchor=CENTER)
+        repeat.grid(column=6, row = 12)
+
     
+def finished():
+    if i == 5:
+        finished = Tk()
 
-    inbetweenBreaks.after(10000, removetext2)
+        congratsMessage = Label(finished, text = "Congrats, you made it, the workout has finished!", anchor=CENTER)
+        congratsMessage.grid()
 
+        finished.mainloop()
+    
+    else:
+        return
 
-    breakTime = Label(top, text = "Grab some water and take a break for 30 seconds", font = fontObj, anchor=CENTER)
-    breakTime.after(30000, removetext7)
-
-    repeat = Label(top, text = "Repeat the workout 5 times to complete, Finish before the time runs out.", font = fontObj, anchor=CENTER)
-    repeat.grid(column=6, row = 12)
     
 
 
 
 def countdown(count):
     global Font_tuple
+    
     Font_tuple = ('Impact',20, 'bold')
     # change text in label        
     label['text'] = count
@@ -204,7 +230,7 @@ def countdown(count):
         # call countdown again after 1000ms (1s)
         root.after(1000, countdown, count-1)
     elif count == 0:
-        alarm = Label(root, text = "60 seconds is up.", font = Font_tuple)
+        alarm = Label(root, text = "20 minutes is up.", font = Font_tuple)
         alarm.grid()
 
 def timer():
@@ -217,7 +243,7 @@ def timer():
     label.place(x=35, y=15)
 
     # call countdown first time   
-    countdown(60)
+    countdown(1200)
     # root.after(0, countdown, 5)
 
     root.mainloop()
