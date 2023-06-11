@@ -4,7 +4,7 @@ import re
 from RegisterUserWindow import *
 from AppWindow import *
 from PopupBox import *
-from CheckUserNameExists import *
+from CheckUsernameExists import *
 from ResetPassword import *
 from PasswordHash import *
 
