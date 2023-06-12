@@ -1,66 +1,96 @@
 from tkinter import *
-#from tkinter import ttk
-import mysql.connector
-from mysql.connector import errorcode
-from GetFitDB import *
-from LoginWindow import *
-#from RegisterUserWindow import *
-#from AppWindow import *
-#from PopupBox import *
-#from CheckUsernameExists import *
-#from PasswordHash import *
+from tkinter import ttk
+from RegisterUserWindow import *
+from UpdateProfileWindow import *
+from SetGoals import *
+from TrackActivity import *
+from TrackProgress import *
+from PopupBox import *
 
-# Implementation of the main window
-def mainAppWindow():
-    #global mainWindow
-    # Create an instance of tkinter frame or window
-    mainWindow = Tk()
+# Implementation of the app window
+def createAppWindow(mainWindow, userLoginWindow, dbConnection, dbCursor, username):
 
-    # Set the width and height of the main window
-    w = 800 # Width 
-    h = 600 # Height
- 
-    # Determine the size of the screen
-    screen_width =  mainWindow.winfo_screenwidth()  # Width of the screen
-    screen_height = mainWindow.winfo_screenheight() # Height of the screen
- 
-    # Calculate starting x and y coordinates to center the main window on the screen
-    x = (screen_width / 2) - (w / 2)
-    y = (screen_height / 2) - (h / 2)
- 
-    mainWindow.geometry('%dx%d+%d+%d' % (w, h, x, y))
-    mainWindow.title("GetFit")
+    # Hide the User Login window
+    userLoginWindow.grid_forget()
 
-    mainWindow.columnconfigure(0, weight = 1)
-    mainWindow.rowconfigure(0, weight = 1)
+    # Create a frame for the main App window
+    appWindow = ttk.Frame(mainWindow, padding=(3,3,12,12))
+    appWindow.grid(sticky=N+S+E+W)
 
-    # Setup parameters to access the mySQL server
-    dbHostname = "localhost"
-    dbUsername = "root"
-    dbPort = "3306"
-    dbPassword = ""
-    dbName = "GetFitDB"
+    # Setup the main App window
+    appWindow.columnconfigure(0, weight = 1)
+    appWindow.columnconfigure(1, weight = 1)
+    #appWindow.rowconfigure(0, weight = 1)
+    appWindow.rowconfigure(1, weight = 1)
 
-    # Connect to the GetFit database
-    accessDatabase(mainWindow, dbHostname, dbUsername, dbPort, dbPassword, dbName)
-    
-    try:
-        # Connect to the GetFit database
-        dbConnection = mysql.connector.connect(
-            host = dbHostname,
-            user = dbUsername,
-            port = dbPort,
-            password = dbPassword,
-            database = dbName
-        )
-        dbCursor = dbConnection.cursor()
+    # Create all the main frame containers
+    topFrame = ttk.Frame(appWindow, width = 600, height = 50, relief = 'groove', borderwidth = 2)
+    bottomFrame = ttk.Frame(appWindow, width = 300, height = 700, relief = 'groove', borderwidth = 2)
+    buttonFrame = ttk.Frame(appWindow, width = 300, height = 50, relief = 'groove', borderwidth = 2)
 
-        # Show the Login window
-        createLoginWindow(mainWindow, dbConnection, dbCursor)
-    except mysql.connector.Error as error:
-        errorMessage = "Error Code: " + str(error.errno) + "\n" + "SQLSTATE: " + error.sqlstate + "\n" + "Message: " + error.msg  
-        popupBox(mainWindow, mainWindow, "Error", errorMessage)
+    # Layout all of the main frame containers
+    topFrame.grid(column = 0, row = 0, columnspan = 2, rowspan = 1, padx = 5, pady = 5, sticky=(N, S, E, W))
+    bottomFrame.grid(column = 0, row = 1, columnspan = 2, rowspan = 5, padx = 5, pady = 5, sticky=(N, S, E, W))
+    buttonFrame.grid(column = 0, row = 1, columnspan = 2, rowspan = 1, padx = 5, pady = 5, sticky=(N, S, E, W))
 
-    mainWindow.mainloop()
+    topFrame.columnconfigure(0, weight = 1)
+    topFrame.columnconfigure(0, weight = 1)
+    bottomFrame.columnconfigure(0, weight = 1)
+    bottomFrame.columnconfigure(0, weight = 1)
+    buttonFrame.columnconfigure(0, weight = 1)
+    buttonFrame.columnconfigure(0, weight = 1)
+    bottomFrame.rowconfigure(1, weight = 1)
+    bottomFrame.rowconfigure(2, weight = 1)
+    bottomFrame.rowconfigure(3, weight = 1)
+    bottomFrame.rowconfigure(4, weight = 1)
+    buttonFrame.rowconfigure(5, weight = 1)
 
-mainAppWindow()
+    # Create all the main frame containers
+    topFrame = ttk.Frame(appWindow, width = 600, height = 50, relief = 'groove', borderwidth = 2)
+    bottomFrame = ttk.Frame(appWindow, width = 600, height = 650, relief = 'groove', borderwidth = 2)
+    buttonFrame = ttk.Frame(appWindow, width = 600, height = 100, relief = 'groove', borderwidth = 2)
+
+    # Layout all of the main frame containers
+    topFrame.grid(column = 0, row = 0, columnspan = 2, rowspan = 1, padx = 5, pady = 5, sticky=(N, S, E, W))
+    bottomFrame.grid(column = 0, row = 1, columnspan = 2, rowspan = 9, padx = 5, pady = 5, sticky=(N, S, E, W))
+    buttonFrame.grid(column = 0, row = 5, columnspan = 2, rowspan = 1, padx = 5, pady = 5, sticky=(N, S, E, W))
+
+    # Create label widget for information message
+    label1 =ttk.Label(topFrame, text = "Signed in to GetFit", width = 20, anchor = 'center')
+    label1.grid(column = 0, row = 0, pady = 5)
+
+    # Create label widget for Username
+    label2 =ttk.Label(topFrame, text = "Username: " + username, width = 20, anchor = 'center')
+    label2.grid(column = 1, row = 0, pady = 5)
+
+    # Create button widget for Profile & Settings
+    updateProfileButton = ttk.Button(bottomFrame, text = "Profile & Settings", command = lambda : createUpdateProfileAndSettingsWindow(mainWindow, appWindow, dbConnection, dbCursor, username))
+    updateProfileButton.grid(column = 0, row = 1, pady = 5)
+
+    # Create button widget for Set Goals
+    setGoalsButton = ttk.Button(bottomFrame, text = "Set Goals", command = lambda : createSetGoalsWindow(mainWindow, appWindow, dbConnection, dbCursor, username))
+    setGoalsButton.grid(column = 0, row = 2, pady = 5)
+
+    # Create button widget for Track Activity
+    trackActivityButton = ttk.Button(bottomFrame, text = "Track Activity", command = lambda : createTrackActivityWindow(mainWindow, appWindow, dbConnection, dbCursor, username))
+    trackActivityButton.grid(column = 0, row = 3, pady = 5)
+
+    # Create button widget for Track Progress
+    trackProgressButton = ttk.Button(bottomFrame, text = "Track Progress", command = lambda : createTrackProgressWindow(mainWindow, appWindow, dbConnection, dbCursor, username))
+    trackProgressButton.grid(column = 0, row = 4, pady = 5)
+
+    # Create button widget for Sign out 
+    signoutButton = ttk.Button(buttonFrame, text = "Sign out", command = lambda : 
+                                   signoutOfApp(mainWindow, userLoginWindow, appWindow))
+    signoutButton.grid(column = 1, row = 5, pady = 5)
+
+    popupBox(mainWindow, appWindow,"Information", "User login was successful")
+
+# Implementation of Sign out button event
+def signoutOfApp(mainWindow, callingWindow, appWindow):
+    # Hide the App window
+    appWindow.grid_forget()
+
+    # Show the User Login window
+    callingWindow.grid(sticky = (N, S, E, W))
+    popupBox(mainWindow, callingWindow, "Information", "User was successfully signed out")
