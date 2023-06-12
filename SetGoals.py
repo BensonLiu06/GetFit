@@ -1,6 +1,15 @@
 import mysql.connector
 from PopupBox import *
 
+# Update the code to call the accessDatabase function with the appropriate parameters
+dbHostname = "localhost"
+dbUsername = "root"
+dbPort = "3306"
+dbPassword = ""
+dbName = "GetFitDB"
+
+dbConnection, dbCursor = accessDatabase(dbHostname, dbUsername, dbPort, dbPassword, dbName)
+
 # Function to connect to the database and return the connection and cursor objects
 def accessDatabase(hostname, username, port, password, dbname):
     try:
@@ -21,15 +30,6 @@ def accessDatabase(hostname, username, port, password, dbname):
         else:
             print(f"Error: {err}")
         return None, None
-
-# Update the code to call the accessDatabase function with the appropriate parameters
-dbHostname = "your_hostname"
-dbUsername = "your_username"
-dbPort = "your_port"
-dbPassword = "your_password"
-dbName = "your_database_name"
-
-dbConnection, dbCursor = accessDatabase(dbHostname, dbUsername, dbPort, dbPassword, dbName)
 
 # Function to retrieve goals from the database for a specific user
 def getGoals(dbCursor, username):
