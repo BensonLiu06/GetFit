@@ -569,7 +569,6 @@ def createUpdateProfileBox(mainWindow, parentWindow, dbConnection, dbCursor, use
         "Female",
         "Male",
         "Non-binary",
-        "Transgender",
         "Other"]
     genderCombobox.grid(column = 1, row = 5)
 
