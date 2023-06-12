@@ -94,15 +94,19 @@ def bmiIndexCalc(height,weight):
     if bmiIndex >= 30:
         obeseStatus = Label(bottomFrame, text = "You are considered obese but we can work on it!")
         obeseStatus.grid( column = 5, row = 8)
+        obeseStatus.after(10000, obeseStatus.destroy)
     elif bmiIndex < 18.59:
         underWeightStatus = Label(bottomFrame, text = "You are considered underweight, consider consuming more calories and having more protein")
         underWeightStatus.grid(column = 5, row = 8)
+        underWeightStatus.after(10000, underWeightStatus.grid)
     elif bmiIndex > 18.59 and bmiIndex < 24.99:
         healthyStatus = Label(bottomFrame, text = "You are in the healthy range! Keep balancing your diet with how much you workout!")
         healthyStatus.grid(column = 5, row = 8)
+        healthyStatus.after(10000, healthyStatus.destroy)
     elif bmiIndex > 25.0 and bmiIndex < 29.99:
         overWeightStatus = Label(bottomFrame, text = "You are considered slightly Overweight, less calorie intake and more exercise is suggested!")
         overWeightStatus.grid(column = 5, row = 8)
+        healthyStatus.after(10000,overWeightStatus.destroy)
     
 
 

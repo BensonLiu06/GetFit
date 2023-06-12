@@ -1,16 +1,11 @@
 from tkinter import *
 from tkinter import ttk
-#import mysql.connector
-#from mysql.connector import errorcode
 from RegisterUserWindow import *
 from UpdateProfileWindow import *
 from SetGoals import *
 from TrackActivity import *
 from TrackProgress import *
 from PopupBox import *
-from WorkoutsWindow import *
-from BMICalc import *
-from BMICalc import bmiTab
 
 # Implementation of the app window
 def createAppWindow(mainWindow, userLoginWindow, dbConnection, dbCursor, username):
@@ -84,15 +79,9 @@ def createAppWindow(mainWindow, userLoginWindow, dbConnection, dbCursor, usernam
     trackProgressButton = ttk.Button(bottomFrame, text = "Track Progress", command = lambda : createTrackProgressWindow(mainWindow, appWindow, dbConnection, dbCursor, username))
     trackProgressButton.grid(column = 0, row = 4, pady = 5)
 
-    workoutsButton =  ttk.Button(bottomFrame, text = "Workouts", command = lambda : workoutsTab())
-    workoutsButton.grid(column = 0, row = 5, pady = 5)
-
-    bmiButton = ttk.Button(bottomFrame, text = "Body-Mass Index Calculator", command = lambda: bmiTab())
-    bmiButton.grid(column = 0, row = 6, pady = 5)
-
     # Create button widget for Sign out 
     signoutButton = ttk.Button(buttonFrame, text = "Sign out", command = lambda : 
-                                signoutOfApp(mainWindow, appWindow))
+                                   signoutOfApp(mainWindow, userLoginWindow, appWindow))
     signoutButton.grid(column = 1, row = 5, pady = 5)
 
     popupBox(mainWindow, appWindow,"Information", "User login was successful")
@@ -105,92 +94,3 @@ def signoutOfApp(mainWindow, callingWindow, appWindow):
     # Show the User Login window
     callingWindow.grid(sticky = (N, S, E, W))
     popupBox(mainWindow, callingWindow, "Information", "User was successfully signed out")
-
-
-def updateProfileWindow(mainWindow, parentWindow, dbConnection, dbCursor, username):
-    global profileWindow
-    global name, age, gender, weight, height
-    global nameEntry, ageEntry, genderEntry, weightEntry, heightEntry
-    profileWindow = Tk()
-    
-    w = 600 # Width 
-    h = 500 # Height
- 
-    # Determine the size of the screen
-    screen_width =  profileWindow.winfo_screenwidth()  # Width of the screen
-    screen_height = profileWindow.winfo_screenheight() # Height of the screen
-     
-    x = (screen_width / 2) - (w / 2)
-    y = (screen_height / 2) - (h / 2)
-
-    profileWindow.geometry('%dx%d+%d+%d' % (w, h, x, y))
-    profileWindow.resizable(True, True)
-    profileWindow.title("User Profile")
-
-    name = ""
-    age = ""
-    gender = ""
-    weight = ""
-    height = ""
-
-    
-    nameLabel = Label(profileWindow , text = "Full Name", width = "30")
-    nameLabel.grid()
-
-    nameEntry = Entry(profileWindow , width = "30", textvariable = name)
-    nameEntry.grid()
-
-    ageLabel = Label(profileWindow, text = "Age" , width = "30")
-    ageLabel.pack()
-
-    ageEntry = Entry(profileWindow, width = "30",  textvariable = age)
-    ageEntry.pack()
-
-    genderLabel = Label(profileWindow  , text = "Gender", width = 30)
-    genderLabel.pack()
-
-    genderEntry = Entry(profileWindow  , width = 30 , textvariable = gender)
-    genderEntry.pack()
-
-    weightLabel = Label(profileWindow  , text = "Weight", width = "30")
-    weightLabel.pack()
-
-    weightEntry = Entry(profileWindow, width = 30 , textvariable = weight)
-    weightEntry.pack()
-
-    heightLabel = Label(profileWindow, text = "Height", width = "30")
-    heightLabel.pack()
-
-    heightEntry = Entry(profileWindow, width = 30, textvariable = height)
-    heightEntry.pack()
-
-    savebutton = Button(profileWindow, text = "Save" , command = clickCommand )
-    savebutton.pack()
-
-
-
-
-
-    profileWindow.mainloop()
-
-def clickCommand():
-    nameDisplay = Label(profileWindow, text = "Name:" + nameEntry.get())
-    nameDisplay.pack()
-
-    ageDisplay = Label(profileWindow, text = "Age:" + ageEntry.get())
-    ageDisplay.pack()
-
-    genderDisplay = Label(profileWindow, text = "Gender:" + genderEntry.get())
-    genderDisplay.pack()
-
-    heightDisplay = Label(profileWindow, text = "Height:" + heightEntry.get())
-    heightDisplay.pack()
-
-    weightDisplay = Label(profileWindow, text = "Weight:" + weightEntry.get())
-    weightDisplay.pack()
-
-
-
-
-
-    

@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 import re
 from AppWindow import *
+from AppWindow import createAppWindow
 from PopupBox import *
 from CheckUserNameExists import *
 from PasswordHash import *

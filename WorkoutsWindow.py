@@ -68,23 +68,23 @@ def workoutsTab():
     workout3.grid(column = 2, row = 1, ipadx= 40, ipady = 80 , padx = 30, pady = 30)
 
 
-    workout4 = ttk.Button(bottomFrame, text = " 7 Minute Workout (Intermediate)", command = lambda: showWorkout4())
+    workout4 = ttk.Button(bottomFrame, text = " Full-Body Cardio Workout", command = lambda: showWorkout4())
     workout4.grid(column = 3, row = 1, ipadx= 40, ipady = 80, padx = 30, pady = 30)
 
 
-    workout5 = ttk.Button(buttonFrame, text = " 7 Minute Workout (Advanced)", command = lambda: showWorkout5())
+    workout5 = ttk.Button(buttonFrame, text = " 7 Minute Workout (Intermediate)", command = lambda: showWorkout5())
     workout5.grid(column = 0, row = 1, ipadx= 40, ipady = 80, padx = 30, pady = 30)
 
 
-    workout6 = ttk.Button(buttonFrame, text = " Arm Workout", command = lambda: showWorkout6())
+    workout6 = ttk.Button(buttonFrame, text = " 7 Minute Workout (Advanced)", command = lambda: showWorkout6())
     workout6.grid(column = 1, row = 1, ipadx= 40, ipady = 80, padx = 30, pady = 30)
 
 
-    workout7 = ttk.Button(buttonFrame, text = " Leg Workout", command = lambda: showWorkout7())
+    workout7 = ttk.Button(buttonFrame, text = " Arm Workout", command = lambda: showWorkout7())
     workout7.grid(column = 2, row = 1, ipadx= 40, ipady = 80, padx = 30, pady = 30)
 
 
-    workout8 = ttk.Button(buttonFrame, text = " Strength Workout", command = lambda: showWorkout8())
+    workout8 = ttk.Button(buttonFrame, text = " Leg Workout", command = lambda: showWorkout8())
     workout8.grid(column = 3, row = 1, ipadx= 40, ipady = 80, padx = 30, pady = 30)
 
 
@@ -104,10 +104,10 @@ def showWorkout1():
     introduction.grid(column = 1, row = 2, padx = 15, pady = 15)
 
 
-    Start = Button(top, text = "Start", command = lambda: [buttonClicked(), timer2()])
+    Start = Button(top, text = "Start", command = lambda: [buttonClicked(), timer()])
     Start.grid(column = 1, row= 1, ipadx = 30, ipady = 20, padx = 15, pady = 15)
 
-    End = Button(top, text = "End", command = lambda: [top.destroy])
+    End = Button(top, text = "End", command = lambda: top.destroy)
     End.grid(column = 1, row= 3, ipadx = 30, ipady = 20, padx = 15, pady = 15)
 
     top.mainloop()
@@ -374,6 +374,8 @@ def buttonClicked3():
 
 
 def showWorkout4():
+    global workout4
+
     workout4 = Tk()
     workout4.geometry("1380x720")
     workout4.title("Full-Body Cardio Workout")
@@ -391,47 +393,54 @@ def showWorkout4():
 
 def buttonClicked4():
     fontObj = ('Times New Roman',30,'bold')
-    sideKickThrough = Label(workout2, text = "side Kick-Through x 30 seconds", width = 20, font = fontObj, anchor=CENTER)
-    sideKickThrough.after(1000 , showtext10)
+    sidePlankTwist = Label(workout4, text = "Side Plank Twist x 30 seconds", width = 20, font = fontObj, anchor=CENTER)
+    sidePlankTwist.after(1000 , showtext14)
 
     
-    inbetweenBreaks = Label(top, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
+    inbetweenBreaks = Label(workout4, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
     inbetweenBreaks.after(31000, showtext2)
 
 
 
 
-    airSquats = Label(top, text = "airSquats x 30 seconds", width = 20, font = fontObj, anchor=CENTER)
-    airSquats.after(41000, showtext1)
+    squatPulse = Label(workout4, text = "Squat Pulse x 30 seconds", width = 20, font = fontObj, anchor=CENTER)
+    squatPulse.after(41000, showtext15)
 
-
+    #Change to 15 second break between exercise
     inbetweenBreaks = Label(top, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
     inbetweenBreaks.after(71000, showtext2)
 
 
-    jumpingLunges = Label(top, text = "Jumping Lunges x 30 seconds", width = 20, font = fontObj, anchor=CENTER)
-    jumpingLunges.after(81000 , showtext11)
+    tuckUp = Label(workout4, text = "Tuck Ups x 30 seconds", width = 20, font = fontObj, anchor=CENTER)
+    tuckUp.after(81000 , showtext16)
     
 
-    inbetweenBreaks = Label(top, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
+    inbetweenBreaks = Label(workout4, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
     inbetweenBreaks.after(111000, showtext2)
     
 
-    Frogger = Label(top, text = "Frogger x 30 Seconds", width = 20, font = fontObj, anchor=CENTER)
-    Frogger.after(121000, showtext12)
+    plankRock = Label(workout4, text = "Plank Rock Back and Fourth x 30 Seconds", width = 20, font = fontObj, anchor=CENTER)
+    plankRock.after(121000, showtext12)
 
-    inbetweenBreaks = Label(top, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
+    inbetweenBreaks = Label(workout4, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
     inbetweenBreaks.after(151000, showtext2)
     
-        
-    bicycleCrunch = Label(top, text = "Bicycle Crunches x 30 seconds", width = 20, font = fontObj, anchor=CENTER)
-    bicycleCrunch.after(161000, showtext13)
+    pushUps = Label(workout4, text = "Push Ups x 30 Seconds")
+    pushUps.after(161000, showtext19)
+    
+    mountainClimbers = Label(workout4, text = "Mountain Climbers x 30 seconds", width = 20, font = fontObj, anchor = CENTER)
+    mountainClimbers.after(191000, showtext20)
 
+    inbetweenBreaks = Label(workout4, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
+    inbetweenBreaks.after(201000, showtext2)
+
+    bicycleKicks= Label(workout4, text = "Bicycle Kicks x 30 seconds", width = 20, font = fontObj, anchor=CENTER)
+    bicycleKicks.after(211000, showtext18)
 
     breakTime = Label(top, text = "Grab some water and take a break for 30 seconds", font = fontObj, anchor=CENTER)
-    breakTime.after(191000, showtext7)
+    breakTime.after(241000, showtext7)
 
-    repeat = Label(top, text = "This workout is to be repeated 6 times to complete, Try your best to finish before the time runs out.", font = fontObj, anchor=CENTER)
+    repeat = Label(top, text = "This workout is to be repeated 5 times to complete, Try your best to finish before the time runs out.", font = fontObj, anchor=CENTER)
     repeat.grid(column=6, row = 12)
 
 def showWorkout5():
@@ -452,17 +461,15 @@ def showWorkout5():
 
 def buttonClicked5():
     fontObj = ('Times New Roman',30,'bold')
-    sideKickThrough = Label(workout2, text = "side Kick-Through x 30 seconds", width = 20, font = fontObj, anchor=CENTER)
-    sideKickThrough.after(1000 , showtext10)
+
+    jumpingJacks = Label(workout2, text = "Jumping Jacks AMRAP", width = 20, font = fontObj, anchor=CENTER)
+    jumpingJacks.after(1000 , showtext10)
 
     
     inbetweenBreaks = Label(top, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
     inbetweenBreaks.after(31000, showtext2)
 
-
-
-
-    airSquats = Label(top, text = "airSquats x 30 seconds", width = 20, font = fontObj, anchor=CENTER)
+    airSquats = Label(top, text = "airSquats AMRAP", width = 20, font = fontObj, anchor=CENTER)
     airSquats.after(41000, showtext1)
 
 
@@ -470,8 +477,8 @@ def buttonClicked5():
     inbetweenBreaks.after(71000, showtext2)
 
 
-    jumpingLunges = Label(top, text = "Jumping Lunges x 30 seconds", width = 20, font = fontObj, anchor=CENTER)
-    jumpingLunges.after(81000 , showtext11)
+    wallSit = Label(top, text = "Wall Sit A<RAP", width = 20, font = fontObj, anchor=CENTER)
+    wallSit.after(81000 , showtext11)
     
 
     inbetweenBreaks = Label(top, text = "10 second break", width = 20, font = fontObj, anchor=CENTER)
@@ -492,7 +499,7 @@ def buttonClicked5():
     breakTime = Label(top, text = "Grab some water and take a break for 30 seconds", font = fontObj, anchor=CENTER)
     breakTime.after(191000, showtext7)
 
-    repeat = Label(top, text = "This workout is to be repeated 6 times to complete, Try your best to finish before the time runs out.", font = fontObj, anchor=CENTER)
+    repeat = Label(top, text = "This workout is to be repeated only once to complete\nTry to pace yourself and complete as much of each in 35 seconds.", font = fontObj, anchor=CENTER)
     repeat.grid(column=6, row = 12)
 
 def showWorkout6():
@@ -694,12 +701,12 @@ def countdown2(count2):
         alarm.grid()
 
     if count2 == 0:
-        finished = Tk()
+        finished1 = Tk()
 
-        congratsMessage = Label(finished, text = "Congrats, you made it, the workout has finished!", anchor=CENTER)
+        congratsMessage = Label(finished1, text = "Congrats, you made it, the workout has finished!", anchor=CENTER)
         congratsMessage.grid()
 
-        finished.mainloop()
+        finished1.mainloop()
     
     else:
         return
@@ -710,7 +717,7 @@ def timer2():
 
     root2 = tk.Tk()
 
-    label = tk.Label(root, font = ('Impact', 20, 'bold'), anchor=CENTER)
+    label = tk.Label(root2, font = ('Impact', 20, 'bold'), anchor=CENTER)
     label.place(x=35, y=15)
 
     # call countdown first time   
