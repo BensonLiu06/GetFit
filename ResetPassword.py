@@ -2,7 +2,6 @@ from tkinter import *
 from tkinter import ttk
 import re
 from AppWindow import *
-from AppWindow import createAppWindow
 from PopupBox import *
 from CheckUserNameExists import *
 from PasswordHash import *
@@ -104,7 +103,7 @@ def confirmPassword(mainWindow, parentWindow, dbConnection, dbCursor, username, 
         passwordHash = user[2]
 
         if (comparePassword(password,passwordHash)):
-            createAppWindow(mainWindow, parentWindow, dbConnection, dbCursor, username)
+                createAppWindow(mainWindow, parentWindow, dbConnection, dbCursor, username)
         else:
             popupBox(mainWindow, parentWindow, "Error", "Password was invalid")
     else:

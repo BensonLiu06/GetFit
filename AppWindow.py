@@ -6,6 +6,8 @@ from SetGoals import *
 from TrackActivity import *
 from TrackProgress import *
 from PopupBox import *
+from WorkoutsWindow import *
+from BMICalc import *
 
 # Implementation of the app window
 def createAppWindow(mainWindow, userLoginWindow, dbConnection, dbCursor, username):
@@ -79,6 +81,11 @@ def createAppWindow(mainWindow, userLoginWindow, dbConnection, dbCursor, usernam
     trackProgressButton = ttk.Button(bottomFrame, text = "Track Progress", command = lambda : createTrackProgressWindow(mainWindow, appWindow, dbConnection, dbCursor, username))
     trackProgressButton.grid(column = 0, row = 4, pady = 5)
 
+    workoutsButton = ttk.Button(bottomFrame, text = " Workouts" , command = lambda: workoutsTab())
+    workoutsButton.grid(column = 0, row = 5, pady = 5)
+
+    bmiButton = ttk.Button(bottomFrame, text = "Body-Mass Index Calculator", command = lambda: bmiTab())
+    bmiButton.grid(column = 0, row = 6, pady = 5)
     # Create button widget for Sign out 
     signoutButton = ttk.Button(buttonFrame, text = "Sign out", command = lambda : 
                                    signoutOfApp(mainWindow, userLoginWindow, appWindow))

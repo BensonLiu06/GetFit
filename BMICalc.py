@@ -1,6 +1,31 @@
 from tkinter import *
 from tkinter import ttk
 
+def clear_lastBMI():
+
+    showBMI.grid_forget()
+
+
+def clear_lastText():
+    if bmiIndex > 30.0:
+        overWeightStatus.grid_forget()
+        healthyStatus.grid_forget()
+        underWeightStatus.grid_forget()
+
+    elif bmiIndex < 18.5:
+        obeseStatus.grid_forget()
+        overWeightStatus.grid_forget()
+        healthyStatus.grid_forget()
+
+    elif bmiIndex > 18.5 and bmiIndex < 24.9:
+        underWeightStatus.grid_forget()
+        obeseStatus.grid_forget()
+        overWeightStatus.grid_forget()
+
+    elif bmiIndex > 25.0 and bmiIndex < 29.9:
+        obeseStatus.grid_forget()
+        healthyStatus.grid_forget()
+        underWeightStatus.grid_forget()
 def bmiTab():
     global bmiWindow
     global userWeight
@@ -59,22 +84,28 @@ def bmiTab():
     weightText.grid(column = 4, row = 4, padx = 20, pady = 20 )
 
     heightText = Label(bottomFrame, width = 20, text = "Height (in Meters)")
-    heightText.grid(column = 8, row = 4, padx = 20, pady = 20)
+    heightText.grid(column = 6, row = 4, padx = 20, pady = 20)
 
     userWeight = Entry(bottomFrame, width = 20, text = "Weight (in Kg)", textvariable = weight)
     userWeight.grid(column = 4, row = 3, padx = 20, pady = 20 )
 
     userHeight = Entry(bottomFrame, width = 20, text = "Height (in Meters)", textvariable = height)
-    userHeight.grid(column = 8, row = 3, padx = 20, pady = 20)
+    userHeight.grid(column = 6, row = 3, padx = 20, pady = 20)
 
-    userCalculate = Button(bottomFrame, width = 20, text = "Calculate BMI", command = lambda: bmiIndexCalc(height, weight))
-    userCalculate.grid(column = 5, row = 6, padx = 20,pady = 20, ipadx = 40, ipady=10)
+    userCalculate = Button(bottomFrame, width = 20, text = "Calculate BMI", command = lambda: [bmiIndexCalc(height, weight), clear_lastBMI(), clear_lastText()])
+    userCalculate.grid(column = 5, row = 4, padx = 20,pady = 20, ipadx = 40, ipady=10)
 
 
     bmiWindow.mainloop()
 
 
 def bmiIndexCalc(height,weight):
+    global showBMI
+    global obeseStatus
+    global underWeightStatus
+    global healthyStatus
+    global overWeightStatus
+    global bmiIndex
 
 
     weight = userWeight.get()
@@ -89,24 +120,24 @@ def bmiIndexCalc(height,weight):
     
 
     showBMI = Label(bottomFrame, text = f"BMI = {bmiIndex}")
-    showBMI.grid(column = 5, row = 7, padx = 10, pady = 10)
+    showBMI.grid(column = 5, row = 6, padx = 5, pady = 5)
+    
 
-    if bmiIndex >= 30:
-        obeseStatus = Label(bottomFrame, text = "You are considered obese but we can work on it!")
-        obeseStatus.grid( column = 5, row = 8)
-        obeseStatus.after(10000, obeseStatus.destroy)
-    elif bmiIndex < 18.59:
+    if bmiIndex > 30.0:
+        obeseStatus = Label(bottomFrame, text = "You are considered obese, but balancing your diet with more greens and fruits.\n exercising more can help you decrease your BMI")
+        obeseStatus.grid(column = 5, row = 7)
+
+    elif bmiIndex < 18.5:
         underWeightStatus = Label(bottomFrame, text = "You are considered underweight, consider consuming more calories and having more protein")
         underWeightStatus.grid(column = 5, row = 8)
-        underWeightStatus.after(10000, underWeightStatus.grid)
-    elif bmiIndex > 18.59 and bmiIndex < 24.99:
+
+    elif bmiIndex > 18.5 and bmiIndex < 24.9:
         healthyStatus = Label(bottomFrame, text = "You are in the healthy range! Keep balancing your diet with how much you workout!")
-        healthyStatus.grid(column = 5, row = 8)
-        healthyStatus.after(10000, healthyStatus.destroy)
-    elif bmiIndex > 25.0 and bmiIndex < 29.99:
+        healthyStatus.grid(column = 5, row = 9)
+
+    elif bmiIndex > 25.0 and bmiIndex < 29.9:
         overWeightStatus = Label(bottomFrame, text = "You are considered slightly Overweight, less calorie intake and more exercise is suggested!")
-        overWeightStatus.grid(column = 5, row = 8)
-        healthyStatus.after(10000,overWeightStatus.destroy)
+        overWeightStatus.grid(column = 5, row = 10)
     
 
 

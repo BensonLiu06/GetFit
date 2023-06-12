@@ -721,7 +721,7 @@ def timer2():
     label.place(x=35, y=15)
 
     # call countdown first time   
-    countdown2(4200)
+    countdown2(420)
     # root.after(0, countdown, 5)
 
     root2.mainloop()
