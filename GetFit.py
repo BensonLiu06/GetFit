@@ -1,18 +1,11 @@
 from tkinter import *
-#from tkinter import ttk
 import mysql.connector
 from mysql.connector import errorcode
 from GetFitDB import *
 from LoginWindow import *
-#from RegisterUserWindow import *
-#from AppWindow import *
-#from PopupBox import *
-#from CheckUsernameExists import *
-#from PasswordHash import *
 
 # Implementation of the main window
 def mainAppWindow():
-    #global mainWindow
     # Create an instance of tkinter frame or window
     mainWindow = Tk()
 
@@ -45,6 +38,11 @@ def mainAppWindow():
     accessDatabase(mainWindow, dbHostname, dbUsername, dbPort, dbPassword, dbName)
     
     try:
+        # connect() creates a connection to the mysql server and returns a mysql connection object
+        # cursor() is a python object that enable you to work with the database
+        # execute() is a method we can use to execute SQL queries associated with the cursor object
+        #
+
         # Connect to the GetFit database
         dbConnection = mysql.connector.connect(
             host = dbHostname,
@@ -58,6 +56,7 @@ def mainAppWindow():
         # Show the Login window
         createLoginWindow(mainWindow, dbConnection, dbCursor)
     except mysql.connector.Error as error:
+        # Format the database error message for displaying in the popup box
         errorMessage = "Error Code: " + str(error.errno) + "\n" + "SQLSTATE: " + error.sqlstate + "\n" + "Message: " + error.msg  
         popupBox(mainWindow, mainWindow, "Error", errorMessage)
 
