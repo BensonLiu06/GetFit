@@ -1,31 +1,10 @@
 from tkinter import *
 from tkinter import ttk
 
-def clear_lastBMI():
-
-    showBMI.grid_forget()
 
 
-def clear_lastText():
-    if bmiIndex > 30.0:
-        overWeightStatus.grid_forget()
-        healthyStatus.grid_forget()
-        underWeightStatus.grid_forget()
 
-    elif bmiIndex < 18.5:
-        obeseStatus.grid_forget()
-        overWeightStatus.grid_forget()
-        healthyStatus.grid_forget()
 
-    elif bmiIndex > 18.5 and bmiIndex < 24.9:
-        underWeightStatus.grid_forget()
-        obeseStatus.grid_forget()
-        overWeightStatus.grid_forget()
-
-    elif bmiIndex > 25.0 and bmiIndex < 29.9:
-        obeseStatus.grid_forget()
-        healthyStatus.grid_forget()
-        underWeightStatus.grid_forget()
 def bmiTab():
     global bmiWindow
     global userWeight
@@ -37,7 +16,7 @@ def bmiTab():
 
     bmiWindow = Tk()
 
-    bmiWindow.geometry("1200x800")
+    bmiWindow.geometry("1600x700")
     bmiWindow.title("BMI Calculator")
     appWindow = ttk.Frame(bmiWindow, padding=(3,3,12,12))
     appWindow.grid(sticky=N+S+E+W)
@@ -92,7 +71,7 @@ def bmiTab():
     userHeight = Entry(bottomFrame, width = 20, text = "Height (in Meters)", textvariable = height)
     userHeight.grid(column = 6, row = 3, padx = 20, pady = 20)
 
-    userCalculate = Button(bottomFrame, width = 20, text = "Calculate BMI", command = lambda: [bmiIndexCalc(height, weight), clear_lastBMI(), clear_lastText()])
+    userCalculate = Button(bottomFrame, width = 20, text = "Calculate BMI", command = lambda: bmiIndexCalc(height, weight))
     userCalculate.grid(column = 5, row = 4, padx = 20,pady = 20, ipadx = 40, ipady=10)
 
 
@@ -118,27 +97,36 @@ def bmiIndexCalc(height,weight):
 
 
     
-
-    showBMI = Label(bottomFrame, text = f"BMI = {bmiIndex}")
-    showBMI.grid(column = 5, row = 6, padx = 5, pady = 5)
+    blankLabel = Label(bottomFrame, text = "                                                                                                                                                        ")
+    blankLabel.grid(column = 5, row = 6, padx=5,pady=5)
+    
+    BMItext = "BMI = " + str(bmiIndex)
+    labelText = ""
     
 
     if bmiIndex > 30.0:
-        obeseStatus = Label(bottomFrame, text = "You are considered obese, but balancing your diet with more greens and fruits.\n exercising more can help you decrease your BMI")
-        obeseStatus.grid(column = 5, row = 7)
+        labelText = "You are considered obese, but balancing your diet with more greens and fruits can help improve your BMI!"
 
     elif bmiIndex < 18.5:
-        underWeightStatus = Label(bottomFrame, text = "You are considered underweight, consider consuming more calories and having more protein")
-        underWeightStatus.grid(column = 5, row = 8)
+        labelText = "You are considered underweight, consider consuming more calories and having more protein to improve BMI!"
+        
 
     elif bmiIndex > 18.5 and bmiIndex < 24.9:
-        healthyStatus = Label(bottomFrame, text = "You are in the healthy range! Keep balancing your diet with how much you workout!")
-        healthyStatus.grid(column = 5, row = 9)
+        labelText = "You are in the healthy range! Keep balancing your diet with how much you workout to stay within the range of healthy BMI!"
+        
 
     elif bmiIndex > 25.0 and bmiIndex < 29.9:
-        overWeightStatus = Label(bottomFrame, text = "You are considered slightly Overweight, less calorie intake and more exercise is suggested!")
-        overWeightStatus.grid(column = 5, row = 10)
+        labelText = "You are considered slightly Overweight, less calorie intake and more exercise is suggested to achieve better BMI!"
+        
     
+    blankLabel = Label(bottomFrame, text = "                                                                                                                                                                                                                                                                                                                                                                              ")
+    blankLabel.place(x = 50, y = 190)
+
+    showBMI = Label(bottomFrame, text = BMItext)
+    showBMI.grid(column = 5, row = 6, padx = 5, pady = 5)
+
+    status = Label(bottomFrame, text = labelText)
+    status.grid(column = 5, row = 7)
 
 
 

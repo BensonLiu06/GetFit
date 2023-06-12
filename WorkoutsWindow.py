@@ -100,14 +100,71 @@ def showWorkout1():
     top.geometry("1680x720")
     top.title("Beginner Workout")
 
-    introduction = Label(top, text = "Press Start to start the workout.")
+    # Create a frame for the Update Profile & Settings window
+    frame1 = ttk.Frame(top)
+
+    # Setup the Update Profile & Settings window
+    frame1.grid(sticky = (N, S, E, W))
+
+    frame1.columnconfigure(0, weight = 1)
+    frame1.columnconfigure(1, weight = 1)
+    frame1.columnconfigure(2, weight = 1)
+
+    frame1.rowconfigure(1, weight = 1)
+    frame1.rowconfigure(2, weight = 1)
+    frame1.rowconfigure(3, weight = 1)
+    frame1.rowconfigure(4, weight = 1)
+    frame1.rowconfigure(5, weight = 1)
+    frame1.rowconfigure(6, weight = 1)
+    frame1.rowconfigure(7, weight = 1)
+    frame1.rowconfigure(8, weight = 1)
+    frame1.rowconfigure(9, weight = 1)
+
+    # Create all the main frame containers
+    topFrame = ttk.Frame(frame1, width = 600, height = 50, relief = 'groove', borderwidth = 2)
+    bottomFrame = ttk.Frame(frame1, width = 300, height = 400, relief = 'groove', borderwidth = 2)
+    buttonFrame = ttk.Frame(frame1, width = 600, height = 50, relief = 'groove', borderwidth = 2)
+    bottomButtonFrame = ttk.Frame(frame1, width = 300, height = 400, relief = 'groove', borderwidth = 2)
+
+    # Layout all of the main frame containers
+    topFrame.grid(column = 0, row = 0, columnspan = 3, rowspan = 1, padx = 5, pady = 5, sticky = (N, S, E, W))
+    bottomFrame.grid(column = 0, row = 3, columnspan = 2, rowspan = 8, padx = 5, pady = 5, sticky = (N, S, E, W))
+    buttonFrame.grid(column = 0, row = 11, columnspan = 3, rowspan = 1, padx = 5, pady = 5, sticky = (N, S, E, W))
+    bottomButtonFrame.grid(column = 2, row = 3, columnspan = 1, rowspan = 8, padx = 5, pady = 5, sticky = (N, S, E, W))
+
+    topFrame.columnconfigure(0, weight = 1)
+    topFrame.columnconfigure(1, weight = 1)
+    topFrame.columnconfigure(2, weight = 1)
+    bottomFrame.columnconfigure(0, weight = 1)
+    bottomFrame.columnconfigure(1, weight = 5)
+    buttonFrame.columnconfigure(0, weight = 1)
+    buttonFrame.columnconfigure(1, weight = 1)
+    bottomButtonFrame.columnconfigure(2, weight = 1)
+    bottomFrame.rowconfigure(3, weight = 1)
+    bottomFrame.rowconfigure(4, weight = 1)
+    bottomFrame.rowconfigure(5, weight = 1)
+    bottomFrame.rowconfigure(6, weight = 1)
+    bottomFrame.rowconfigure(7, weight = 1)
+    bottomFrame.rowconfigure(8, weight = 1)
+    bottomFrame.rowconfigure(9, weight = 1)
+    bottomFrame.rowconfigure(10, weight = 1)
+    bottomButtonFrame.rowconfigure(3, weight = 1)
+    bottomButtonFrame.rowconfigure(4, weight = 1)
+    bottomButtonFrame.rowconfigure(5, weight = 1)
+    bottomButtonFrame.rowconfigure(6, weight = 1)
+    bottomButtonFrame.rowconfigure(7, weight = 1)
+    bottomButtonFrame.rowconfigure(8, weight = 1)
+    bottomButtonFrame.rowconfigure(9, weight = 1)
+    bottomButtonFrame.rowconfigure(10, weight = 1)
+
+    introduction = Label(topFrame, text = "Press Start to start the workout.")
     introduction.grid(column = 1, row = 2, padx = 15, pady = 15)
 
 
-    Start = Button(top, text = "Start", command = lambda: [buttonClicked(), timer()])
-    Start.grid(column = 1, row= 1, ipadx = 30, ipady = 20, padx = 15, pady = 15)
+    Start = Button(bottomButtonFrame, text = "Start", command = lambda: [buttonClicked(), timer()])
+    Start.grid(column = 1, row= 2, ipadx = 30, ipady = 20, padx = 15, pady = 15)
 
-    End = Button(top, text = "End", command = lambda: top.destroy)
+    End = Button(bottomButtonFrame, text = "End", command = lambda: top.destroy)
     End.grid(column = 1, row= 3, ipadx = 30, ipady = 20, padx = 15, pady = 15)
 
     top.mainloop()
@@ -236,6 +293,47 @@ def showWorkout2():
     workout2 = Tk()
     workout2.geometry("1380x720")
     workout2.title("Advanced Workout")
+
+    appWindow = ttk.Frame(workout2, padding=(3,3,12,12))
+    appWindow.grid(sticky=N+S+E+W)
+
+    # Setup the main App window
+    workout2.columnconfigure(0, weight = 1)
+    workout2.columnconfigure(1, weight = 1)
+    #appWindow.rowconfigure(0, weight = 1)
+    workout2.rowconfigure(1, weight = 1)
+
+    # Create all the main frame containers
+    topFrame = ttk.Frame(workout2, width = 600, height = 50, relief = 'groove', borderwidth = 2)
+    bottomFrame = ttk.Frame(workoutsTab, width = 200, height = 700, relief = 'groove', borderwidth = 2)
+    buttonFrame = ttk.Frame(workoutsTab, width = 300, height = 50, relief = 'groove', borderwidth = 2)
+
+    # Layout all of the main frame containers
+    topFrame.grid(column = 0, row = 0, columnspan = 2, rowspan = 1, padx = 5, pady = 5, sticky=(N, S, E, W))
+    bottomFrame.grid(column = 0, row = 1, columnspan = 2, rowspan = 5, padx = 5, pady = 5, sticky=(N, S, E, W))
+    buttonFrame.grid(column = 0, row = 1, columnspan = 2, rowspan = 1, padx = 5, pady = 5, sticky=(N, S, E, W))
+
+    topFrame.columnconfigure(0, weight = 1)
+    topFrame.columnconfigure(0, weight = 1)
+    bottomFrame.columnconfigure(0, weight = 1)
+    bottomFrame.columnconfigure(0, weight = 1)
+    buttonFrame.columnconfigure(0, weight = 1)
+    buttonFrame.columnconfigure(0, weight = 1)
+    bottomFrame.rowconfigure(1, weight = 1)
+    bottomFrame.rowconfigure(2, weight = 1)
+    bottomFrame.rowconfigure(3, weight = 1)
+    bottomFrame.rowconfigure(4, weight = 1)
+    buttonFrame.rowconfigure(5, weight = 1)
+
+    # Create all the main frame containers
+    topFrame = ttk.Frame(workoutsTab, width = 600, height = 50, relief = 'groove', borderwidth = 2)
+    bottomFrame = ttk.Frame(workoutsTab, width = 600, height = 650, relief = 'groove', borderwidth = 2)
+    buttonFrame = ttk.Frame(workoutsTab, width = 600, height = 300, relief = 'groove', borderwidth = 2)
+
+    # Layout all of the main frame containers
+    topFrame.grid(column = 0, row = 0, columnspan = 2, rowspan = 1, padx = 5, pady = 5, sticky=(N, S, E, W))
+    bottomFrame.grid(column = 0, row = 1, columnspan = 2, rowspan = 9, padx = 5, pady = 5, sticky=(N, S, E, W))
+    buttonFrame.grid(column = 0, row = 5, columnspan = 2, rowspan = 1, padx = 5, pady = 5, sticky=(N, S, E, W))
     
     introduction2 = Label(workout2, text = "Press start to start the workout")
     introduction2.grid()
