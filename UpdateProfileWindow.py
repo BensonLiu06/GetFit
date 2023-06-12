@@ -9,9 +9,7 @@ import PIL.Image
 import os
 import mysql.connector
 from mysql.connector import errorcode
-#from RegisterUserWindow import *
 from PopupBox import *
-#from CheckUserNameExists import *
 from ResetPassword import *
 
 # Implementation of the Update Profile and Settings window
@@ -29,7 +27,6 @@ def createUpdateProfileAndSettingsWindow(mainWindow, appWindow, dbConnection, db
     updateProfileAndSettingsWindow.columnconfigure(1, weight = 1)
     updateProfileAndSettingsWindow.columnconfigure(2, weight = 1)
 
-    #updateProfileWindow.rowconfigure(0, weight = 1)
     updateProfileAndSettingsWindow.rowconfigure(1, weight = 1)
     updateProfileAndSettingsWindow.rowconfigure(2, weight = 1)
     updateProfileAndSettingsWindow.rowconfigure(3, weight = 1)
@@ -68,7 +65,6 @@ def createUpdateProfileAndSettingsWindow(mainWindow, appWindow, dbConnection, db
     middleButtonFrame.columnconfigure(2, weight = 1)
     bottomButtonFrame.columnconfigure(2, weight = 1)
 
-    #topFrame.rowconfigure(0, weight = 1)
     middleFrame.rowconfigure(1, weight = 1)
     middleFrame.rowconfigure(2, weight = 1)
     bottomFrame.rowconfigure(3, weight = 1)
@@ -90,10 +86,10 @@ def createUpdateProfileAndSettingsWindow(mainWindow, appWindow, dbConnection, db
     bottomButtonFrame.rowconfigure(9, weight = 1)
     bottomButtonFrame.rowconfigure(10, weight = 1)
 
+    # Get the user profile information for the user from the GetFit database
     userProfileInfo = getUserProfileInformation(mainWindow, updateProfileAndSettingsWindow, dbConnection, dbCursor, username)
 
     # Create StringVars for the labels
-
     fullname = StringVar(updateProfileAndSettingsWindow)
     birthdate = StringVar(updateProfileAndSettingsWindow)
     phoneNumber = StringVar(updateProfileAndSettingsWindow)
@@ -103,6 +99,7 @@ def createUpdateProfileAndSettingsWindow(mainWindow, appWindow, dbConnection, db
     weight = StringVar(updateProfileAndSettingsWindow)
     imagePath = StringVar(updateProfileAndSettingsWindow)
 
+    # Set the StringVars to the values obtained from the GetFit database
     fullname.set(userProfileInfo[0])
     birthdate.set(userProfileInfo[1].strftime("%m/%d/%y"))
     phoneNumber.set(userProfileInfo[2])
@@ -111,7 +108,6 @@ def createUpdateProfileAndSettingsWindow(mainWindow, appWindow, dbConnection, db
     height.set(str(userProfileInfo[5]))
     weight.set(str(userProfileInfo[6]))
     imagePath.set(userProfileInfo[7])
-
 
     # Create a tuple for the labels  
     labels = [fullname, birthdate, phoneNumber, email, gender, height, weight, imagePath]
@@ -133,25 +129,24 @@ def createUpdateProfileAndSettingsWindow(mainWindow, appWindow, dbConnection, db
     passwordAndSecurityInfoLabel.grid(column = 0, row = 2, columnspan = 2, sticky = (N, W))
 
     # Create button widget for Change password
-    updatePasswordAndSecurityButton = ttk.Button(middleButtonFrame, text = "Change password", command = lambda : createChangePasswordSecurityCheckBox(mainWindow, updateProfileAndSettingsWindow, dbConnection, dbCursor, username))
+    updatePasswordAndSecurityButton = ttk.Button(middleButtonFrame, text = "Change password", command = lambda :
+                                                 createChangePasswordSecurityCheckBox(mainWindow, updateProfileAndSettingsWindow, dbConnection, dbCursor, username))
     updatePasswordAndSecurityButton.grid(column = 2, row = 1, sticky = (W, E))
 
     # Create button widget for Change security question password
-    updatePasswordAndSecurityButton = ttk.Button(middleButtonFrame, text = "Change security question", command = lambda : createChangeSecretQuestionSecurityCheckBox(mainWindow, updateProfileAndSettingsWindow, dbConnection, dbCursor, username))
+    updatePasswordAndSecurityButton = ttk.Button(middleButtonFrame, text = "Change security question", command = lambda :
+                                                 createChangeSecretQuestionSecurityCheckBox(mainWindow, updateProfileAndSettingsWindow, dbConnection, dbCursor, username))
     updatePasswordAndSecurityButton.grid(column = 2, row = 2, sticky = (W, E))
     
     # Create label widget for Personal Information
-    #personaInformationLabel =ttk.Label(bottomFrame,text = "Personal Information", width = "30", anchor = W)
     personaInformationLabel =ttk.Label(bottomFrame, text = "Personal Information", anchor = W)
     personaInformationLabel.grid(column = 0, row = 3, sticky = (N, W))
 
     # Create label widget for Name
-    #nameLabel =ttk.Label(bottomFrame,text = "Name: " + fullname, width = "30", anchor = W)
     nameLabel =ttk.Label(bottomFrame, text = "Name:", anchor = W)
     nameLabel.grid(column = 0, row = 4, sticky = (N, W))
     
     # Create label widget for value of Full Name
-    #nameLabel =ttk.Label(bottomFrame,text = "Name: " + fullname, width = "30", anchor = W)
     nameLabel =ttk.Label(bottomFrame, textvariable = fullname, anchor = W)
     nameLabel.grid(column = 1, row = 4, sticky = (N, W))
 
@@ -204,29 +199,39 @@ def createUpdateProfileAndSettingsWindow(mainWindow, appWindow, dbConnection, db
     weightLabel.grid(column = 1, row = 10, sticky = (N, W))
 
     # Create button widget for Edit Personal Information
-    updateProfileButton = ttk.Button(bottomButtonFrame, text = "Edit Personal Information", command = lambda : createUpdateProfileBox(mainWindow, updateProfileAndSettingsWindow, dbConnection, dbCursor, username, labels))
+    updateProfileButton = ttk.Button(bottomButtonFrame, text = "Edit Personal Information", command = lambda :
+                                     createUpdateProfileBox(mainWindow, updateProfileAndSettingsWindow, dbConnection, dbCursor, username, labels))
     updateProfileButton.grid(column = 2, row = 3, sticky = (W, E))
 
     # Handle special case of empty string; just ignore it
     if not imagePath.get():
         pass
     else:
+        # Check if the image file exists
         if(os.path.isfile(imagePath.get())):
-            # Create label widget for user's image
+            # If the image file exists, open it
             userImage = PIL.Image.open(imagePath.get())
+
+            # Resize the image to fit in the window
             userImage = userImage.resize((250, 250), PIL.Image.Resampling.LANCZOS)
             userImage = ImageTk.PhotoImage(userImage)
-            userImageLabel = ttk.Label(bottomButtonFrame, image=userImage)
+
+            # Create label widget to display the user's image
+            userImageLabel = ttk.Label(bottomButtonFrame, image = userImage)
             userImageLabel.image = userImage
             userImageLabel.grid(column = 2, row = 4, sticky = (N, S, E, W))
-            #imagePath.trace('w', lambda imagePath, userImageLabel, bottomButtonFram, updateProfileAndSettingsWindow, mainWindow=mainWindow: updateImage(mainWindow)) # triggers on change of StringVar
-            #imagePath.trace('w', lambda mainWindow, updateProfileAndSettingsWindow, bottomButtonFrame, userImageLabel, imagePath=imagePath: updateImage(imagePath)) # triggers on change of StringVar
         else:
+            # If the image file does not exist, show an error dialog
             popupBox(mainWindow, updateProfileAndSettingsWindow, "Error", "The file " + imagePath.get() + " was not found")
 
     # Create button widget to Cancel the Update Profile & Settings window
-    cancelButton = ttk.Button(buttonFrame, text = "Cancel", command = lambda : 
-                                   cancelUpdateProfileAndSettingsWindow(mainWindow, updateProfileAndSettingsWindow, appWindow))
+    updateButton = ttk.Button(bottomButtonFrame, text = "Update image", command = lambda :
+                              updateImage(mainWindow, updateProfileAndSettingsWindow, bottomButtonFrame, userImageLabel, imagePath))
+    updateButton.grid(column = 2, row = 10, sticky = (W, E))  
+
+    # Create button widget to Cancel the Update Profile & Settings window
+    cancelButton = ttk.Button(buttonFrame, text = "Cancel", command = lambda :
+                              cancelUpdateProfileAndSettingsWindow(mainWindow, updateProfileAndSettingsWindow, appWindow))
     cancelButton.grid(column = 2, row = 11, pady = 5, sticky = (W, E))
 
 def openImageFile(mainWindow, parentWindow, labels):
@@ -238,26 +243,28 @@ def openImageFile(mainWindow, parentWindow, labels):
     labels[7].set(file.name)
 
 def updateImage(mainWindow, parentWindow, bottomButtonFrame, userImageLabel, imagePath):
-    print("Update Image called")
+    # Handle special case of empty string; just ignore it
     if not imagePath.get():
         pass
     else:
+        # Check if the image file exists
         if(os.path.isfile(imagePath.get())):
-            print("Trying to update the image")
-
-            # Create label widget for user's image
+            # If the image file exists, open it
             userImage = PIL.Image.open(imagePath.get())
+
+            # Resize the image to fit in the window
             userImage = userImage.resize((250, 250), PIL.Image.Resampling.LANCZOS)
             userImage = ImageTk.PhotoImage(userImage)
+
             userImageLabel.grid_forget()
-            userImageLabel = ttk.Label(bottomButtonFrame, image=userImage)
+
+            # Create label widget for user's image
+            userImageLabel = ttk.Label(bottomButtonFrame, image = userImage)
             userImageLabel.image = userImage
             userImageLabel.grid(column = 2, row = 4, sticky = (N, S, E, W))
-            #imagePath.trace('w', updateImage(userImageLabel, imagePath)) # triggers on change of StringVar
-
         else:
+            # If the image file does not exist, show an error dialog
             popupBox(mainWindow, parentWindow, "Error", "The file " + imagePath.get() + " was not found")
-
 
 def createChangePasswordSecurityCheckBox(mainWindow, parentWindow, dbConnection, dbCursor, username):
     # Create a toplevel window for the Reset Password dialog box
@@ -284,11 +291,13 @@ def createChangePasswordSecurityCheckBox(mainWindow, parentWindow, dbConnection,
     passwordField.grid(column = 0, row = 3, columnspan = 2)
 
     # Create button widget for OK
-    oKButton = ttk.Button(changePasswordSecurityCheckWindow, text = "OK", width=10, command = lambda : checkPasswordToChangePassword(mainWindow, parentWindow, changePasswordSecurityCheckWindow, dbConnection, dbCursor, username, passwordField.get()))
+    oKButton = ttk.Button(changePasswordSecurityCheckWindow, text = "OK", width=10, command = lambda :
+                          checkPasswordToChangePassword(mainWindow, parentWindow, changePasswordSecurityCheckWindow, dbConnection, dbCursor, username, passwordField.get()))
     oKButton.grid(column = 0, row = 7)
 
     # Create button widget for Cancel
-    cancelButton = ttk.Button(changePasswordSecurityCheckWindow, text = "Cancel", width = 10, command = lambda : changePasswordSecurityCheckWindow.destroy())
+    cancelButton = ttk.Button(changePasswordSecurityCheckWindow, text = "Cancel", width = 10, command = lambda :
+                              changePasswordSecurityCheckWindow.destroy())
     cancelButton.grid(column = 1, row = 7)
     
     # Force an update on the mainWindow so the size of the widgets are known
@@ -333,11 +342,13 @@ def createChangeSecretQuestionSecurityCheckBox(mainWindow, parentWindow, dbConne
     passwordField.grid(column = 0, row = 3, columnspan = 2)
 
     # Create button widget for OK
-    oKButton = ttk.Button(changeSecretQuestionSecurityCheckWindow, text = "OK", width=10, command = lambda : checkPasswordToChangeSecretQuestion(mainWindow, parentWindow, changeSecretQuestionSecurityCheckWindow, dbConnection, dbCursor, username, passwordField.get()))
+    oKButton = ttk.Button(changeSecretQuestionSecurityCheckWindow, text = "OK", width=10, command = lambda :
+                          checkPasswordToChangeSecretQuestion(mainWindow, parentWindow, changeSecretQuestionSecurityCheckWindow, dbConnection, dbCursor, username, passwordField.get()))
     oKButton.grid(column = 0, row = 7)
 
     # Create button widget for Cancel
-    cancelButton = ttk.Button(changeSecretQuestionSecurityCheckWindow, text = "Cancel", width = 10, command = lambda : changeSecretQuestionSecurityCheckWindow.destroy())
+    cancelButton = ttk.Button(changeSecretQuestionSecurityCheckWindow, text = "Cancel", width = 10, command = lambda :
+                              changeSecretQuestionSecurityCheckWindow.destroy())
     cancelButton.grid(column = 1, row = 7)
     
     # Force an update on the mainWindow so the size of the widgets are known
@@ -362,11 +373,15 @@ def checkPasswordToChangePassword(mainWindow, parentWindow, callingWindow, dbCon
         # Get the hashed password for the username from the GetFit database
         selectStatement = """SELECT * FROM User WHERE username = %s"""
         vals = (username,)
+
+        # Execute the SQL SELECT statement
         dbCursor.execute(selectStatement, vals)
 
+        # Fetch the results of the query
         user = dbCursor.fetchone()
         passwordHash = user[2]
 
+        # Compare the hashed password retrieved from the GetFit database to the user supplied password
         if (comparePassword(password,passwordHash)):
             callingWindow.destroy()
 
@@ -374,29 +389,34 @@ def checkPasswordToChangePassword(mainWindow, parentWindow, callingWindow, dbCon
         else:
             popupBox(mainWindow, parentWindow, "Error", "Password was invalid")
     except mysql.connector.Error as error:
+        # Format the database error message for displaying in the popup box
         errorMessage = "Error Code: " + str(error.errno) + "\n" + "SQLSTATE: " + error.sqlstate + "\n" + "Message: " + error.msg  
         popupBox(mainWindow, callingWindow, "Error", errorMessage)
-
 
 def checkPasswordToChangeSecretQuestion(mainWindow, parentWindow, callingWindow, dbConnection, dbCursor, username, password):
     # Get the hashed password for the username from the GetFit database
     try:
+        # Get the hashed password for the username from the GetFit database
         selectStatement = """SELECT * FROM User WHERE username = %s"""
         vals = (username,)
+
+        # Execute the SQL SELECT statement
         dbCursor.execute(selectStatement, vals)
 
+        # Fetch the results of the query
         user = dbCursor.fetchone()
         passwordHash = user[2]
 
+        # Compare the hashed password retrieved from the GetFit database to the user supplied password
         if (comparePassword(password,passwordHash)):
             callingWindow.destroy()
             createChangeSecretQuestionBox(mainWindow, parentWindow, callingWindow, dbConnection, dbCursor, username)
         else:
             popupBox(mainWindow, parentWindow, "Error", "Password was invalid")
     except mysql.connector.Error as error:
+        # Format the database error message for displaying in the popup box
         errorMessage = "Error Code: " + str(error.errno) + "\n" + "SQLSTATE: " + error.sqlstate + "\n" + "Message: " + error.msg  
         popupBox(mainWindow, callingWindow, "Error", errorMessage)
-
 
 def createChangeSecretQuestionBox(mainWindow, parentWindow, callingWindow, dbConnection, dbCursor, username):
     # Create a toplevel window for the Reset Password dialog box
@@ -428,11 +448,13 @@ def createChangeSecretQuestionBox(mainWindow, parentWindow, callingWindow, dbCon
     emptyLabel.grid(column = 0, row = 4, columnspan = 2)
 
     # Create button widget for OK - changes the Security Question and Response for a user
-    okButton = ttk.Button(changeSecretQuestionWindow, text = "OK", width=10, command = lambda : changeSecurityQuestion(mainWindow, parentWindow, changeSecretQuestionWindow, dbConnection, dbCursor, username, securityQuestionField.get(), securityResponseField.get()))
+    okButton = ttk.Button(changeSecretQuestionWindow, text = "OK", width=10, command = lambda :
+                          changeSecurityQuestion(mainWindow, parentWindow, changeSecretQuestionWindow, dbConnection, dbCursor, username, securityQuestionField.get(), securityResponseField.get()))
     okButton.grid(column = 0, row = 5, sticky = (N, W))
 
     # Create button widget for Cancel - cancels Security Question window
-    cancelButton = ttk.Button(changeSecretQuestionWindow, text = "Cancel", width = 10, command = lambda : changeSecretQuestionWindow.destroy())
+    cancelButton = ttk.Button(changeSecretQuestionWindow, text = "Cancel", width = 10, command = lambda :
+                              changeSecretQuestionWindow.destroy())
     cancelButton.grid(column = 1, row = 5 ,sticky = (N, W))
 
     # Force an update on the mainWindow so the size of the widgets are known
@@ -471,9 +493,9 @@ def changeSecurityQuestion(mainWindow, parentWindow, callingWindow, dbConnection
             callingWindow.destroy()
 
         except mysql.connector.Error as error:
+            # Format the database error message for displaying in the popup box
             errorMessage = "Error Code: " + str(error.errno) + "\n" + "SQLSTATE: " + error.sqlstate + "\n" + "Message: " + error.msg  
             popupBox(mainWindow, callingWindow, "Error", errorMessage)
-    
     
         # Show information message indicating Security question was updated
         popupBox(mainWindow, parentWindow, "Information", "Security Question was successfully updated")
@@ -495,8 +517,6 @@ def createUpdateProfileBox(mainWindow, parentWindow, dbConnection, dbCursor, use
     weight = StringVar(updateProfileWindow)
     imagePath = StringVar(updateProfileWindow)
     
-    
-
     # Create an information label
     informationLabel =ttk.Label(updateProfileWindow, text = "Please enter details below to update your profile")
     informationLabel.grid(column = 0, row = 0, columnspan = 2)
@@ -576,20 +596,20 @@ def createUpdateProfileBox(mainWindow, parentWindow, dbConnection, dbCursor, use
     # Creat entry widget for Image path
     imagePathEntry = ttk.Entry(updateProfileWindow, width = 20, textvariable = imagePath)
     imagePathEntry.grid(column = 1, row = 8, columnspan = 1)
-    #imagePathEntry.insert(0, imagePath)
 
     # Create button widget for Open Image File dialog box
-    updateProfileButton = ttk.Button(updateProfileWindow, width = 20, text = "Select Image File", command = lambda : openImageFile(mainWindow, updateProfileWindow, newLabels))
+    updateProfileButton = ttk.Button(updateProfileWindow, width = 20, text = "Select Image File", command = lambda :
+                                     openImageFile(mainWindow, updateProfileWindow, newLabels))
     updateProfileButton.grid(column = 1, row = 9)
 
     # Create button widget for OK - updates the User profile
-    #okButton = ttk.Button(updateProfileWindow, text = "OK", width=10, command = lambda : updateProfile(mainWindow, parentWindow, updateProfileWindow, dbConnection, dbCursor, username, fullname.get(), birthdateEntry.get_date(), phoneNumber.get(), email.get(), gender.get(), height.get(), weight.get(), imagePath.get()))
-
-    okButton = ttk.Button(updateProfileWindow, text = "OK", width=10, command = lambda : updateProfile(mainWindow, parentWindow, updateProfileWindow, dbConnection, dbCursor, username, labels, newLabels))
+    okButton = ttk.Button(updateProfileWindow, text = "OK", width=10, command = lambda :
+                          updateProfile(mainWindow, parentWindow, updateProfileWindow, dbConnection, dbCursor, username, labels, newLabels))
     okButton.grid(column = 0, row = 10, sticky = (W, E))
 
     # Create button widget for Cancel - cancels the Update profile window
-    cancelButton = ttk.Button(updateProfileWindow, text = "Cancel", width = 10, command = lambda : updateProfileWindow.destroy())
+    cancelButton = ttk.Button(updateProfileWindow, text = "Cancel", width = 10, command = lambda :
+                              updateProfileWindow.destroy())
     cancelButton.grid(column = 1, row = 10 ,sticky = (W, E))
 
     fullname.set(userProfileInfo[0])
@@ -618,7 +638,6 @@ def createUpdateProfileBox(mainWindow, parentWindow, dbConnection, dbCursor, use
     y = (hs/2) - (h/2)
     updateProfileWindow.geometry('%dx%d+%d+%d' % (w, h, x, y))
 
-#def updateProfile(mainWindow, parentWindow, updateProfileWindow, dbConnection, dbCursor, username, fullname, birthdate, phoneNumber, email, gender, height, weight, imagePath):
 def updateProfile(mainWindow, parentWindow, updateProfileWindow, dbConnection, dbCursor, username, labels, newLabels):
     
     fullname = newLabels[0].get()
@@ -629,15 +648,12 @@ def updateProfile(mainWindow, parentWindow, updateProfileWindow, dbConnection, d
     height = newLabels[5].get()
     weight = newLabels[6].get()
     imagePath = newLabels[7].get()    
-    
     decimalHeight = Decimal(height)
     decimalHeight = round(decimalHeight, 1)
-
     decimalWeight = Decimal(weight)
     decimalWeight = round(decimalWeight, 1)
-
-    #print("birthdate = " + birthdate)
     
+    # Validate entered data and display any errors
     if len(fullname) > 256:
         popupBox(mainWindow, updateProfileWindow, "Error", "The maximum length of a full name is 256 characters")
     elif len(phoneNumber) > 50:
@@ -674,6 +690,7 @@ def updateProfile(mainWindow, parentWindow, updateProfileWindow, dbConnection, d
             popupBox(mainWindow, parentWindow, "Information", "User profile was successfully updated")
 
         except mysql.connector.Error as error:
+            # Format the database error message for displaying in the popup box
             errorMessage = "Error Code: " + str(error.errno) + "\n" + "SQLSTATE: " + error.sqlstate + "\n" + "Message: " + error.msg  
             popupBox(mainWindow, updateProfileWindow, "Error", errorMessage)
 
@@ -702,8 +719,11 @@ def getUserProfileInformation(mainWindow, callingWindow, dbConnection, dbCursor,
     try:
         selectStatement = """SELECT * FROM UserInfo WHERE username = %s"""
         vals = (username,)
+
+        # Execute the SQL SELECT statement
         dbCursor.execute(selectStatement, vals)
 
+        # Fetch the results of the query
         userInfo = dbCursor.fetchone()
 
         # Create the userProfileInfo tuple
@@ -713,5 +733,6 @@ def getUserProfileInformation(mainWindow, callingWindow, dbConnection, dbCursor,
         # Return the tuple (fullname, birthdate, phone_number, email, gender, height, weight, image_path)
         return userProfileInfo
     except mysql.connector.Error as error:
+        # Format the database error message for displaying in the popup box
         errorMessage = "Error Code: " + str(error.errno) + "\n" + "SQLSTATE: " + error.sqlstate + "\n" + "Message: " + error.msg  
         popupBox(mainWindow, callingWindow, "Error", errorMessage)
