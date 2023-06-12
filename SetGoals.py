@@ -31,9 +31,6 @@ dbName = "your_database_name"
 
 dbConnection, dbCursor = accessDatabase(dbHostname, dbUsername, dbPort, dbPassword, dbName)
 
-# Connect to the database and create the necessary tables
-dbConnection, dbCursor = accessDatabase(mainWindow, dbHostname, dbUsername, dbPort, dbPassword, dbName)
-
 # Function to retrieve goals from the database for a specific user
 def getGoals(dbCursor, username):
     dbCursor.execute("SELECT goal, completed FROM goals WHERE username = %s", (username,))
