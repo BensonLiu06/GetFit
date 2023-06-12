@@ -3,11 +3,12 @@ from tkinter import *
 from tkinter import ttk
 import time
 import tkinter.font as tkFont
-from WorkoutsShowText import *
+#from WorkoutsShowText import *
 
 
 def workoutsTab():
 
+    global workoutsTab
     workoutsTab = Tk()
     workoutsTab.geometry("1000x800")
     workoutsTab.title("Workouts")
@@ -18,23 +19,27 @@ def workoutsTab():
     # Setup the main App window
     workoutsTab.columnconfigure(0, weight = 1)
     workoutsTab.columnconfigure(1, weight = 1)
+    workoutsTab.columnconfigure(2, weight = 1)
+    workoutsTab.columnconfigure(3, weight = 1)
     #appWindow.rowconfigure(0, weight = 1)
     workoutsTab.rowconfigure(1, weight = 1)
 
-    # Create all the main frame containers
+# Create all the main frame containers
     topFrame = ttk.Frame(workoutsTab, width = 600, height = 50, relief = 'groove', borderwidth = 2)
-    bottomFrame = ttk.Frame(workoutsTab, width = 300, height = 700, relief = 'groove', borderwidth = 2)
-    buttonFrame = ttk.Frame(workoutsTab, width = 300, height = 50, relief = 'groove', borderwidth = 2)
+    bottomFrame = ttk.Frame(workoutsTab, width = 600, height = 650, relief = 'groove', borderwidth = 2)
+    buttonFrame = ttk.Frame(workoutsTab, width = 600, height = 100, relief = 'groove', borderwidth = 2)
 
     # Layout all of the main frame containers
-    topFrame.grid(column = 0, row = 0, columnspan = 2, rowspan = 1, padx = 5, pady = 5, sticky=(N, S, E, W))
-    bottomFrame.grid(column = 0, row = 1, columnspan = 2, rowspan = 5, padx = 5, pady = 5, sticky=(N, S, E, W))
-    buttonFrame.grid(column = 0, row = 1, columnspan = 2, rowspan = 1, padx = 5, pady = 5, sticky=(N, S, E, W))
+    topFrame.grid(column = 0, row = 0, columnspan = 4, rowspan = 1, padx = 5, pady = 5, sticky=(N, S, E, W))
+    bottomFrame.grid(column = 0, row = 1, columnspan = 4, rowspan = 9, padx = 5, pady = 5, sticky=(N, S, E, W))
+    buttonFrame.grid(column = 0, row = 10, columnspan = 4, rowspan = 1, padx = 5, pady = 5, sticky=(N, S, E, W))
 
     topFrame.columnconfigure(0, weight = 1)
     topFrame.columnconfigure(0, weight = 1)
     bottomFrame.columnconfigure(0, weight = 1)
-    bottomFrame.columnconfigure(0, weight = 1)
+    bottomFrame.columnconfigure(1, weight = 1)
+    bottomFrame.columnconfigure(2, weight = 1)
+    bottomFrame.columnconfigure(3, weight = 1)
     buttonFrame.columnconfigure(0, weight = 1)
     buttonFrame.columnconfigure(0, weight = 1)
     bottomFrame.rowconfigure(1, weight = 1)
@@ -42,16 +47,6 @@ def workoutsTab():
     bottomFrame.rowconfigure(3, weight = 1)
     bottomFrame.rowconfigure(4, weight = 1)
     buttonFrame.rowconfigure(5, weight = 1)
-
-    # Create all the main frame containers
-    topFrame = ttk.Frame(workoutsTab, width = 600, height = 50, relief = 'groove', borderwidth = 2)
-    bottomFrame = ttk.Frame(workoutsTab, width = 600, height = 650, relief = 'groove', borderwidth = 2)
-    buttonFrame = ttk.Frame(workoutsTab, width = 600, height = 100, relief = 'groove', borderwidth = 2)
-
-    # Layout all of the main frame containers
-    topFrame.grid(column = 0, row = 0, columnspan = 2, rowspan = 1, padx = 5, pady = 5, sticky=(N, S, E, W))
-    bottomFrame.grid(column = 0, row = 1, columnspan = 2, rowspan = 9, padx = 5, pady = 5, sticky=(N, S, E, W))
-    buttonFrame.grid(column = 0, row = 5, columnspan = 2, rowspan = 1, padx = 5, pady = 5, sticky=(N, S, E, W))
 
     #Creates buttons for different types of workouts
 
@@ -86,8 +81,6 @@ def workoutsTab():
     workout8 = ttk.Button(bottomFrame, text = " Strength Workout")
     workout8.grid(column = 3, row = 2, ipadx= 40, ipady = 80, padx = 30, pady = 30)
 
-
-
     workoutsTab.mainloop()
    
 def showWorkout1():
@@ -96,8 +89,9 @@ def showWorkout1():
     global End
 
     top = Tk()
-    top.geometry("1680x720")
-    top.title("Beginner Workout")
+    ws = workoutsTab.winfo_screenwidth()
+    hs = workoutsTab.winfo_screenheight()
+    top.geometry('%dx%d' % (ws, hs))
 
     introduction = Label(top, text = "Press Start to start the workout.")
     introduction.grid()
@@ -396,3 +390,7 @@ def showtext8():
 
 def showtext9():
     tricepDips.grid(column = 6, row = 8)
+
+    workoutsTab.mainloop()
+
+workoutsTab()
