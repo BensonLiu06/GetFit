@@ -3,7 +3,7 @@ from tkinter import ttk
 import bcrypt
 import re
 from PopupBox import *
-from CheckUserNameExists import *
+from CheckUsernameExists import *
 from PasswordHash import *
 
 # Implementation of the User Registration window
@@ -134,6 +134,7 @@ def registerUser(mainWindow, parentWindow, userLoginWindow, dbConnection, dbCurs
     #   - Has at least one special character. You can remove this condition by removing (?=.*?[#?!@$%^&*-])
     passwordPattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
     
+    # Validate input fields are valid and do not exceed maximum lengths of fields
     if not username:
         popupBox(mainWindow, parentWindow, "Error", "Username is null. Please provide a valid user name")
     elif len(username) < 6 or len(username) > 50:
@@ -141,40 +142,41 @@ def registerUser(mainWindow, parentWindow, userLoginWindow, dbConnection, dbCurs
     elif not password:
         popupBox(mainWindow, parentWindow, "Error", "Password is null. Please provide a valid password")
     elif len(password) < 8 or len(password) > 64:
-        popupBox(mainWindow,parentWindow, "Error", "Password must be between 8 and 64 characters long")
+        popupBox(mainWindow,parentWindow, "Error", "Password must be between 8 and 64 characters in length")
     elif (re.match(passwordPattern,password) == None):
-        popupBox(mainWindow,parentWindow, "Error", "Password must be a minimum of 8 characters long\nPassword must have at least one uppercase English letter\nPassword must have at least one lowercase English letter\nPassword must have at least one digit\nPassword must have at least one special character such as #?!@$%^&*-\n")
+        popupBox(mainWindow,parentWindow, "Error", "Password must be a minimum of 8 characters in length\nPassword must have at least one uppercase English letter\nPassword must have at least one lowercase English letter\nPassword must have at least one digit\nPassword must have at least one special character such as #?!@$%^&*-\n")
     elif not securityQuestion:
         popupBox(mainWindow, parentWindow, "Error", "You must provide a security question")
     elif len(securityQuestion) > 256:
-        popupBox(mainWindow,parentWindow, "Error", "The maximum length of a security question is 256 characters long")
+        popupBox(mainWindow,parentWindow, "Error", "The maximum length of a security question is 256 characters")
     elif not securityResponse:
         popupBox(mainWindow, parentWindow, "Error", "You must provide a security response")
     elif len(securityResponse) > 64:
-        popupBox(mainWindow,parentWindow, "Error", "The maximum length of a security response is 64 characters long")
+        popupBox(mainWindow,parentWindow, "Error", "The maximum length of a security response is 64 characters")
     else:
-        if checkUsernameExists(username, dbCursor) == False:
+        # Check to ensure that the username does not already exist
+        if checkUsernameExists(mainWindow, parentWindow, dbConnection, dbCursor, username) == False:
+            # If the username does not already exist, check that the password and
+            # confirm password fields match
             if password == confirmPassword:
+                # Create a hashed password
                 passwordHash = createPasswordHash(password)
 
                 # Add new user into the GetFit database
                 insertStatement = """INSERT INTO User (username, password_hash, security_question, security_response) VALUES (%s, %s, %s, %s)"""
                 vals = (username, passwordHash, securityQuestion, securityResponse)
+                
+                # Execute the SQL INSERT statement
                 dbCursor.execute(insertStatement, vals)
 
                 # Add a UserInfo record for the user
-                #fullName = ""
-                #phoneNo = ""
-                #email = ""
-                #gender = ""
-                #imagePath = ""
-                #insertStatement = """INSERT INTO UserInfo (username, fullname, phone_number, email, gender, image_path) VALUES (%s, %s, %s, %s, %s, %s)"""
-                #vals = (username, fullName, phoneNo, email, gender, imagePath)
                 insertStatement = """INSERT INTO UserInfo (username) VALUES (%s)"""
                 vals = (username,)
 
+                # Execute the SQL INSERT statement
                 dbCursor.execute(insertStatement, vals)
 
+                # Commit the changes
                 dbConnection.commit()
 
                 usernameField.delete(0, END)
@@ -190,9 +192,10 @@ def registerUser(mainWindow, parentWindow, userLoginWindow, dbConnection, dbCurs
                 userLoginWindow.grid(sticky = (N, S, E, W))
                 popupBox(mainWindow, userLoginWindow, "Information", "User registration was successful")
             else:
+                # Else passwords do not match, show error
                 popupBox(mainWindow, userLoginWindow, "Error", "Passwords do not match")
-
         else:
+            # Else username already exists, show error
             popupBox(mainWindow, parentWindow, "Error", "This username already exits. Please try another username")
 
 # Implementation for the Cancel user registration button event
