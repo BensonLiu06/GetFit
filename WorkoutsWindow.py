@@ -21,30 +21,39 @@ def workoutsTab():
     # Setup the main App window
     workoutsTab.columnconfigure(0, weight = 1)
     workoutsTab.columnconfigure(1, weight = 1)
-    #appWindow.rowconfigure(0, weight = 1)
-    workoutsTab.rowconfigure(1, weight = 1)
+    workoutsTab.rowconfigure(0, weight = 1)
+    workoutsTab.rowconfigure(1, weight = 5)
+    workoutsTab.rowconfigure(2, weight = 5)
+    workoutsTab.rowconfigure(3, weight = 1)
+
 
     # Create all the main frame containers
-    topFrame = ttk.Frame(workoutsTab, width = 600, height = 50, relief = 'groove', borderwidth = 2)
-    bottomFrame = ttk.Frame(workoutsTab, width = 300, height = 700, relief = 'groove', borderwidth = 2)
-    buttonFrame = ttk.Frame(workoutsTab, width = 300, height = 50, relief = 'groove', borderwidth = 2)
+    topFrame = ttk.Frame(workoutsTab, width = 800, height = 100, relief = 'groove', borderwidth = 2)
+    bottomFrame = ttk.Frame(workoutsTab, width = 800, height = 450, relief = 'groove', borderwidth = 2)
+    buttonFrame = ttk.Frame(workoutsTab, width = 800, height = 50, relief = 'groove', borderwidth = 2)
 
     # Layout all of the main frame containers
-    topFrame.grid(column = 0, row = 0, columnspan = 2, rowspan = 1, padx = 5, pady = 5, sticky=(N, S, E, W))
-    bottomFrame.grid(column = 0, row = 1, columnspan = 2, rowspan = 5, padx = 5, pady = 5, sticky=(N, S, E, W))
-    buttonFrame.grid(column = 0, row = 1, columnspan = 2, rowspan = 1, padx = 5, pady = 5, sticky=(N, S, E, W))
+    topFrame.grid(column = 0, row = 0, columnspan = 4, rowspan = 1, padx = 5, pady = 5, sticky=(N, S, E, W))
+    bottomFrame.grid(column = 0, row = 1, columnspan = 4, rowspan = 2, padx = 5, pady = 5, sticky=(N, S, E, W))
+    buttonFrame.grid(column = 0, row = 3, columnspan = 4, rowspan = 1, padx = 5, pady = 5, sticky=(N, S, E, W))
 
     topFrame.columnconfigure(0, weight = 1)
-    topFrame.columnconfigure(0, weight = 1)
+    topFrame.columnconfigure(1, weight = 1)
+    topFrame.columnconfigure(2, weight = 1)
+    topFrame.columnconfigure(3, weight = 1)
     bottomFrame.columnconfigure(0, weight = 1)
-    bottomFrame.columnconfigure(0, weight = 1)
+    bottomFrame.columnconfigure(1, weight = 1)
+    bottomFrame.columnconfigure(2, weight = 1)
+    bottomFrame.columnconfigure(3, weight = 1)
     buttonFrame.columnconfigure(0, weight = 1)
-    buttonFrame.columnconfigure(0, weight = 1)
-    bottomFrame.rowconfigure(1, weight = 1)
-    bottomFrame.rowconfigure(2, weight = 1)
-    bottomFrame.rowconfigure(3, weight = 1)
-    bottomFrame.rowconfigure(4, weight = 1)
-    buttonFrame.rowconfigure(5, weight = 1)
+    buttonFrame.columnconfigure(1, weight = 1)
+    buttonFrame.columnconfigure(2, weight = 1)
+    buttonFrame.columnconfigure(3, weight = 1)
+
+    topFrame.rowconfigure(0, weight = 1)
+    bottomFrame.rowconfigure(1, weight = 5)
+    bottomFrame.rowconfigure(2, weight = 5)
+    buttonFrame.rowconfigure(3, weight = 1)
 
     # Create all the main frame containers
     topFrame = ttk.Frame(workoutsTab, width = 600, height = 50, relief = 'groove', borderwidth = 2)
@@ -141,7 +150,7 @@ def showWorkout1():
     bottomFrame.grid(column = 0, row = 3, columnspan = 2, rowspan = 8, padx = 5, pady = 5, sticky = (N, S, E, W))
     buttonFrame.grid(column = 0, row = 11, columnspan = 3, rowspan = 1, padx = 5, pady = 5, sticky = (N, S, E, W))
     bottomButtonFrame.grid(column = 2, row = 3, columnspan = 1, rowspan = 8, padx = 5, pady = 5, sticky = (N, S, E, W))
-
+    
     #configures the geometry of the frames
     topFrame.columnconfigure(0, weight = 1)
     topFrame.columnconfigure(1, weight = 1)
