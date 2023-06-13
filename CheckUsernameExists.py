@@ -1,7 +1,3 @@
-import mysql.connector
-from mysql.connector import errorcode
-from PopupBox import *
-
 # Create a function to check if the username already exists
 def checkUsernameExists(username, dbCursor):
     selectQuery = """SELECT * FROM User WHERE username = %s"""
