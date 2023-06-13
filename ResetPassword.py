@@ -1,10 +1,11 @@
 from tkinter import *
 from tkinter import ttk
 import re
-from CheckUsernameExists import *
-from PopupBox import *
-from PasswordHash import *
 from AppWindow import *
+from PopupBox import *
+from AppWindow import *
+from CheckUserNameExists import *
+from PasswordHash import *
 
 def createResetPasswordBox(mainWindow, parentWindow, dbConnection, dbCursor, username):
     # Create StringVars to hold the user input
@@ -126,4 +127,3 @@ def passwordCheck(mainWindow, parentWindow, dbConnection, dbCursor, username, pa
     else:
         popupBox(mainWindow, parentWindow, "Error", "Username was not found")
         return False
-
