@@ -103,7 +103,7 @@ def confirmPassword(mainWindow, parentWindow, dbConnection, dbCursor, username, 
         passwordHash = user[2]
 
         if (comparePassword(password,passwordHash)):
-                 createAppWindow(mainWindow, parentWindow, dbConnection, dbCursor, username)
+                createAppWindow(mainWindow, parentWindow, dbConnection, dbCursor, username)
         else:
             popupBox(mainWindow, parentWindow, "Error", "Password was invalid")
     else:

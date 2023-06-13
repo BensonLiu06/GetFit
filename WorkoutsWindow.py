@@ -1311,7 +1311,7 @@ def countdown2(count):
 
     #if the number is greater than 0 it will keep subtracting until it's 0
     if count > 0:
-        bottomButtonFrame.after(1000, countdown, count-1)
+        bottomButtonFrame.after(1000, countdown2, count-1)
     
 
 
