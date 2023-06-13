@@ -2,9 +2,11 @@ from tkinter import *
 from tkinter import ttk
 import re
 from AppWindow import *
+from CheckUsernameExists import checkUsernameExists
 from PopupBox import *
-from CheckUsernameExists import *
+from CheckUserNameExists import *
 from PasswordHash import *
+from AppWindow import createAppWindow
 
 def createResetPasswordBox(mainWindow, parentWindow, dbConnection, dbCursor, username):
     # Create StringVars to hold the user input
@@ -77,85 +79,54 @@ def verifyAndResetPassword(mainWindow, parentWindow, callingWindow, dbConnection
     #   - Has at least one special character. You can remove this condition by removing (?=.*?[#?!@$%^&*-])
     passwordPattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
 
-    # Make sure the password complies with the password rules
     if (re.match(passwordPattern,password) == None):
-        # Password does not comply with password rules
-        # Show an error dialog and display the password rules
         popupBox(mainWindow,parentWindow, "Error", "Password must be a minimum of 8 characters long\nPassword must have at least one uppercase English letter\nPassword must have at least one lowercase English letter\nPassword must have at least one digit\nPassword must have at least one special character such as #?!@$%^&*-\n")
-    # Check to make sure the password and confirm password match
     elif password == confirmPassword:
-        # Passwords match
         callingWindow.destroy()
-
-        # Hash the password before storing it in the database
         passwordHash = createPasswordHash(password)
 
         updateStatement = """UPDATE User SET password_hash = %s WHERE username = %s"""
         vals = (passwordHash, username)
-
-        # Execute the SQL UPDATE statement
         dbCursor.execute(updateStatement, vals)
-
-        # Commit the changes
         dbConnection.commit()
-        
-        # Show a message that the password was successfully changed
+        #
         popupBox(mainWindow, parentWindow, "Information", "Password was successfully reset")
     else:
         popupBox(mainWindow, callingWindow, "Error", "Passwords do not match")
 
 
 def confirmPassword(mainWindow, parentWindow, dbConnection, dbCursor, username, password):
-    if checkUsernameExists(mainWindow, parentWindow, dbConnection, dbCursor, username):
+    if checkUsernameExists(username, dbCursor):
         selectStatement = """SELECT * FROM User WHERE username = %s"""
         vals = (username,)
-
-        # Execute the SQL SELECT statement
         dbCursor.execute(selectStatement, vals)
 
-        # Fetch the record returned from the query
         user = dbCursor.fetchone()
-
-        # Access the hashed password
         passwordHash = user[2]
 
-        # Compare the password supplied by the user with the hashed password
         if (comparePassword(password,passwordHash)):
-            # If passwords match, open the App window
-            createAppWindow(mainWindow, parentWindow, dbConnection, dbCursor, username)
+                createAppWindow(mainWindow, parentWindow, dbConnection, dbCursor, username)
         else:
-            # Else password was invalid, show ar Error dialog
             popupBox(mainWindow, parentWindow, "Error", "Password was invalid")
     else:
-        # Else username was not found, show an Error dialog
         popupBox(mainWindow, parentWindow, "Error", "Username was not found")
 
 def passwordCheck(mainWindow, parentWindow, dbConnection, dbCursor, username, password):
-    # Check if the username exists
-    if checkUsernameExists(mainWindow, parentWindow, dbConnection, dbCursor, username):
-        # User name exists
+    if checkUsernameExists(username, dbCursor):
         selectStatement = """SELECT * FROM User WHERE username = %s"""
         vals = (username,)
-        
-        # Execute the SQL SELECT statement
         dbCursor.execute(selectStatement, vals)
 
-        # Fetch the results of the query
         user = dbCursor.fetchone()
-
-        # Access the hashed password
         passwordHash = user[2]
 
-        # Compare the user supplied password with the hashed password
         if (comparePassword(password,passwordHash)):
-            # If passwords match, return True
             return True
         else:
-            # If passwords don't match, show Error dialog box and return False
             popupBox(mainWindow, parentWindow, "Error", "Password was invalid")
             return False
     else:
-        # Else username was not found, show Error dialog box and return False
         popupBox(mainWindow, parentWindow, "Error", "Username was not found")
         return False
+
 

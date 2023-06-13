@@ -1,9 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
-import time
-import tkinter.font as tkFont
-from WorkoutsShowText import *
+
 
 
 def workoutsTab():
