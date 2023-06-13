@@ -7,7 +7,10 @@ from WorkoutsShowText import *
 
 
 def workoutsTab():
-
+    ''' 
+    Displays the main window that shows all types of workouts when user clicks
+    on the workouts button from the main window
+    '''
     workoutsTab = Tk()
     workoutsTab.geometry("1200x800")
     workoutsTab.title("Workouts")
@@ -90,18 +93,26 @@ def workoutsTab():
 
     workoutsTab.mainloop()
    
+
 def showWorkout1():
+    '''
+    Displays the beginner workout window with a start button
+   that starts the timer and shows the workout
+   and an end button will stop the timer
+    '''
     global bottomButtonFrame
 
     #calls up the window
     top = Tk()
+    #sets the geometry of the window
     top.geometry("1100x900")
+    #sets the title of the window
     top.title("Beginner Workout")
 
-    # Create a frame 
+    # Creates a frame 
     frame1 = ttk.Frame(top)
 
-    # Setup the window
+    # Setups the window
     frame1.grid(sticky = (N, S, E, W))
 
     #configures the geometry of the frame
@@ -119,13 +130,13 @@ def showWorkout1():
     frame1.rowconfigure(8, weight = 1)
     frame1.rowconfigure(9, weight = 1)
 
-    # Create all the main frame containers
+    # Creates all the main frame containers
     topFrame = ttk.Frame(frame1, width = 600, height = 50, relief = 'groove', borderwidth = 2)
     bottomFrame = ttk.Frame(frame1, width = 300, height = 400, relief = 'groove', borderwidth = 2)
     buttonFrame = ttk.Frame(frame1, width = 600, height = 50, relief = 'groove', borderwidth = 2)
     bottomButtonFrame = ttk.Frame(frame1, width = 300, height = 400, relief = 'groove', borderwidth = 2)
 
-    # Layout all of the main frame containers
+    # Lays out all of the main frame containers
     topFrame.grid(column = 0, row = 0, columnspan = 3, rowspan = 1, padx = 5, pady = 5, sticky = (N, S, E, W))
     bottomFrame.grid(column = 0, row = 3, columnspan = 2, rowspan = 8, padx = 5, pady = 5, sticky = (N, S, E, W))
     buttonFrame.grid(column = 0, row = 11, columnspan = 3, rowspan = 1, padx = 5, pady = 5, sticky = (N, S, E, W))
@@ -173,9 +184,12 @@ def showWorkout1():
     
     top.mainloop()
 
-
 def buttonClicked(bottomFrame):
-    
+    ''' 
+    Function that runs and displays all parts of the workout 
+    and how the workout process works
+    when user clicks the Start button 
+    '''
     #creates a variable to set the font of the labels
     fontObj = ('Times New Roman',14,'bold')
 
@@ -225,9 +239,10 @@ def buttonClicked(bottomFrame):
     repeat.grid(column=6, row = 12)
 
        
-
 def finished():
-
+    """
+    Stops the timer and shows a workout finished message when user presses End
+    """
     #destroys the label
     label.after(1000, label.destroy())
 
@@ -242,20 +257,22 @@ def finished():
 
     
 def countdown(count):
-
+    '''
+    sets the label number as count and subtracts 1 out of the number every second
+    '''
     # change text in label        
     label['text'] = count
 
+    #if the number is greater than 0 it will keep subtracting until it's 0
     if count > 0:
         bottomButtonFrame.after(1000, countdown, count-1)
     
 
 
-    
-
-    
 def timer(bottomButtonFrame):
-
+    '''
+    displays the number from countdown onto the window
+    '''
     global label
 
 
@@ -265,20 +282,23 @@ def timer(bottomButtonFrame):
     
     # call countdown first time   
     countdown(1200)
-    # root.after(0, countdown, 5)
 
 
         
 def showWorkout2():
-
+    '''
+    Displays the advanced workout window with a start button
+   that starts the timer and shows the workout
+   and an end button will stop the timer
+    '''
     top = Tk()
     top.geometry("1100x900")
     top.title("Advanced Workout")
 
-    # Create a frame for the Update Profile & Settings window
+    # Create a frame for the window
     frame1 = ttk.Frame(top)
 
-    # Setup the Update Profile & Settings window
+    # Setups the window
     frame1.grid(sticky = (N, S, E, W))
 
     frame1.columnconfigure(0, weight = 1)
@@ -335,23 +355,31 @@ def showWorkout2():
     introduction = Label(topFrame, text = "Press Start to start the workout.")
     introduction.grid(column = 1, row = 2, padx = 15, pady = 15)
 
-
+    #button to start the workout and timer
     Start = Button(bottomButtonFrame, text = "Start", command = lambda: [buttonClicked2(bottomFrame), timer(bottomButtonFrame)])
     Start.grid(column = 1, row= 4, ipadx = 30, ipady = 20, padx = 15, pady = 15)
 
+    #button to end the timer
     End = Button(bottomButtonFrame, text = "End", command = lambda: finished() )
     End.grid(column = 1, row= 6, ipadx = 30, ipady = 20, padx = 15, pady = 15)
 
+    #button to close the workout window
     exit = Button(buttonFrame, text = "Quit", command =  top.destroy )
     exit.grid(column = 1 , row = 3 , ipadx = 30, ipady = 20 , padx = 15, pady = 15)
     
     top.mainloop()
 
 def buttonClicked2(bottomFrame):
-    
+    ''' 
+    Function that runs and displays all parts of the workout 
+    and how the workout process works
+    when user clicks the Start button 
+    '''
 
-    
+    #variable to set the font of the label
     fontObj = ('Times New Roman',14,'bold')
+
+    #labels to display all parts of the workouts
     airSquats = Label(bottomFrame, text = "Air Squats x 20", width = 20, font = fontObj, anchor=CENTER)
     airSquats.grid(column = 6, row = 1)
 
@@ -399,14 +427,18 @@ def buttonClicked2(bottomFrame):
 
 
 def showWorkout3():
+    '''
+    Displays the HIIT workout window with a start button
+   that starts the timer and shows the workout
+   and an end button will stop the timer
+    '''
+
     top = Tk()
     top.geometry("1100x900")
     top.title("HIIT Workout")
 
-    # Create a frame for the Update Profile & Settings window
     frame1 = ttk.Frame(top)
 
-    # Setup the Update Profile & Settings window
     frame1.grid(sticky = (N, S, E, W))
 
     frame1.columnconfigure(0, weight = 1)
@@ -476,7 +508,17 @@ def showWorkout3():
     top.mainloop()
 
 def buttonClicked3(bottomFrame):
+
+    ''' 
+    Function that runs and displays all parts of the HIIT workout 
+    and how the workout process works
+    when user clicks the Start button 
+    '''
+
+
     fontObj = ('Times New Roman',14,'bold')
+
+
     sideKickThrough = Label(bottomFrame, text = "side Kick-Through x 30 seconds", width = 20, font = fontObj, anchor=CENTER)
     sideKickThrough.grid(column = 6, row = 1)
 
@@ -521,6 +563,11 @@ def buttonClicked3(bottomFrame):
 
 
 def showWorkout4():
+    '''
+    Displays the cardio workout window with a start button
+   that starts the timer and shows the workout
+   and an end button will stop the timer
+    '''
 
     top = Tk()
     top.geometry("1100x900")
@@ -599,7 +646,15 @@ def showWorkout4():
     top.mainloop()
 
 def buttonClicked4(bottomFrame):
+    ''' 
+    Function that runs and displays all parts of the cardio workout 
+    and how the workout process works
+    when user clicks the Start button 
+    '''
+
     fontObj = ('Times New Roman',14,'bold')
+
+    #labels to display all parts of the workout
     sidePlankTwist = Label(bottomFrame, text = "Side Plank Twist x 30 seconds", width = 20, font = fontObj, anchor=CENTER)
     sidePlankTwist.grid(column = 6, row = 1)
 
@@ -607,13 +662,9 @@ def buttonClicked4(bottomFrame):
     inbetweenBreaks1 = Label(bottomFrame, text = "15 second break", width = 20, font = fontObj, anchor=CENTER)
     inbetweenBreaks1.grid(column = 6, row = 2)
 
-
-
-
     squatPulse = Label(bottomFrame, text = "Squat Pulse x 30 seconds", width = 20, font = fontObj, anchor=CENTER)
     squatPulse.grid(column = 6, row = 3)
 
-    #Change to 15 second break between exercise
     inbetweenBreaks2 = Label(bottomFrame, text = "15 second break", width = 20, font = fontObj, anchor=CENTER)
     inbetweenBreaks2.grid(column = 6, row = 4)
 
@@ -651,14 +702,20 @@ def buttonClicked4(bottomFrame):
     repeat.grid(column=6, row = 14)
 
 def showWorkout5():
+
+    '''
+    Displays the first 7 minute workout window with a start button
+   that starts the timer and shows the workout
+   and an end button will stop the timer (this time with timer 2 because this workout is 7 minutes long)
+    '''
     top = Tk()
     top.geometry("1100x900")
     top.title("Intermediate 7 minute Workout")
 
-    # Create a frame for the Update Profile & Settings window
+    # Create a frame
     frame1 = ttk.Frame(top)
 
-    # Setup the Update Profile & Settings window
+    # Setup the window
     frame1.grid(sticky = (N, S, E, W))
 
     frame1.columnconfigure(0, weight = 1)
@@ -728,9 +785,16 @@ def showWorkout5():
     top.mainloop()
 
 def buttonClicked5(bottomFrame):
+    ''' 
+    Function that runs and displays all 
+    parts of the intermediate 7 minute workout 
+    and how the workout process works
+    when user clicks the Start button 
+    '''
 
     fontObj = ('Times New Roman',14,'bold')
 
+    #labels to display all parts of the workout
     jumpingJacks = Label(bottomFrame, text = "Jumping Jacks AMRAP", width = 20, font = fontObj, anchor=CENTER)
     jumpingJacks.grid(column = 6, row = 1)
 
@@ -785,14 +849,19 @@ def buttonClicked5(bottomFrame):
     repeat.grid(column=6, row = 16)
 
 def showWorkout6():
+    '''
+    Displays the second 7 minute workout window with a start button
+   that starts the timer and shows the workout
+   and an end button will stop the timer (this time with timer 2 because this workout is 7 minutes)
+    '''
     top = Tk()
     top.geometry("1100x900")
     top.title("Advanced 7 Minute Workout")
 
-    # Create a frame for the Update Profile & Settings window
+    # Create a frame
     frame1 = ttk.Frame(top)
 
-    # Setup the Update Profile & Settings window
+    # Setup the window
     frame1.grid(sticky = (N, S, E, W))
 
     frame1.columnconfigure(0, weight = 1)
@@ -862,8 +931,15 @@ def showWorkout6():
     top.mainloop()
 
 def buttonClicked6(bottomFrame):
+    ''' 
+    Function that runs and displays all 
+    parts of the advanced 7 minute workout 
+    and how the workout process works
+    when user clicks the Start button 
+    '''
     fontObj = ('Times New Roman',14,'bold')
 
+    #labels to display all parts of the workout
     reverseLunges = Label(bottomFrame, text = "Reverse Lunges, alternating sides per rep AMRAP", width = 20, font = fontObj, anchor=CENTER)
     reverseLunges.grid(column = 6, row = 1)
 
@@ -907,14 +983,20 @@ def buttonClicked6(bottomFrame):
     repeat.grid(column=6, row = 12)
 
 def showWorkout7():
+    '''
+    Displays the arm workout window with a start button
+   that starts the timer and shows the workout
+   and an end button will stop the timer
+    '''
+
     top = Tk()
     top.geometry("1100x900")
     top.title("Arm Workout")
 
-    # Create a frame for the Update Profile & Settings window
+    # Create a frame
     frame1 = ttk.Frame(top)
 
-    # Setup the Update Profile & Settings window
+    # Setup the window
     frame1.grid(sticky = (N, S, E, W))
 
     frame1.columnconfigure(0, weight = 1)
@@ -984,8 +1066,16 @@ def showWorkout7():
     top.mainloop()
 
 def buttonClicked7(bottomFrame):
+    ''' 
+    Function that runs and displays all 
+    parts of the arms workout
+    and how the workout process works
+    when user clicks the Start button 
+    '''
+
     fontObj = ('Times New Roman',14,'bold')
 
+    #labels to show all parts of the workout
     tricepDips_chair = Label(bottomFrame, text = "Tricep Dips on Chair x 20", width = 20, font = fontObj, anchor=CENTER)
     tricepDips_chair.grid(column = 6, row = 1)
 
@@ -1043,14 +1133,19 @@ def buttonClicked7(bottomFrame):
     repeat.grid(column=6, row = 17)
 
 def showWorkout8():
+    '''
+    Displays the leg workout window with a start button
+   that starts the timer and shows the workout
+   and an end button will stop the timer
+    '''
     top = Tk()
     top.geometry("1100x900")
     top.title("Leg Workout")
 
-    # Create a frame for the Update Profile & Settings window
+    # Create a frame
     frame1 = ttk.Frame(top)
 
-    # Setup the Update Profile & Settings window
+    # Setup the window
     frame1.grid(sticky = (N, S, E, W))
 
     frame1.columnconfigure(0, weight = 1)
@@ -1120,8 +1215,16 @@ def showWorkout8():
     top.mainloop()
 
 def buttonClicked8(bottomFrame):
+    ''' 
+    Function that runs and displays all 
+    parts of the legs workout
+    and how the workout process works
+    when user clicks the Start button 
+    '''
+
     fontObj = ('Times New Roman',14,'bold')
 
+    #labels to display all parts of the workout
     reverseLunges2 = Label(bottomFrame, text = "Reverse Lunges x 45 seconds", width = 20, font = fontObj, anchor=CENTER)
     reverseLunges2.grid(column = 6, row = 1)
 
@@ -1175,19 +1278,31 @@ def buttonClicked8(bottomFrame):
 
 
 def finished2():
+    """
+    Stops the second timer for the 7 minute workouts
+    and shows a workout finished message when user presses End
+    """
+    
+    #destroys the label after one second when user presses End button
     label2.after(1000, label2.destroy())
 
+    #calls up the window
     finished = Tk()
 
+    #displays a congrats message
     congratsMessage = Label(finished, text = "Congrats, you made it, the workout has finished!", anchor=CENTER)
     congratsMessage.grid()
 
     finished.mainloop()
     
 def countdown2(count):
-    # change text in label        
+    '''
+    sets the label number as count and subtracts 1 out of the number every second
+    '''
+
     label2['text'] = count
 
+    #if the number is greater than 0 it will keep subtracting until it's 0
     if count > 0:
         bottomButtonFrame.after(1000, countdown, count-1)
     
@@ -1197,6 +1312,9 @@ def countdown2(count):
 
     
 def timer2(bottomButtonFrame):
+    '''
+    displays the number from countdown 2 onto the window
+    '''
     global label2
 
     label2 = tk.Label(bottomButtonFrame, font = ('impact', 14, 'bold'))
@@ -1204,10 +1322,4 @@ def timer2(bottomButtonFrame):
     
     # call countdown first time   
     countdown2(420)
-    # root.after(0, countdown, 5)
-
-
-
-#------------------------------------------------------------
-
 
