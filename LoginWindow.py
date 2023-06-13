@@ -4,9 +4,10 @@ import re
 from RegisterUserWindow import *
 from AppWindow import *
 from PopupBox import *
-from CheckUsernameExists import *
+from CheckUsernameExists import*
 from ResetPassword import *
 from PasswordHash import *
+
 
 # Implementation of the User Login window
 def createLoginWindow(mainWindow, dbConnection, dbCursor):
@@ -21,6 +22,8 @@ def createLoginWindow(mainWindow, dbConnection, dbCursor):
     # Setup the main User Login window
     userLoginWindow.columnconfigure(0, weight = 1)
     userLoginWindow.columnconfigure(1, weight = 1)
+    #userLoginWindow.rowconfigure(0, weight = 1)
+    #userLoginWindow.rowconfigure(1, weight = 1)
 
     # Create all the main frame containers
     topFrame = ttk.Frame(userLoginWindow, width = 600, height = 50, relief = 'groove', borderwidth = 2)
@@ -118,34 +121,22 @@ def createLoginWindow(mainWindow, dbConnection, dbCursor):
 # Check that the provided user name exists and that the provided password matches
 # the password for that username. If it matches, open the main app window
 def verifyLogin(mainWindow, parentWindow, dbConnection, dbCursor, username, password, usernameLoginField, passwordLoginField):
-    # Clear out the entry fields for username and password on the user login window
     usernameLoginField.delete(0, END)
     passwordLoginField.delete(0, END)
 
-    # Check to see if the username exits
-    if checkUsernameExists(mainWindow, parentWindow, dbConnection, dbCursor, username):
-        # If the username exists, get the user record for username from the GetFit database
+    if checkUsernameExists(username, dbCursor):
         selectStatement = """SELECT * FROM User WHERE username = %s"""
         vals = (username,)
-
-        # Execute the database SELECT command
         dbCursor.execute(selectStatement, vals)
 
-        # Fetch the user record using the database cursor
         user = dbCursor.fetchone()
-
-        # Access the hashed password
         passwordHash = user[2]
 
-        # Compare the password provided by the user with the hashed passwor
         if (comparePassword(password,passwordHash)):
-            # If the passwords match, open the main App window
             createAppWindow(mainWindow, parentWindow, dbConnection, dbCursor, username)
         else:
-            # Else display an error indicating the password was invalid
             popupBox(mainWindow, parentWindow, "Error", "Password was invalid")
     else:
-        # Else display an error indicating the username was not found
         popupBox(mainWindow, parentWindow, "Error", "Username was not found")
 
 # Implementation for the Forgot your password button event
@@ -179,13 +170,11 @@ def createForgotYourPasswordBox(mainWindow, parentWindow, dbConnection, dbCursor
     emptyLabel2.grid(column = 0, row = 4, columnspan = 2)
 
     # Create button widget for OK
-    oKButton = ttk.Button(forgotYourPasswordWindow, text = "OK", width = 10, command = lambda :
-                          verifyUsernameForPasswordReset(mainWindow, parentWindow, forgotYourPasswordWindow, dbConnection, dbCursor, usernameField.get()))
+    oKButton = ttk.Button(forgotYourPasswordWindow, text = "OK", width = 10, command = lambda : verifyUsernameForPasswordReset(mainWindow, parentWindow, forgotYourPasswordWindow, dbConnection, dbCursor, usernameField.get()))
     oKButton.grid(column = 0, row = 5)
 
     # Create button widget for Cancel
-    cancelButton = ttk.Button(forgotYourPasswordWindow, text = "Cancel", width = 10, command = lambda :
-                              forgotYourPasswordWindow.destroy())
+    cancelButton = ttk.Button(forgotYourPasswordWindow, text = "Cancel", width = 10, command = lambda : forgotYourPasswordWindow.destroy())
     cancelButton.grid(column = 1, row = 5)
     
     # Force an update on the mainWindow so the size of the widgets are known
@@ -209,17 +198,12 @@ def createForgotYourPasswordBox(mainWindow, parentWindow, dbConnection, dbCursor
 # Create a function to check that the provided username exists and obtain the
 # security question and response for that user's username
 def verifyUsernameForPasswordReset(mainWindow, parentWindow, callingWindow, dbConnection, dbCursor, username):
-    # Check the GetFit database to ensure the username exists
-    if checkUsernameExists(mainWindow, parentWindow, dbConnection, dbCursor, username):
-        # If the username exists, get the security question and security response
-        # for the username provided from the GetFit database
+    # Check the GetFit database to ensure the Username exists
+    if checkUsernameExists(username, dbCursor):
         selectQuery = """SELECT security_question, security_response FROM User WHERE username = %s"""
+
         vals = (username,)
-
-        # Execute the database SELECT command
         dbCursor.execute(selectQuery, vals)
-
-        # Fetch the results of the query using the cursor
         result = dbCursor.fetchone()
 
         # Parse the results of the database query
@@ -267,13 +251,12 @@ def createAskSecurityQuestionBox(mainWindow, parentWindow, dbConnection, dbCurso
     emptyLabel2.grid(column = 0, row = 5, columnspan = 2)
 
     # Create an OK button widget
-    okButton = ttk.Button(askSecurityQuestionWindow, text = "OK", width=10, command = lambda :
+    okButton = ttk.Button(askSecurityQuestionWindow, text = "OK", width=10, command = lambda : 
            verifySecurityResponse(mainWindow, parentWindow, askSecurityQuestionWindow, dbConnection, dbCursor, username, securityResponse, inputSecurityResponse.get()))
     okButton.grid(column = 0, row = 6)
 
     # Create button widget for Cancel
-    cancelButton = ttk.Button(askSecurityQuestionWindow, text = "Cancel", width = 10, command = lambda :
-                              askSecurityQuestionWindow.destroy())
+    cancelButton = ttk.Button(askSecurityQuestionWindow, text = "Cancel", width = 10, command = lambda : askSecurityQuestionWindow.destroy())
     cancelButton.grid(column = 1, row = 6)
 
     # Force an update on the mainWindow so the size of the widgets are known
@@ -298,8 +281,8 @@ def createAskSecurityQuestionBox(mainWindow, parentWindow, dbConnection, dbCurso
 # before resetting the user's password
 def verifySecurityResponse(mainWindow, parentWindow, callingWindow, dbConnection, dbCursor, username, securityResponse, inputSecurityResponse):
     if inputSecurityResponse == securityResponse:
-        # If the security responses match, show the reset password dialog box
         callingWindow.destroy()
+
         createResetPasswordBox(mainWindow, parentWindow, dbConnection, dbCursor, username)
     else:
         popupBox(mainWindow, parentWindow, "Error", "Your security response was invalid")

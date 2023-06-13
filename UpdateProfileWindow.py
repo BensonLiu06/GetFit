@@ -9,8 +9,11 @@ import PIL.Image
 import os
 import mysql.connector
 from mysql.connector import errorcode
+from PasswordHash import comparePassword
 from PopupBox import *
 from ResetPassword import *
+from ResetPassword import createResetPasswordBox
+from passwordHash import *
 
 # Implementation of the Update Profile and Settings window
 def createUpdateProfileAndSettingsWindow(mainWindow, appWindow, dbConnection, dbCursor, username):

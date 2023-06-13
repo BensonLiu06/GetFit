@@ -4,6 +4,7 @@ from RegisterUserWindow import *
 from UpdateProfileWindow import *
 from SetGoals import *
 from PopupBox import *
+from UpdateProfileWindow import createUpdateProfileAndSettingsWindow
 from WorkoutsWindow import *
 from BMICalc import *
 
