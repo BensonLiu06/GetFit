@@ -4,13 +4,12 @@ from RegisterUserWindow import *
 from UpdateProfileWindow import *
 from SetGoals import *
 from PopupBox import *
-from UpdateProfileWindow import createUpdateProfileAndSettingsWindow
-from WorkoutsWindow import *
+from WorkoutsTab import *
 from BMICalc import *
 
 # Implementation of the app window
-def createAppWindow(mainWindow, userLoginWindow, dbConnection, dbCursor, username):
 
+def createAppWindow(mainWindow, userLoginWindow, dbConnection, dbCursor, username):
     # Hide the User Login window
     userLoginWindow.grid_forget()
 
@@ -72,16 +71,14 @@ def createAppWindow(mainWindow, userLoginWindow, dbConnection, dbCursor, usernam
     setGoalsButton = ttk.Button(bottomFrame, text = "Set Goals", command = lambda : createSetGoalsWindow(mainWindow, appWindow, dbConnection, dbCursor, username))
     setGoalsButton.grid(column = 0, row = 2, pady = 5)
 
-
-    workoutsButton =  ttk.Button(bottomFrame, text = "Workouts", command = lambda : workoutsTab())
+    workoutsButton = ttk.Button(bottomFrame, text = " Workouts" , command = lambda: workoutsTab())
     workoutsButton.grid(column = 0, row = 5, pady = 5)
 
     bmiButton = ttk.Button(bottomFrame, text = "Body-Mass Index Calculator", command = lambda: bmiTab())
     bmiButton.grid(column = 0, row = 6, pady = 5)
-
     # Create button widget for Sign out 
     signoutButton = ttk.Button(buttonFrame, text = "Sign out", command = lambda : 
-                                signoutOfApp(mainWindow, appWindow))
+                                   signoutOfApp(mainWindow, userLoginWindow, appWindow))
     signoutButton.grid(column = 1, row = 5, pady = 5)
 
     popupBox(mainWindow, appWindow,"Information", "User login was successful")
@@ -94,8 +91,3 @@ def signoutOfApp(mainWindow, callingWindow, appWindow):
     # Show the User Login window
     callingWindow.grid(sticky = (N, S, E, W))
     popupBox(mainWindow, callingWindow, "Information", "User was successfully signed out")
-
-
-
-
-    
