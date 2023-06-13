@@ -339,7 +339,7 @@ def buttonClicked2(bottomFrame):
     
 
     
-    fontObj = ('Times New Roman',30,'bold')
+    fontObj = ('Times New Roman',14,'bold')
     airSquats = Label(bottomFrame, text = "Air Squats x 20", width = 20, font = fontObj, anchor=CENTER)
     airSquats.grid(column = 6, row = 1)
 
@@ -464,7 +464,7 @@ def showWorkout3():
     top.mainloop()
 
 def buttonClicked3(bottomFrame):
-    fontObj = ('Times New Roman',30,'bold')
+    fontObj = ('Times New Roman',14,'bold')
     sideKickThrough = Label(bottomFrame, text = "side Kick-Through x 30 seconds", width = 20, font = fontObj, anchor=CENTER)
     sideKickThrough.grid(column = 6, row = 1)
 
@@ -587,7 +587,7 @@ def showWorkout4():
     top.mainloop()
 
 def buttonClicked4(bottomFrame):
-    fontObj = ('Times New Roman',30,'bold')
+    fontObj = ('Times New Roman',14,'bold')
     sidePlankTwist = Label(bottomFrame, text = "Side Plank Twist x 30 seconds", width = 20, font = fontObj, anchor=CENTER)
     sidePlankTwist.grid(column = 6, row = 1)
 
@@ -717,7 +717,7 @@ def showWorkout5():
 
 def buttonClicked5(bottomFrame):
 
-    fontObj = ('Times New Roman',30,'bold')
+    fontObj = ('Times New Roman',14,'bold')
 
     jumpingJacks = Label(bottomFrame, text = "Jumping Jacks AMRAP", width = 20, font = fontObj, anchor=CENTER)
     jumpingJacks.grid(column = 6, row = 1)
@@ -850,7 +850,7 @@ def showWorkout6():
     top.mainloop()
 
 def buttonClicked6(bottomFrame):
-    fontObj = ('Times New Roman',30,'bold')
+    fontObj = ('Times New Roman',14,'bold')
 
     reverseLunges = Label(bottomFrame, text = "Reverse Lunges, alternating sides per rep AMRAP", width = 20, font = fontObj, anchor=CENTER)
     reverseLunges.grid(column = 6, row = 1)
@@ -972,7 +972,7 @@ def showWorkout7():
     top.mainloop()
 
 def buttonClicked7(bottomFrame):
-    fontObj = ('Times New Roman',30,'bold')
+    fontObj = ('Times New Roman',14,'bold')
 
     tricepDips_chair = Label(bottomFrame, text = "Tricep Dips on Chair x 20", width = 20, font = fontObj, anchor=CENTER)
     tricepDips_chair.grid(column = 6, row = 1)
@@ -1108,7 +1108,7 @@ def showWorkout8():
     top.mainloop()
 
 def buttonClicked8(bottomFrame):
-    fontObj = ('Times New Roman',30,'bold')
+    fontObj = ('Times New Roman',14,'bold')
 
     reverseLunges2 = Label(bottomFrame, text = "Reverse Lunges x 45 seconds", width = 20, font = fontObj, anchor=CENTER)
     reverseLunges2.grid(column = 6, row = 1)
