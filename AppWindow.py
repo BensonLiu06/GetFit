@@ -73,13 +73,7 @@ def createAppWindow(mainWindow, userLoginWindow, dbConnection, dbCursor, usernam
     setGoalsButton = ttk.Button(bottomFrame, text = "Set Goals", command = lambda : createSetGoalsWindow(mainWindow, appWindow, dbConnection, dbCursor, username))
     setGoalsButton.grid(column = 0, row = 2, pady = 5)
 
-    # Create button widget for Track Activity
-    trackActivityButton = ttk.Button(bottomFrame, text = "Track Activity", command = lambda : createTrackActivityWindow(mainWindow, appWindow, dbConnection, dbCursor, username))
-    trackActivityButton.grid(column = 0, row = 3, pady = 5)
-
-    # Create button widget for Track Progress
-    trackProgressButton = ttk.Button(bottomFrame, text = "Track Progress", command = lambda : createTrackProgressWindow(mainWindow, appWindow, dbConnection, dbCursor, username))
-    trackProgressButton.grid(column = 0, row = 4, pady = 5)
+    
 
     workoutsButton = ttk.Button(bottomFrame, text = " Workouts" , command = lambda: workoutsTab())
     workoutsButton.grid(column = 0, row = 5, pady = 5)

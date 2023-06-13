@@ -1198,40 +1198,4 @@ def timer2(bottomButtonFrame):
 
 
 
-#------------------------------------------------------------
 
-def showtext1():
-    airSquats.grid(column = 6, row = 1)
-
-def showtext2():
-    inbetweenBreaks.grid(column = 6, row = 2)
-
-def showtext3():
-    walkingLunges.grid(column = 6, row = 3)
-
-def showtext4():
-    pushUps.grid(column = 6, row = 5)
-
-def showtext5():
-    plank.grid(column = 6, row = 7)
-
-def showtext6():
-    jumpingJacks.grid(column = 6, row = 9)
-
-def showtext7():
-    breakTime.grid(column = 6, row = 11)
-
-def showtext8():
-    pistolSquats.grid(column = 6, row = 6)
-
-def showtext9():
-    tricepDips.grid(column = 6, row = 8)
-
-def showtext10():
-    tricepDips.grid(column = 6, row = 8)
-def showtext11():
-    tricepDips.grid(column = 6, row = 8)
-def showtext12():
-    tricepDips.grid(column = 6, row = 8)
-def showtext13():   
-    tricepDips.grid(column = 6, row = 8)
