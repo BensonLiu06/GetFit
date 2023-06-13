@@ -4,10 +4,9 @@ import re
 from RegisterUserWindow import *
 from AppWindow import *
 from PopupBox import *
-from CheckUsernameExists import*
+from CheckUserNameExists import *
 from ResetPassword import *
 from PasswordHash import *
-
 
 # Implementation of the User Login window
 def createLoginWindow(mainWindow, dbConnection, dbCursor):
