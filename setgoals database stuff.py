@@ -14,18 +14,17 @@ dbConnection = mysql.connector.connect(
 # Create a cursor object
 dbCursor = dbConnection.cursor()
 
-# Function to add a goal
-def addGoal(entry, frame):
-    goal = entry.get()
-    if goal and len(frame.winfo_children()) < 50:
-        entry.delete(0, END)
-        insertGoal(goal, frame)
-            
 # Implementation of Set Goals window
 def createSetGoalsWindow(mainWindow, parentWindow, dbConnection, dbCursor, username):
     # Hide the App window
     parentWindow.grid_forget()
 
+    # Function to add a goal
+    def addGoal(entry, frame):
+        goal = entry.get()
+        if goal and len(frame.winfo_children()) < 50:
+            entry.delete(0, END)
+            insertGoal(goal, frame)
     # Create a frame for the Set Goals window
     setGoalsWindow = ttk.Frame(mainWindow, padding=(3, 3, 12, 12))
     setGoalsWindow.grid(sticky=(N, S, E, W))
