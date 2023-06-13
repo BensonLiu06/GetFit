@@ -49,7 +49,7 @@ def accessDatabase(mainWindow, dbHostname, dbUsername, dbPort, dbPassword, dbNam
             dbCursor.execute("CREATE TABLE UserInfo (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(50), fullname VARCHAR(256), birthdate DATE DEFAULT(CURRENT_DATE), phone_number VARCHAR(50), email VARCHAR(256), gender VARCHAR(10), height DECIMAL(4,1) DEFAULT 0, weight DECIMAL (4,1) DEFAULT 0, image_path VARCHAR(256))")
             
             # Create the Goals table
-            dbCursor.execute("CREATE TABLE Goal (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(50), goal VARCHAR(256))")
+            dbCursor.execute("CREATE TABLE Goal (id INT AUTO_INCREMENT PRIMARY KEY, username VARCHAR(50), goal_text VARCHAR(256), completed BOOLEAN DEFAULT False)")
 
             # Commit the changes
             dbConnection.commit()
