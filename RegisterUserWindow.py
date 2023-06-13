@@ -4,7 +4,7 @@ import bcrypt
 import re
 from CheckUsernameExists import checkUsernameExists
 from PopupBox import *
-from CheckUserNameExists import *
+from CheckUsernameExists import *
 from PasswordHash import *
 
 # Implementation of the User Registration window
