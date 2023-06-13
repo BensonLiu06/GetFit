@@ -4,7 +4,7 @@ import re
 from AppWindow import *
 from PopupBox import *
 from AppWindow import *
-from CheckUserNameExists import *
+from CheckUsernameExists import *
 from PasswordHash import *
 
 def createResetPasswordBox(mainWindow, parentWindow, dbConnection, dbCursor, username):
