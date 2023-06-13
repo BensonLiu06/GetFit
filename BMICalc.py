@@ -6,6 +6,7 @@ from tkinter import ttk
 
 
 def bmiTab():
+    global bmiWindow
     global userWeight
     global userHeight
     global bottomFrame
@@ -78,6 +79,12 @@ def bmiTab():
 
 
 def bmiIndexCalc(height,weight):
+    global showBMI
+    global obeseStatus
+    global underWeightStatus
+    global healthyStatus
+    global overWeightStatus
+    global bmiIndex
 
 
     weight = userWeight.get()
@@ -120,7 +127,6 @@ def bmiIndexCalc(height,weight):
 
     status = Label(bottomFrame, text = labelText)
     status.grid(column = 5, row = 7)
-
 
 
 
