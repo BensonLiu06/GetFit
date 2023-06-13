@@ -161,8 +161,8 @@ def showWorkout1():
     Start = Button(bottomButtonFrame, text = "Start", command = lambda: [buttonClicked(bottomFrame), timer(bottomButtonFrame)])
     Start.grid(column = 1, row= 4, ipadx = 30, ipady = 20, padx = 15, pady = 15)
 
-    End = Button(bottomButtonFrame, text = "End", command = lambda: finished() )
-    End.grid(column = 1, row= 6, ipadx = 30, ipady = 20, padx = 15, pady = 15)
+    end = Button(bottomButtonFrame, text = "End", command = lambda: finished())
+    end.grid(column = 1, row= 6, ipadx = 30, ipady = 20, padx = 15, pady = 15)
 
     exit = Button(buttonFrame, text = "Quit", command =  top.destroy )
     exit.grid(column = 1 , row = 3 , ipadx = 30, ipady = 20 , padx = 15, pady = 15)
@@ -220,9 +220,10 @@ def buttonClicked(bottomFrame):
     repeat.grid(column=6, row = 12)
 
        
+
 def finished():
-    blankLabel = Label(bottomButtonFrame, text = "                           ")
-    blankLabel.grid(column = 1, row= 3, padx = 15, pady = 15)
+
+    label.after(1000, label.destroy())
 
     finished = Tk()
 
@@ -246,7 +247,10 @@ def countdown(count):
 
     
 def timer(bottomButtonFrame):
+
     global label
+
+
 
     label = tk.Label(bottomButtonFrame, font = ('impact', 14, 'bold'))
     label.grid(column = 1, row= 3, padx = 15, pady = 15)
@@ -707,7 +711,7 @@ def showWorkout5():
     Start = Button(bottomButtonFrame, text = "Start", command = lambda: [buttonClicked5(bottomFrame), timer2(bottomButtonFrame)])
     Start.grid(column = 1, row= 4, ipadx = 30, ipady = 20, padx = 15, pady = 15)
 
-    End = Button(bottomButtonFrame, text = "End", command = lambda: finished() )
+    End = Button(bottomButtonFrame, text = "End", command = lambda: finished2() )
     End.grid(column = 1, row= 6, ipadx = 30, ipady = 20, padx = 15, pady = 15)
 
     exit = Button(buttonFrame, text = "Quit", command =  top.destroy )
@@ -841,7 +845,7 @@ def showWorkout6():
     Start = Button(bottomButtonFrame, text = "Start", command = lambda: [buttonClicked6(bottomFrame), timer2(bottomButtonFrame)])
     Start.grid(column = 1, row= 4, ipadx = 30, ipady = 20, padx = 15, pady = 15)
 
-    End = Button(bottomButtonFrame, text = "End", command = lambda: finished() )
+    End = Button(bottomButtonFrame, text = "End", command = lambda: finished2() )
     End.grid(column = 1, row= 6, ipadx = 30, ipady = 20, padx = 15, pady = 15)
 
     exit = Button(buttonFrame, text = "Quit", command =  top.destroy )
@@ -1162,9 +1166,8 @@ def buttonClicked8(bottomFrame):
     repeat.grid(column=6, row = 15)
 
 
-def finished():
-    blankLabel = Label(bottomButtonFrame, text = "                           ")
-    blankLabel.grid(column = 1, row= 3, padx = 15, pady = 15)
+def finished2():
+    label2.after(1000, label2.destroy())
 
     finished = Tk()
 
@@ -1172,7 +1175,6 @@ def finished():
     congratsMessage.grid()
 
     finished.mainloop()
-
     
 def countdown2(count):
     # change text in label        
@@ -1193,9 +1195,11 @@ def timer2(bottomButtonFrame):
     label2.grid(column = 1, row= 3, padx = 15, pady = 15)
     
     # call countdown first time   
-    countdown(420)
+    countdown2(420)
     # root.after(0, countdown, 5)
 
 
+
+#------------------------------------------------------------
 
 
