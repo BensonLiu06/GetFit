@@ -93,16 +93,18 @@ def workoutsTab():
 def showWorkout1():
     global bottomButtonFrame
 
+    #calls up the window
     top = Tk()
     top.geometry("1100x900")
     top.title("Beginner Workout")
 
-    # Create a frame for the Update Profile & Settings window
+    # Create a frame 
     frame1 = ttk.Frame(top)
 
-    # Setup the Update Profile & Settings window
+    # Setup the window
     frame1.grid(sticky = (N, S, E, W))
 
+    #configures the geometry of the frame
     frame1.columnconfigure(0, weight = 1)
     frame1.columnconfigure(1, weight = 1)
     frame1.columnconfigure(2, weight = 1)
@@ -129,6 +131,7 @@ def showWorkout1():
     buttonFrame.grid(column = 0, row = 11, columnspan = 3, rowspan = 1, padx = 5, pady = 5, sticky = (N, S, E, W))
     bottomButtonFrame.grid(column = 2, row = 3, columnspan = 1, rowspan = 8, padx = 5, pady = 5, sticky = (N, S, E, W))
 
+    #configures the geometry of the frames
     topFrame.columnconfigure(0, weight = 1)
     topFrame.columnconfigure(1, weight = 1)
     topFrame.columnconfigure(2, weight = 1)
@@ -154,10 +157,11 @@ def showWorkout1():
     bottomButtonFrame.rowconfigure(9, weight = 1)
     bottomButtonFrame.rowconfigure(10, weight = 1)
 
+    
     introduction = Label(topFrame, text = "Press Start to start the workout.")
     introduction.grid(column = 1, row = 2, padx = 15, pady = 15)
 
-
+    #Creates Buttons to run the workout
     Start = Button(bottomButtonFrame, text = "Start", command = lambda: [buttonClicked(bottomFrame), timer(bottomButtonFrame)])
     Start.grid(column = 1, row= 4, ipadx = 30, ipady = 20, padx = 15, pady = 15)
 
@@ -172,10 +176,11 @@ def showWorkout1():
 
 def buttonClicked(bottomFrame):
     
+    #creates a variable to set the font of the labels
     fontObj = ('Times New Roman',14,'bold')
 
     
-    
+    #Creates labels for workouts and displays them
     airSquats = Label(bottomFrame, text = "Air Squats x 20", width = 20, font = fontObj, anchor=CENTER)
     airSquats.grid(column = 6, row = 1)
 
@@ -223,9 +228,12 @@ def buttonClicked(bottomFrame):
 
 def finished():
 
+    #destroys the label
     label.after(1000, label.destroy())
 
+    #Calls up a new window to display message
     finished = Tk()
+
 
     congratsMessage = Label(finished, text = "Congrats, you made it, the workout has finished!", anchor=CENTER)
     congratsMessage.grid()
