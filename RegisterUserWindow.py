@@ -3,7 +3,7 @@ from tkinter import ttk
 import bcrypt
 import re
 from PopupBox import *
-from CheckUserNameExists import *
+from CheckUsernameExists import *
 from PasswordHash import *
 
 # Implementation of the User Registration window
